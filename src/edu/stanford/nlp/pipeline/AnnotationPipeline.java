@@ -1,5 +1,7 @@
 package edu.stanford.nlp.pipeline;
 
+import edu.stanford.nlp.io.IOUtils;
+import edu.stanford.nlp.ling.CoreAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.util.*;
@@ -22,7 +24,10 @@ import java.util.function.Consumer;
  * @author Jenny Finkel
  */
 
-public class AnnotationPipeline implements Annotator {
+public class AnnotationPipeline implements Annotator  {
+
+  /** A logger for this class */
+  private static final Redwood.RedwoodChannels log = Redwood.channels(AnnotationPipeline.class);
 
   protected static final boolean TIME = true;
 
@@ -33,7 +38,7 @@ public class AnnotationPipeline implements Annotator {
     this.annotators = annotators;
     if (TIME) {
       int num = annotators.size();
-      accumulatedTime = new ArrayList<MutableLong>(num);
+      accumulatedTime = new ArrayList<>(num);
       for (int i = 0; i < num; i++) {
         accumulatedTime.add(new MutableLong());
       }
@@ -41,7 +46,7 @@ public class AnnotationPipeline implements Annotator {
   }
 
   public AnnotationPipeline() {
-    this(new ArrayList<Annotator>());
+    this(new ArrayList<>()); // It can't be a singletonList() since it isn't copied but is mutated.
   }
 
   public void addAnnotator(Annotator annotator) {
@@ -62,6 +67,9 @@ public class AnnotationPipeline implements Annotator {
     Iterator<MutableLong> it = accumulatedTime.iterator();
     Timing t = new Timing();
     for (Annotator annotator : annotators) {
+      if (Thread.interrupted()) {  // Allow interrupting
+        throw new RuntimeInterruptedException();
+      }
       if (TIME) {
         t.start();
       }
@@ -182,13 +190,15 @@ public class AnnotationPipeline implements Annotator {
   public String timingInformation() {
     StringBuilder sb = new StringBuilder();
     if (TIME) {
-      sb.append("Annotation pipeline timing information:\n");
+      sb.append("Annotation pipeline timing information:");
+      sb.append(IOUtils.eolChar);
       Iterator<MutableLong> it = accumulatedTime.iterator();
       long total = 0;
       for (Annotator annotator : annotators) {
         MutableLong m = it.next();
         sb.append(StringUtils.getShortClassName(annotator)).append(": ");
-        sb.append(Timing.toSecondsString(m.longValue())).append(" sec.\n");
+        sb.append(Timing.toSecondsString(m.longValue())).append(" sec.");
+        sb.append(IOUtils.eolChar);
         total += m.longValue();
       }
       sb.append("TOTAL: ").append(Timing.toSecondsString(total)).append(" sec.");
@@ -197,8 +207,8 @@ public class AnnotationPipeline implements Annotator {
   }
 
   @Override
-  public Set<Requirement> requirementsSatisfied() {
-    Set<Requirement> satisfied = Generics.newHashSet();
+  public Set<Class<? extends CoreAnnotation>> requirementsSatisfied() {
+    Set<Class<? extends CoreAnnotation>> satisfied = Generics.newHashSet();
     for (Annotator annotator : annotators) {
       satisfied.addAll(annotator.requirementsSatisfied());
     }
@@ -206,7 +216,7 @@ public class AnnotationPipeline implements Annotator {
   }
 
   @Override
-  public Set<Requirement> requires() {
+  public Set<Class<? extends CoreAnnotation>> requires() {
     if (annotators.isEmpty()) {
       return Collections.emptySet();
     }
@@ -217,14 +227,14 @@ public class AnnotationPipeline implements Annotator {
   public static void main(String[] args) throws IOException, ClassNotFoundException {
     Timing tim = new Timing();
     AnnotationPipeline ap = new AnnotationPipeline();
-    boolean verbose = false;
+    final boolean verbose = false;
     ap.addAnnotator(new TokenizerAnnotator(verbose, "en"));
     ap.addAnnotator(new WordsToSentencesAnnotator(verbose));
     // ap.addAnnotator(new NERCombinerAnnotator(verbose));
     // ap.addAnnotator(new OldNERAnnotator(verbose));
     // ap.addAnnotator(new NERMergingAnnotator(verbose));
     ap.addAnnotator(new ParserAnnotator(verbose, -1));
-/**
+/*
     ap.addAnnotator(new UpdateSentenceFromParseAnnotator(verbose));
     ap.addAnnotator(new NumberAnnotator(verbose));
     ap.addAnnotator(new QuantifiableEntityNormalizingAnnotator(verbose));
@@ -243,7 +253,7 @@ public class AnnotationPipeline implements Annotator {
 
     if (TIME) {
       System.out.println(ap.timingInformation());
-      System.err.println("Total time for AnnotationPipeline: " +
+      log.info("Total time for AnnotationPipeline: " +
                          tim.toSecondsString() + " sec.");
     }
   }

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.fsm;
+package edu.stanford.nlp.fsm; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.util.Generics;
 import edu.stanford.nlp.util.Scored;
@@ -15,7 +16,10 @@ import java.util.*;
  * @author Michel Galley (AT&amp;T FSM library format printing)
  * @author Sarah Spikes (sdspikes@cs.stanford.edu) - cleanup and filling in types
  */
-public final class DFSA<T,S> implements Scored {
+public final class DFSA<T,S> implements Scored  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(DFSA.class);
 
   Object dfsaID;
   DFSAState<T,S> initialState;
@@ -51,7 +55,7 @@ public final class DFSA<T,S> implements Scored {
 
   public Set<DFSAState<T, S>> states() {
     Set<DFSAState<T, S>> visited = Generics.newHashSet();
-    List<DFSAState<T,S>> toVisit = new ArrayList<DFSAState<T,S>>();
+    List<DFSAState<T,S>> toVisit = new ArrayList<>();
     toVisit.add(initialState());
     exploreStates(toVisit, visited);
     return visited;
@@ -94,12 +98,12 @@ public final class DFSA<T,S> implements Scored {
   }
 
   public static <T, S> void printTrieDFSA(DFSA<T, S> dfsa) {
-    System.err.println("DFSA: " + dfsa.dfsaID);
+    log.info("DFSA: " + dfsa.dfsaID);
     printTrieDFSAHelper(dfsa.initialState(), 2);
   }
 
   public void printAttFsmFormat(Writer w) throws IOException {
-    Queue<DFSAState<T,S>> q = new LinkedList<DFSAState<T,S>>();
+    Queue<DFSAState<T,S>> q = new LinkedList<>();
     Set<DFSAState<T,S>> visited = Generics.newHashSet();
     q.offer(initialState);
     while(q.peek() != null) {
@@ -111,7 +115,7 @@ public final class DFSA<T,S> implements Scored {
         w.write(state.toString()+"\t"+state.score()+"\n");
         continue;
       }
-      TreeSet<T> inputs = new TreeSet<T>(state.continuingInputs());
+      TreeSet<T> inputs = new TreeSet<>(state.continuingInputs());
       for (T input : inputs) {
         DFSATransition<T, S> transition = state.transition(input);
         DFSAState<T,S> target = transition.target();

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.international.spanish.pipeline;
+package edu.stanford.nlp.international.spanish.pipeline; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.stats.TwoDimensionalCounter;
@@ -23,7 +24,10 @@ import java.util.*;
  *
  * @author Jon Gauthier
  */
-public class AnCoraPOSStats {
+public class AnCoraPOSStats  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(AnCoraPOSStats.class);
 
   private final TwoDimensionalCounter<String, String> unigramTagger;
 
@@ -34,7 +38,7 @@ public class AnCoraPOSStats {
     this.fileList = fileList;
     this.outputPath = outputPath;
 
-    unigramTagger = new TwoDimensionalCounter<String, String>();
+    unigramTagger = new TwoDimensionalCounter<>();
   }
 
   public void process() throws IOException {
@@ -68,14 +72,14 @@ public class AnCoraPOSStats {
   private static final String usage =
     String.format("Usage: java %s -o <output_path> file(s)%n%n", AnCoraPOSStats.class.getName());
 
-  private static final Map<String, Integer> argOptionDefs = new HashMap<String, Integer>();
+  private static final Map<String, Integer> argOptionDefs = new HashMap<>();
   static {
     argOptionDefs.put("o", 1);
   }
 
   public static void main(String[] args) throws IOException {
     if (args.length < 1) {
-      System.err.println(usage);
+      log.info(usage);
       System.exit(1);
     }
 
@@ -86,7 +90,7 @@ public class AnCoraPOSStats {
       throw new IllegalArgumentException("-o argument (output path for built tagger) is required");
 
     String[] remainingArgs = options.getProperty("").split(" ");
-    List<File> fileList = new ArrayList<File>();
+    List<File> fileList = new ArrayList<>();
     for (String arg : remainingArgs)
       fileList.add(new File(arg));
 

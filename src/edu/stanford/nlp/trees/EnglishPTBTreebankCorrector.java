@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees;
+package edu.stanford.nlp.trees; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -14,7 +15,10 @@ import edu.stanford.nlp.trees.tregex.tsurgeon.TsurgeonPattern;
 import edu.stanford.nlp.util.Pair;
 
 
-public class EnglishPTBTreebankCorrector implements TreebankTransformer {
+public class EnglishPTBTreebankCorrector implements TreebankTransformer  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(EnglishPTBTreebankCorrector.class);
 
   private static final boolean DEBUG = false;
 
@@ -66,25 +70,25 @@ public class EnglishPTBTreebankCorrector implements TreebankTransformer {
 
   public EnglishPTBTreebankCorrector() {
     // initialize the transformations to be done
-    ops = new ArrayList<Pair<TregexPattern,TsurgeonPattern>>();
+    ops = new ArrayList<>();
     TreebankLanguagePack tlp = new PennTreebankLanguagePack();
     TregexPatternCompiler tpc = new TregexPatternCompiler(tlp.headFinder(), tlp.getBasicCategoryFunction());
     Macros.addAllMacros(tpc, getBufferedReader(macroStr));
     try {
       BufferedReader br = getBufferedReader(editStr);
-      List<TsurgeonPattern> tsp = new ArrayList<TsurgeonPattern>();
+      List<TsurgeonPattern> tsp = new ArrayList<>();
       for (String line; (line = br.readLine()) != null; ) {
         TregexPattern matchPattern = tpc.compile(line);
         tsp.clear();
-        if (DEBUG) System.err.println("Pattern is " + line + " [" + matchPattern + ']');
+        if (DEBUG) log.info("Pattern is " + line + " [" + matchPattern + ']');
         while (continuing(line = br.readLine())) {
           TsurgeonPattern p = Tsurgeon.parseOperation(line);
-          if (DEBUG) System.err.println("Operation is " + line + " [" + p + ']');
+          if (DEBUG) log.info("Operation is " + line + " [" + p + ']');
           tsp.add(p);
         }
         if ( ! tsp.isEmpty()) {
           TsurgeonPattern tp = Tsurgeon.collectOperations(tsp);
-          ops.add(new Pair<TregexPattern,TsurgeonPattern>(matchPattern, tp));
+          ops.add(new Pair<>(matchPattern, tp));
         }
       } // while not at end of file
     } catch (IOException ioe) {

@@ -29,7 +29,8 @@
 //    Support/Questions: java-nlp-user@lists.stanford.edu
 //    Licensing: java-nlp-support@lists.stanford.edu
 
-package edu.stanford.nlp.trees.international.pennchinese;
+package edu.stanford.nlp.trees.international.pennchinese; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.trees.TreebankLanguagePack;
 import edu.stanford.nlp.util.Generics;
@@ -45,7 +46,10 @@ import java.util.regex.Pattern;
  *
  * @author Galen Andrew
  */
-public class ChineseEnglishWordMap implements Serializable {
+public class ChineseEnglishWordMap implements Serializable  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ChineseEnglishWordMap.class);
 
   /**
    * 
@@ -142,8 +146,8 @@ public class ChineseEnglishWordMap implements Serializable {
     }
     t = t.trim();
     if (DEBUG && !origT.equals(t)) {
-      System.err.println("orig="+origT);
-      System.err.println("norm="+t);
+      log.info("orig="+origT);
+      log.info("norm="+t);
     }
     return t;
   }
@@ -188,7 +192,7 @@ public class ChineseEnglishWordMap implements Serializable {
               }
             }
           } else {
-            Set<String> transList = new LinkedHashSet<String>(Arrays.asList(trans));
+            Set<String> transList = new LinkedHashSet<>(Arrays.asList(trans));
             String normW = normalize(word);
             Set<String> normSet = normalize(transList);
             if ( ! normW.equals("") && normSet.size() > 0) {
@@ -266,7 +270,7 @@ public class ChineseEnglishWordMap implements Serializable {
         Set<String> entry = rMap.get(trans);
         if (entry == null) {
           // reduce default size as most will be small
-          Set<String> toAdd = new LinkedHashSet<String>(6);
+          Set<String> toAdd = new LinkedHashSet<>(6);
           toAdd.add(k);
           rMap.put(trans, toAdd);
         } else {
@@ -288,7 +292,7 @@ public class ChineseEnglishWordMap implements Serializable {
       Set<String> addList = me.getValue();
       Set<String> origList = map.get(k);
       if (origList == null) {
-        map.put(k, new LinkedHashSet<String>(addList));
+        map.put(k, new LinkedHashSet<>(addList));
         Set<String> newList = map.get(k);
         if (newList != null && newList.size() != 0) {
           newTrans+=addList.size();
@@ -338,7 +342,7 @@ public class ChineseEnglishWordMap implements Serializable {
     Map<String, String[]> argMap = StringUtils.argsToMap(args, flagsToNumArgs);
     String[] otherArgs = argMap.get(null);
     if (otherArgs.length < 1) {
-      System.err.println("usage: ChineseEnglishWordMap [-all] [-dictPath path] [-encoding enc_string] inputFile");
+      log.info("usage: ChineseEnglishWordMap [-all] [-dictPath path] [-encoding enc_string] inputFile");
       System.exit(1);
     }
     String filename = otherArgs[0];
@@ -370,7 +374,7 @@ public class ChineseEnglishWordMap implements Serializable {
         } else if (cewm.containsKey(word)) {
           coveredWords++;
           if (allTranslations) {
-            List<String> trans = new ArrayList<String>(cewm.getAllTranslations(word));
+            List<String> trans = new ArrayList<>(cewm.getAllTranslations(word));
             for (String s : trans) {
               pw.print((trans.indexOf(s) > 0 ? "|" : "") + s);
             }
@@ -385,7 +389,7 @@ public class ChineseEnglishWordMap implements Serializable {
       pw.println();
     }
     r.close();
-    System.err.print("Finished translating " + totalWords + " words (");
-    System.err.println(coveredWords + " were in dictionary).");
+    log.info("Finished translating " + totalWords + " words (");
+    log.info(coveredWords + " were in dictionary).");
   }
 }

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.stats;
+package edu.stanford.nlp.stats; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 
 import edu.stanford.nlp.io.RecordIterator;
@@ -31,7 +32,10 @@ import java.io.*;
  *
  * @author Bill MacCartney
  */
-public interface DataSeries {
+public interface DataSeries  {
+
+  /** A logger for this class */
+  Redwood.RedwoodChannels log = Redwood.channels(DataSeries.class);
 
   public String     name();
   public double     get(int i);         // SAFE! if index out of bounds, return (double) i
@@ -53,11 +57,11 @@ public interface DataSeries {
     public void setDomain(DataSeries domain) { this.domain = domain; }
 
     public List<Pair<Double, Double>> toListPairDouble() {
-      List<Pair<Double, Double>> list = new ArrayList<Pair<Double, Double>>();
+      List<Pair<Double, Double>> list = new ArrayList<>();
       for (int i = 0; i < size(); i++) {
         double x = (domain() != null ? domain().get(i) : (double) i);
         double y = get(i);
-        list.add(new Pair<Double, Double>(x, y));
+        list.add(new Pair<>(x, y));
       }
       return list;
     }
@@ -164,7 +168,7 @@ public interface DataSeries {
 
     public ListDataSeries(String name) { 
       setName(name);
-      setData(new ArrayList<Double>());
+      setData(new ArrayList<>());
     }
 
     public ListDataSeries(String name, List<Double> data) { 
@@ -271,7 +275,7 @@ public interface DataSeries {
       if (args.length > 0) {
         serieses = readDataSeries(args[0], true);
       } else {
-        System.err.println("[Reading from stdin...]");
+        log.info("[Reading from stdin...]");
         serieses = readDataSeries(System.in, true);
       }
 

@@ -1,30 +1,28 @@
-//MaxentTagger -- StanfordMaxEnt, A Maximum Entropy Toolkit
-//Copyright (c) 2002-2010 Leland Stanford Junior University
+// MaxentTagger -- StanfordMaxEnt, A Maximum Entropy Toolkit
+// Copyright (c) 2002-2016 Leland Stanford Junior University
 
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
 
-//This program is free software; you can redistribute it and/or
-//modify it under the terms of the GNU General Public License
-//as published by the Free Software Foundation; either version 2
-//of the License, or (at your option) any later version.
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
 
-//This program is distributed in the hope that it will be useful,
-//but WITHOUT ANY WARRANTY; without even the implied warranty of
-//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-//You should have received a copy of the GNU General Public License
-//along with this program; if not, write to the Free Software
-//Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
-//For more information, bug reports, fixes, contact:
-//Christopher Manning
-//Dept of Computer Science, Gates 1A
-//Stanford CA 94305-9010
-//USA
-//Support/Questions: java-nlp-user@lists.stanford.edu
-//Licensing: java-nlp-support@lists.stanford.edu
-//http://www-nlp.stanford.edu/software/tagger.shtml
-
+// For more information, bug reports, fixes, contact:
+// Christopher Manning
+// Dept of Computer Science, Gates 2A
+// Stanford CA 94305-9020
+// USA
+// Support/Questions: stanford-nlp on SO or java-nlp-user@lists.stanford.edu
+// Licensing: java-nlp-support@lists.stanford.edu
+// http://nlp.stanford.edu/software/tagger.html
 
 package edu.stanford.nlp.tagger.maxent;
 
@@ -49,7 +47,6 @@ import edu.stanford.nlp.sequences.PlainTextDocumentReaderAndWriter.OutputStyle;
 import edu.stanford.nlp.tagger.common.Tagger;
 import edu.stanford.nlp.tagger.io.TaggedFileRecord;
 import edu.stanford.nlp.util.DataFilePaths;
-import java.util.function.Function;
 import edu.stanford.nlp.util.Generics;
 import edu.stanford.nlp.util.ReflectionLoading;
 import edu.stanford.nlp.util.Timing;
@@ -57,9 +54,11 @@ import edu.stanford.nlp.util.StringUtils;
 import edu.stanford.nlp.util.XMLUtils;
 import edu.stanford.nlp.util.concurrent.MulticoreWrapper;
 import edu.stanford.nlp.util.concurrent.ThreadsafeProcessor;
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.lang.reflect.Method;
 import java.text.NumberFormat;
@@ -86,33 +85,33 @@ import java.text.DecimalFormat;
  * <dl>
  * <dt>
  * A MaxentTagger can be made with a constructor taking as argument the location of parameter files for a trained tagger: </dt>
- * <dd> <code>MaxentTagger tagger = new MaxentTagger("models/left3words-wsj-0-18.tagger");</code></dd>
+ * <dd> {@code MaxentTagger tagger = new MaxentTagger("models/left3words-wsj-0-18.tagger"); }</dd>
  * <p>
  * <dt>A default path is provided for the location of the tagger on the Stanford NLP machines:</dt>
- * <dd><code>MaxentTagger tagger = new MaxentTagger(DEFAULT_NLP_GROUP_MODEL_PATH); </code></dd>
+ * <dd>{@code MaxentTagger tagger = new MaxentTagger(DEFAULT_NLP_GROUP_MODEL_PATH); }</dd>
  * <p>
  * <dt>If you set the NLP_DATA_HOME environment variable,
  * DEFAULT_NLP_GROUP_MODEL_PATH will instead point to the directory
  * given in NLP_DATA_HOME.</dt>
  * <p>
  * <dt>To tag a List of HasWord and get a List of TaggedWord, you can use one of: </dt>
- * <dd><code>List&lt;TaggedWord&gt; taggedSentence = tagger.tagSentence(List&lt;? extends HasWord&gt; sentence)</code></dd>
- * <dd><code>List&lt;TaggedWord&gt; taggedSentence = tagger.apply(List&lt;? extends HasWord&gt; sentence)</code></dd>
+ * <dd>{@code List&lt;TaggedWord&gt; taggedSentence = tagger.tagSentence(List&lt;? extends HasWord&gt; sentence)}</dd>
+ * <dd>{@code List&lt;TaggedWord&gt; taggedSentence = tagger.apply(List&lt;? extends HasWord&gt; sentence)}</dd>
  * <p>
  * <dt>To tag a list of sentences and get back a list of tagged sentences:
- * <dd><code> List taggedList = tagger.process(List sentences)</code></dd>
+ * <dd>{@code List taggedList = tagger.process(List sentences)}</dd>
  * <p>
  * <dt>To tag a String of text and to get back a String with tagged words:</dt>
- * <dd> <code>String taggedString = tagger.tagString("Here's a tagged string.")</code></dd>
+ * <dd> {@code String taggedString = tagger.tagString("Here's a tagged string.")}</dd>
  * <p>
  * <dt>To tag a string of <i>correctly tokenized</i>, whitespace-separated words and get a string of tagged words back:</dt>
- * <dd> <code>String taggedString = tagger.tagTokenizedString("Here 's a tagged string .")</code></dd>
+ * <dd> {@code String taggedString = tagger.tagTokenizedString("Here 's a tagged string .")}</dd>
  * </dl>
  * <p>
- * The <code>tagString</code> method uses the default tokenizer (PTBTokenizer).
+ * The {@code tagString} method uses the default tokenizer (PTBTokenizer).
  * If you wish to control tokenization, you may wish to call
  * {@link #tokenizeText(Reader, TokenizerFactory)} and then to call
- * <code>process()</code> on the result.
+ * {@code process()} on the result.
  * </p>
  *
  * <h3>Using the command line</h3>
@@ -151,7 +150,7 @@ import java.text.DecimalFormat;
  * input has already been tokenized, use the flag "-tokenize false".
  *
  * <p> Parameters can be defined using a Properties file
- * (specified on the command-line with <code>-prop</code> <i>propFile</i>),
+ * (specified on the command-line with {@code -prop} <i>propFile</i>),
  * or directly on the command line (by preceding their name with a minus sign
  * ("-") to turn them into a flag. The following properties are recognized:
  * </p>
@@ -182,8 +181,8 @@ import java.text.DecimalFormat;
  * <tr><td>encoding</td><td>String</td><td>UTF-8</td><td>All</td><td>Encoding of the read files (training, testing) and the output text files.</td></tr>
  * <tr><td>tokenize</td><td>boolean</td><td>true</td><td>Tag,Test</td><td>Whether or not the file needs to be tokenized.  If this is false, the tagger assumes that white space separates words if and only if they should be tagged as separate tokens, and that the input is strictly one sentence per line.</td></tr>
  * <tr><td>tokenizerFactory</td><td>String</td><td>edu.stanford.nlp.<br>process.PTBTokenizer</td><td>Tag,Test</td><td>Fully qualified class name of the tokenizer to use.  edu.stanford.nlp.process.PTBTokenizer does basic English tokenization.</td></tr>
- * <tr><td>tokenizerOptions</td><td>String</td><td></td><td>Tag,Test</td><td>Known options for the particular tokenizer used. A comma-separated list. For PTBTokenizer, options of interest include <code>americanize=false</code> and <code>asciiQuotes</code> (for German). Note that any choice of tokenizer options that conflicts with the tokenization used in the tagger training data will likely degrade tagger performance.</td></tr>
- * <tr><td>sentenceDelimiter</td><td>String</td><td>null</td><td>Tag,Test</td><td>A marker used to separate a text into sentences. If not set (equal to <code>null</code>), sentence breaking is done by content (looking for periods, etc.) Otherwise, it will break on this String, except that if the String is "newline", it breaks on the String "\\n".</td></tr>
+ * <tr><td>tokenizerOptions</td><td>String</td><td></td><td>Tag,Test</td><td>Known options for the particular tokenizer used. A comma-separated list. For PTBTokenizer, options of interest include {@code americanize=false} and {@code asciiQuotes} (for German). Note that any choice of tokenizer options that conflicts with the tokenization used in the tagger training data will likely degrade tagger performance.</td></tr>
+ * <tr><td>sentenceDelimiter</td><td>String</td><td>null</td><td>Tag,Test</td><td>A marker used to separate a text into sentences. If not set (equal to {@code null}), sentence breaking is done by content (looking for periods, etc.) Otherwise, it will break on this String, except that if the String is "newline", it breaks on the String "\\n".</td></tr>
  * <tr><td>arch</td><td>String</td><td>generic</td><td>Train</td><td>Architecture of the model, as a comma-separated list of options, some with a parenthesized integer argument written k here: this determines what features are used to build your model.  See {@link ExtractorFrames} and {@link ExtractorFramesRare} for more information.</td></tr>
  * <tr><td>wordFunction</td><td>String</td><td>(none)</td><td>Train</td><td>A function to apply to the text before training or testing.  Must inherit from edu.stanford.nlp.util.Function&lt;String, String&gt;.  Can be blank.</td></tr>
  * <tr><td>lang</td><td>String</td><td>english</td><td>Train</td><td>Language from which the part of speech tags are drawn. This option determines which tags are considered closed-class (only fixed set of words can be tagged with a closed-class tag, such as prepositions). Defined languages are 'english' (Penn tag set), 'polish' (very rudimentary), 'french', 'chinese', 'arabic', 'german', and 'medline'.  </td></tr>
@@ -219,7 +218,10 @@ import java.text.DecimalFormat;
  * @author Christopher Manning
  * @author John Bauer
  */
-public class MaxentTagger extends Tagger implements ListProcessor<List<? extends HasWord>,List<TaggedWord>>, Serializable {
+public class MaxentTagger extends Tagger implements ListProcessor<List<? extends HasWord>,List<TaggedWord>>, Serializable  {
+
+  /** A logger for this class */
+  private static final Redwood.RedwoodChannels log = Redwood.channels(MaxentTagger.class);
 
   /**
    * The directory from which to get taggers when using
@@ -245,7 +247,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
 
   public MaxentTagger(TaggerConfig config) {
     // todo: maybe this shouldn't do this but replace the zero arg constructor.
-    // i.e., call init() not readModelAndInit(). This method is currently UNUSUED. Make non-public.
+    // i.e., call init() not readModelAndInit(). This method is currently UNUSED. Make non-public.
     this(config.getModel(), config);
   }
 
@@ -261,6 +263,20 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
    */
   public MaxentTagger(String modelFile) {
     this(modelFile, StringUtils.argsToProperties("-model", modelFile), true);
+  }
+
+  /**
+   * Constructor for a tagger, loading a model stored in a particular file,
+   * classpath resource, or URL.
+   * The tagger data is loaded when the constructor is called (this can be
+   * slow). This constructor first constructs a TaggerConfig object, which
+   * loads the tagger options from the modelFile.
+   *
+   * @param modelStream The InputStream from which to read the model
+   * @throws RuntimeIOException if I/O errors or serialization errors
+   */
+  public MaxentTagger(InputStream modelStream) {
+    this(modelStream, new Properties(), true);
   }
 
   /**
@@ -298,6 +314,17 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     readModelAndInit(config, modelFile, printLoading);
   }
 
+  /**
+   * Initializer that loads the tagger.
+   *
+   * @param modelStream An InputStream for reading the model file
+   * @param config TaggerConfig based on command-line arguments
+   * @param printLoading Whether to print a message saying what model file is being loaded and how long it took when finished.
+   * @throws RuntimeIOException if I/O errors or serialization errors
+   */
+  public MaxentTagger(InputStream modelStream, Properties config, boolean printLoading) {
+    readModelAndInit(config, modelStream, printLoading);
+  }
 
   final Dictionary dict = new Dictionary();
   TTags tags;
@@ -348,7 +375,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
   static final boolean POSSIBLE_TAGS_ONLY = Boolean.parseBoolean(TaggerConfig.POSSIBLE_TAGS_ONLY);
 
   private double defaultScore;
-  private double[] defaultScores = null;
+  private double[] defaultScores; // = null;
 
   int leftContext;
   int rightContext;
@@ -462,7 +489,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
         throw new RuntimeException("At least two of lang (\"" + lang + "\"), openClassTags (length " + openClassTags.length + ": " + Arrays.toString(openClassTags) + ")," +
             "and closedClassTags (length " + closedClassTags.length + ": " + Arrays.toString(closedClassTags) + ") specified---you must choose one!");
       } else if ((openClassTags.length == 0) && lang.equals("") && (closedClassTags.length == 0) && ! config.getLearnClosedClassTags()) {
-        System.err.println("warning: no language set, no open-class tags specified, and no closed-class tags specified; assuming ALL tags are open class tags");
+        log.info("warning: no language set, no open-class tags specified, and no closed-class tags specified; assuming ALL tags are open class tags");
       }
     }
 
@@ -486,8 +513,8 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
       veryCommonWordThresh = config.getVeryCommonWordThresh();
       occurringTagsOnly = config.occurringTagsOnly();
       possibleTagsOnly = config.possibleTagsOnly();
-      // System.err.println("occurringTagsOnly: "+occurringTagsOnly);
-      // System.err.println("possibleTagsOnly: "+possibleTagsOnly);
+      // log.info("occurringTagsOnly: "+occurringTagsOnly);
+      // log.info("possibleTagsOnly: "+possibleTagsOnly);
 
       if(config.getDefaultScore() >= 0)
         defaultScore = config.getDefaultScore();
@@ -700,7 +727,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
       saveModel(file);
       file.close();
     } catch (IOException ioe) {
-      System.err.println("Error saving tagger to file " + filename);
+      log.info("Error saving tagger to file " + filename);
       throw new RuntimeIOException(ioe);
     }
   }
@@ -745,7 +772,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
   }
 
   /** This reads the complete tagger from a single model stored in a file, at a URL,
-   *  or as a resource in a jar file, and inits the tagger using a
+   *  or as a resource in a jar file, and initializes the tagger using a
    *  combination of the properties passed in and parameters from the file.
    *  <p>
    *  <i>Note for the future:</i> This assumes that the TaggerConfig in the file
@@ -761,16 +788,38 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
    */
   protected void readModelAndInit(Properties config, String modelFileOrUrl, boolean printLoading) {
     try {
+      readModelAndInit(config, IOUtils.getInputStreamFromURLOrClasspathOrFileSystem(modelFileOrUrl), printLoading);
+    } catch (IOException e) {
+      throw new RuntimeIOException("Error while loading a tagger model (probably missing model file)", e);
+    }
+  }
+
+  /** This reads the complete tagger from a single model provided as an InputStream,
+   *  and initializes the tagger using a
+   *  combination of the properties passed in and parameters from the file.
+   *  <p>
+   *  <i>Note for the future:</i> This assumes that the TaggerConfig in the file
+   *  has already been read and used.  This work is done inside the
+   *  constructor of TaggerConfig.  It might be better to refactor
+   *  things so that is all done inside this method, but for the moment
+   *  it seemed better to leave working code alone [cdm 2008].
+   *
+   *  @param config The tagger config
+   *  @param modelStream The model provided as an InputStream
+   *  @param printLoading Whether to print a message saying what model file is being loaded and how long it took when finished.
+   *  @throws RuntimeIOException if I/O errors or serialization errors
+   */
+  protected void readModelAndInit(Properties config, InputStream modelStream, boolean printLoading) {
+    try {
       // first check can open file ... or else leave with exception
-      DataInputStream rf = new DataInputStream(IOUtils.getInputStreamFromURLOrClasspathOrFileSystem(modelFileOrUrl));
+      DataInputStream rf = new DataInputStream(modelStream);
 
       readModelAndInit(config, rf, printLoading);
       rf.close();
     } catch (IOException e) {
-      throw new RuntimeIOException("Unrecoverable error while loading a tagger model", e);
+      throw new RuntimeIOException("Error while loading a tagger model (probably missing model file)", e);
     }
   }
-
 
 
   /** This reads the complete tagger from a single model file, and inits
@@ -790,8 +839,8 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
   protected void readModelAndInit(Properties config, DataInputStream rf, boolean printLoading) {
     try {
       Timing t = new Timing();
+      String source = null;
       if (printLoading) {
-        String source = null;
         if (config != null) {
           // TODO: "model"
           source = config.getProperty("model");
@@ -799,7 +848,6 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
         if (source == null) {
           source = "data stream";
         }
-        t.doing("Reading POS tagger model from " + source);
       }
       TaggerConfig taggerConfig = TaggerConfig.readConfig(rf);
       if (config != null) {
@@ -814,7 +862,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
       dict.read(rf);
 
       if (VERBOSE) {
-        System.err.println(" dictionary read ");
+        log.info("Tagger dictionary read.");
       }
       tags.read(rf);
       readExtractors(rf);
@@ -826,7 +874,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
       for (int i = 0; i < extractors.size() + extractorsRare.size(); ++i) {
         fAssociations.add(Generics.<String, int[]>newHashMap());
       }
-      if (VERBOSE) System.err.printf("Reading %d feature keys...%n",sizeAssoc);
+      if (VERBOSE) log.info("Reading %d feature keys...%n",sizeAssoc);
       PrintFile pfVP = null;
       if (VERBOSE) {
         pfVP = new PrintFile("pairs.txt");
@@ -857,18 +905,18 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
       }
       if (VERBOSE) {
         for (int k = 0; k < numFA.length; k++) {
-          System.err.println(" Number of features of kind " + k + ' ' + numFA[k]);
+          log.info("Number of features of kind " + k + ' ' + numFA[k]);
         }
       }
       prob = new LambdaSolveTagger(rf);
       if (VERBOSE) {
-        System.err.println(" prob read ");
+        log.info("prob read ");
       }
-      if (printLoading) t.done();
-    } catch (IOException e) {
-      throw new RuntimeIOException("Unrecoverable error while loading a tagger model", e);
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeIOException("Unrecoverable error while loading a tagger model", e);
+      if (printLoading) {
+        t.done(log, "Reading POS tagger model from " + source);
+      }
+    } catch (IOException | ClassNotFoundException e) {
+      throw new RuntimeIOException("Error while loading a tagger model (probably missing model file)", e);
     }
   }
 
@@ -912,7 +960,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
    * @return The same string with tags inserted in the form word/tag
    */
   public String tagTokenizedString(String toTag) {
-    List<Word> sent = Sentence.toUntaggedList(Arrays.asList(toTag.split("\\s+")));
+    List<Word> sent = SentenceUtils.toUntaggedList(Arrays.asList(toTag.split("\\s+")));
     TestSentence testSentence = new TestSentence(this);
     testSentence.tagSentence(sent, false);
     return testSentence.getTaggedNice();
@@ -1105,7 +1153,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
    */
   private static void runTest(TaggerConfig config) {
     if (config.getVerbose()) {
-      System.err.println("## tagger testing invoked at " + new Date() + " with arguments:");
+      log.info("## tagger testing invoked at " + new Date() + " with arguments:");
       config.dump();
     }
 
@@ -1118,7 +1166,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
       printErrWordsPerSec(millis, testClassifier.getNumWords());
       testClassifier.printModelAndAccuracy(tagger);
     } catch (Exception e) {
-      System.err.println("An error occurred while testing the tagger.");
+      log.info("An error occurred while testing the tagger.");
       e.printStackTrace();
     }
   }
@@ -1141,9 +1189,9 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     TaggerExperiments samples = new TaggerExperiments(config, maxentTagger);
     TaggerFeatures feats = samples.getTaggerFeatures();
     byte[][] fnumArr = samples.getFnumArr();
-    System.err.println("Samples from " + config.getFile());
-    System.err.println("Number of features: " + feats.size());
-    System.err.println("Tag set: " + maxentTagger.tags.tagSet());
+    log.info("Samples from " + config.getFile());
+    log.info("Number of features: " + feats.size());
+    log.info("Tag set: " + maxentTagger.tags.tagSet());
     Problem p = new Problem(samples, feats);
     LambdaSolveTagger prob = new LambdaSolveTagger(p, 0.0001, fnumArr);
     maxentTagger.prob = prob;
@@ -1165,9 +1213,9 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     }
 
     if (prob.checkCorrectness()) {
-      System.err.println("Model is correct [empirical expec = model expec]");
+      log.info("Model is correct [empirical expec = model expec]");
     } else {
-      System.err.println("Model is not correct");
+      log.info("Model is not correct");
     }
 
     // Some of the rules may have been optimized so they don't have
@@ -1181,8 +1229,8 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     maxentTagger.simplifyLambda();
 
     maxentTagger.saveModel(modelName);
-    System.err.println("Extractors list:");
-    System.err.println(maxentTagger.extractors.toString() + "\nrare" + maxentTagger.extractorsRare.toString());
+    log.info("Extractors list:");
+    log.info(maxentTagger.extractors.toString() + "\nrare" + maxentTagger.extractorsRare.toString());
   }
 
 
@@ -1196,7 +1244,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
   {
     Date now = new Date();
 
-    System.err.println("## tagger training invoked at " + now + " with arguments:");
+    log.info("## tagger training invoked at " + now + " with arguments:");
     config.dump();
     Timing tim = new Timing();
 
@@ -1213,7 +1261,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
   private static void printErrWordsPerSec(long milliSec, int numWords) {
     double wordsPerSec = numWords / (((double) milliSec) / 1000);
     NumberFormat nf = new DecimalFormat("0.00");
-    System.err.println("Tagged " + numWords + " words at " +
+    log.info("Tagged " + numWords + " words at " +
         nf.format(wordsPerSec) + " words per second.");
   }
 
@@ -1231,7 +1279,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     private final boolean tokenize;
     private final boolean outputVerbosity, outputLemmas;
     private final OutputStyle outputStyle;
-    private final String tagSeparator;
+    // private final String tagSeparator;
     private final Morphology morpha;
 
     protected TaggerWrapper(MaxentTagger tagger) {
@@ -1245,7 +1293,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
                                  config.getTokenizerOptions(),
                                  config.getTokenizerInvertible());
       } catch (Exception e) {
-        System.err.println("Error in tokenizer factory instantiation for class: " + config.getTokenizerFactory());
+        log.info("Error in tokenizer factory instantiation for class: " + config.getTokenizerFactory());
         e.printStackTrace();
         tokenizerFactory = PTBTokenizerFactory.newWordTokenizerFactory(config.getTokenizerOptions());
       }
@@ -1255,7 +1303,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
       outputLemmas = config.getOutputLemmas();
       morpha = (outputLemmas) ? new Morphology() : null;
       tokenize = config.getTokenize();
-      tagSeparator = config.getTagSeparator();
+      // tagSeparator = config.getTagSeparator();
     }
 
     @Override
@@ -1267,12 +1315,12 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
         sentences = tokenizeText(new StringReader(o), tokenizerFactory);
       } else {
         sentences = Generics.newArrayList();
-        sentences.add(Sentence.toWordList(o.split("\\s+")));
+        sentences.add(SentenceUtils.toWordList(o.split("\\s+")));
       }
 
       // TODO: there is another almost identical block of code elsewhere.  Refactor
       if (config.getNThreads() != 1) {
-        MulticoreWrapper<List<? extends HasWord>, List<? extends HasWord>> wrapper = new MulticoreWrapper<List<? extends HasWord>, List<? extends HasWord>>(config.getNThreads(), new SentenceTaggingProcessor(tagger, outputLemmas));
+        MulticoreWrapper<List<? extends HasWord>, List<? extends HasWord>> wrapper = new MulticoreWrapper<>(config.getNThreads(), new SentenceTaggingProcessor(tagger, outputLemmas));
         for (List<? extends HasWord> sentence : sentences) {
           wrapper.put(sentence);
           while (wrapper.peek()) {
@@ -1286,8 +1334,9 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
           tagger.outputTaggedSentence(taggedSentence, outputLemmas, outputStyle, outputVerbosity, sentNum++, " ", taggedResults);
         }
       } else {
+        // there is only one thread
         for (List<? extends HasWord> sent : sentences) {
-          Morphology morpha = (outputLemmas) ? new Morphology() : null;
+          // Morphology morpha = (outputLemmas) ? new Morphology() : null;
           sent = tagger.tagCoreLabelsOrHasWords(sent, morpha, outputLemmas);
           tagger.outputTaggedSentence(sent, outputLemmas, outputStyle, outputVerbosity, sentNum++, " ", taggedResults);
         }
@@ -1390,8 +1439,8 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     try {
       w.write(getXMLWords(sent, sentNum, outputLemmas));
     } catch (IOException e) {
-      System.err.println("Error writing sentence " + sentNum + ": " +
-                         Sentence.listToString(sent));
+      log.info("Error writing sentence " + sentNum + ": " +
+                         SentenceUtils.listToString(sent));
       throw new RuntimeIOException(e);
     }
   }
@@ -1405,46 +1454,46 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
    * elements to tag, whereas the runTagger method throws away all of
    * the surrounding structure and returns tagged plain text.
    */
-  public void tagFromXML(InputStream input, Writer writer, String ... xmlTags) {
+  public void tagFromXML(InputStream input, Writer writer, String... xmlTags) {
     OutputStyle outputStyle =
       OutputStyle.fromShortName(config.getOutputFormat());
 
-    TransformXML<String> txml = new TransformXML<String>();
+    TransformXML<String> txml = new TransformXML<>();
     switch(outputStyle) {
     case XML:
     case INLINE_XML:
       txml.transformXML(xmlTags, new TaggerWrapper(this),
                         input, writer,
-                        new TransformXML.NoEscapingSAXInterface<String>());
+                        new TransformXML.NoEscapingSAXInterface<>());
       break;
     case SLASH_TAGS:
     case TSV:
       txml.transformXML(xmlTags, new TaggerWrapper(this),
                         input, writer,
-                        new TransformXML.SAXInterface<String>());
+                        new TransformXML.SAXInterface<>());
       break;
     default:
       throw new RuntimeException("Unexpected format " + outputStyle);
     }
   }
 
-  public void tagFromXML(Reader input, Writer writer, String ... xmlTags) {
+  public void tagFromXML(Reader input, Writer writer, String... xmlTags) {
     OutputStyle outputStyle =
       OutputStyle.fromShortName(config.getOutputFormat());
 
-    TransformXML<String> txml = new TransformXML<String>();
+    TransformXML<String> txml = new TransformXML<>();
     switch(outputStyle) {
     case XML:
     case INLINE_XML:
       txml.transformXML(xmlTags, new TaggerWrapper(this),
                         input, writer,
-                        new TransformXML.NoEscapingSAXInterface<String>());
+                        new TransformXML.NoEscapingSAXInterface<>());
       break;
     case SLASH_TAGS:
     case TSV:
       txml.transformXML(xmlTags, new TaggerWrapper(this),
                         input, writer,
-                        new TransformXML.SAXInterface<String>());
+                        new TransformXML.SAXInterface<>());
       break;
     default:
       throw new RuntimeException("Unexpected format " + outputStyle);
@@ -1469,10 +1518,10 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
               config.getEncoding() + "\"?>\n");
       tagFromXML(reader, w, config.getXMLInput());
     } catch (FileNotFoundException e) {
-      System.err.println("Input file not found: " + config.getFile());
+      log.info("Input file not found: " + config.getFile());
       e.printStackTrace();
     } catch (IOException ioe) {
-      System.err.println("tagFromXML: mysterious IO Exception");
+      log.info("tagFromXML: mysterious IO Exception");
       ioe.printStackTrace();
     } finally {
       IOUtils.closeIgnoringExceptions(reader);
@@ -1492,7 +1541,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
   {
     if (config.getVerbose()) {
       Date now = new Date();
-      System.err.println("## tagger invoked at " + now + " with arguments:");
+      log.info("## tagger invoked at " + now + " with arguments:");
       config.dump();
     }
     MaxentTagger tagger = new MaxentTagger(config.getModel(), config);
@@ -1543,8 +1592,8 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
           runTagger(br, writer, config.getTagInside(), outputStyle);
         }
       } else {
-        System.err.println("Type some text to tag, then EOF.");
-        System.err.println("  (For EOF, use Return, Ctrl-D on Unix; Enter, Ctrl-Z, Enter on Windows.)");
+        log.info("Type some text to tag, then EOF.");
+        log.info("  (For EOF, use Return, Ctrl-D on Unix; Enter, Ctrl-Z, Enter on Windows.)");
         br = new BufferedReader(new InputStreamReader(System.in));
 
         runTaggerStdin(br, writer, outputStyle);
@@ -1635,8 +1684,8 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     }
 
     // this uses NER codebase technology to read/write SGML-ish files
-    PlainTextDocumentReaderAndWriter<CoreLabel> readerAndWriter = new PlainTextDocumentReaderAndWriter<CoreLabel>();
-    ObjectBank<List<CoreLabel>> ob = new ObjectBank<List<CoreLabel>>(new ReaderIteratorFactory(reader), readerAndWriter);
+    PlainTextDocumentReaderAndWriter<CoreLabel> readerAndWriter = new PlainTextDocumentReaderAndWriter<>();
+    ObjectBank<List<CoreLabel>> ob = new ObjectBank<>(new ReaderIteratorFactory(reader), readerAndWriter);
     PrintWriter pw = new PrintWriter(writer);
     for (List<CoreLabel> sentence : ob) {
       List<CoreLabel> s = Generics.newArrayList();
@@ -1661,7 +1710,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     printErrWordsPerSec(millis, numWords);
   }
 
-  public  <X extends HasWord> void runTagger(Iterable<List<X>> document,
+  public <X extends HasWord> void runTagger(Iterable<List<X>> document,
                                             BufferedWriter writer,
                                             OutputStyle outputStyle)
     throws IOException
@@ -1684,7 +1733,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
 
 
     if (config.getNThreads() != 1) {
-      MulticoreWrapper<List<? extends HasWord>, List<? extends HasWord>> wrapper = new MulticoreWrapper<List<? extends HasWord>, List<? extends HasWord>>(config.getNThreads(), new SentenceTaggingProcessor(this, outputLemmas));
+      MulticoreWrapper<List<? extends HasWord>, List<? extends HasWord>> wrapper = new MulticoreWrapper<>(config.getNThreads(), new SentenceTaggingProcessor(this, outputLemmas));
       for (List<X> sentence : document) {
         wrapper.put(sentence);
         while (wrapper.peek()) {
@@ -1813,7 +1862,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
         writeXMLSentence(writer, sentence, numSentences, outputLemmas);
         break;
       case SLASH_TAGS:
-        writer.write(Sentence.listToString(sentence, false, config.getTagSeparator()));
+        writer.write(SentenceUtils.listToString(sentence, false, config.getTagSeparator()));
         writer.write(separator);
         break;
       default:
@@ -1845,7 +1894,7 @@ public class MaxentTagger extends Tagger implements ListProcessor<List<? extends
     } else if (config.getMode() == TaggerConfig.Mode.DUMP) {
       dumpModel(config);
     } else {
-      System.err.println("Impossible: nothing to do. None of train, tag, test, or dump was specified.");
+      log.info("Impossible: nothing to do. None of train, tag, test, or dump was specified.");
     }
   } // end main()
 

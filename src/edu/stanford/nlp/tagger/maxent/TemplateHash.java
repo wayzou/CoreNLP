@@ -5,7 +5,8 @@
  * Company:      Stanford University<p>
  */
 
-package edu.stanford.nlp.tagger.maxent;
+package edu.stanford.nlp.tagger.maxent; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.util.Generics;
 import edu.stanford.nlp.util.Pair;
@@ -22,7 +23,7 @@ import java.util.Map;
  */
 class ListInstances {
 
-  private final ArrayList<Integer> v = new ArrayList<Integer>();
+  private final ArrayList<Integer> v = new ArrayList<>();
   private int[] positions = null;
   private int num = 0;
 
@@ -94,7 +95,10 @@ class ListInstances {
 
 }
 
-public class TemplateHash {
+public class TemplateHash  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(TemplateHash.class);
 
   // the positions of the feature extractors
   private final Map<Pair<Integer,String>,ListInstances> tempHash = Generics.newHashMap();
@@ -106,19 +110,19 @@ public class TemplateHash {
   }
 
   protected void addPositions(int start, int end, FeatureKey fK) {
-    Pair<Integer, String> key = new Pair<Integer, String>(fK.num, fK.val);
+    Pair<Integer, String> key = new Pair<>(fK.num, fK.val);
     tempHash.get(key).addPositions(start, end);
   }
 
   protected int[] getPositions(FeatureKey s) {
-    Pair<Integer, String> p = new Pair<Integer, String>(s.num, s.val);
+    Pair<Integer, String> p = new Pair<>(s.num, s.val);
     return tempHash.get(p).getPositions();
   }
 
   //public void init() {
 //    cdm 2008: stringNums isn't used anywhere, so we now don't do any init.
 //    int num = maxentTagger.extractors.getSize() + maxentTagger.extractorsRare.getSize();
-//    //System.err.println("A total of "+num+" features in TemplateHash");
+//    //log.info("A total of "+num+" features in TemplateHash");
 //    stringNums = new String[num];
 //    for (int i = 0; i < num; i++) {
 //      stringNums[i] = String.valueOf(i);
@@ -134,9 +138,9 @@ public class TemplateHash {
     int general = maxentTagger.extractors.size();
 
     if (nFeatFrame < general) {
-      wT = new Pair<Integer,String>(nFeatFrame, maxentTagger.extractors.extract(nFeatFrame, history));
+      wT = new Pair<>(nFeatFrame, maxentTagger.extractors.extract(nFeatFrame, history));
     } else {
-      wT = new Pair<Integer,String>(nFeatFrame, maxentTagger.extractorsRare.extract(nFeatFrame - general, history));
+      wT = new Pair<>(nFeatFrame, maxentTagger.extractorsRare.extract(nFeatFrame - general, history));
     }
 
     if (tempHash.containsKey(wT)) {
@@ -160,9 +164,9 @@ public class TemplateHash {
     int general = maxentTagger.extractors.size();
 
     if (nFeatFrame < general) {
-      wT = new Pair<Integer,String>(nFeatFrame, maxentTagger.extractors.extract(nFeatFrame, history));
+      wT = new Pair<>(nFeatFrame, maxentTagger.extractors.extract(nFeatFrame, history));
     } else {
-      wT = new Pair<Integer,String>(nFeatFrame, maxentTagger.extractorsRare.extract(nFeatFrame - general, history));
+      wT = new Pair<>(nFeatFrame, maxentTagger.extractorsRare.extract(nFeatFrame - general, history));
     }
     if (tempHash.containsKey(wT)) {
       (tempHash.get(wT)).inc();

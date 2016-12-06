@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
+
+import edu.stanford.nlp.util.logging.Redwood;
+
 import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.io.RuntimeIOException;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -39,6 +42,8 @@ import edu.stanford.nlp.parser.lexparser.TreebankLangParserParams;
  * @author John Bauer
  */
 public abstract class ParserGrammar implements Function<List<? extends HasWord>, Tree> {
+
+  private static Redwood.RedwoodChannels logger = Redwood.channels(ParserGrammar.class);
 
   public abstract ParserQuery parserQuery();
 
@@ -176,9 +181,8 @@ public abstract class ParserGrammar implements Function<List<? extends HasWord>,
     ParserGrammar parser;
     try {
       Timing timing = new Timing();
-      System.err.print("Loading parser from serialized file " + path + " ... ");
       parser = IOUtils.readObjectFromURLOrClasspathOrFileSystem(path);
-      timing.done();
+      timing.done(logger, "Loading parser from serialized file " + path);
     } catch (IOException | ClassNotFoundException e) {
       throw new RuntimeIOException(e);
     }

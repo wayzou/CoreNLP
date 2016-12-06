@@ -1,5 +1,6 @@
 
-package edu.stanford.nlp.ie.machinereading.common;
+package edu.stanford.nlp.ie.machinereading.common; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -7,10 +8,13 @@ import java.util.StringTokenizer;
 /**
  * Simple string tokenization
  */
-public class SimpleTokenize {
+public class SimpleTokenize  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(SimpleTokenize.class);
   /** Basic string tokenization, skipping over white spaces */
   public static ArrayList<String> tokenize(String line) {
-    ArrayList<String> tokens = new ArrayList<String>();
+    ArrayList<String> tokens = new ArrayList<>();
     StringTokenizer tokenizer = new StringTokenizer(line);
     while (tokenizer.hasMoreElements()) {
       tokens.add(tokenizer.nextToken());
@@ -20,7 +24,7 @@ public class SimpleTokenize {
 
   /** Basic string tokenization, skipping over white spaces */
   public static ArrayList<String> tokenize(String line, String separators) {
-    ArrayList<String> tokens = new ArrayList<String>();
+    ArrayList<String> tokens = new ArrayList<>();
     StringTokenizer tokenizer = new StringTokenizer(line, separators);
     while (tokenizer.hasMoreElements()) {
       tokens.add(tokenizer.nextToken());
@@ -68,7 +72,7 @@ public class SimpleTokenize {
    * Regular quotes inside tokens MUST be preceded by \
    */
   public static ArrayList<String> tokenizeWithQuotes(String line) {
-    ArrayList<String> tokens = new ArrayList<String>();
+    ArrayList<String> tokens = new ArrayList<>();
     int position = 0;
 
     while ((position = findNonWhitespace(line, position)) != -1) {
@@ -131,7 +135,7 @@ public class SimpleTokenize {
   /** Implements a simple test */
   public static void main(String[] argv) {
     String in = "T \"Athens \\\"the beautiful\\\"\" \"Athens\" \"\" \"Greece\"";
-    System.err.println("Input: " + in);
-    System.err.println(tokenizeWithQuotes(in));
+    log.info("Input: " + in);
+    log.info(tokenizeWithQuotes(in));
   }
 }

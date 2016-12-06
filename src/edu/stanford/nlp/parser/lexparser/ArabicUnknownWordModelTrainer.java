@@ -1,4 +1,5 @@
-package edu.stanford.nlp.parser.lexparser;
+package edu.stanford.nlp.parser.lexparser; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.io.EncodingPrintWriter;
 import edu.stanford.nlp.ling.TaggedWord;
@@ -8,6 +9,10 @@ import edu.stanford.nlp.util.Index;
 public class ArabicUnknownWordModelTrainer
   extends AbstractUnknownWordModelTrainer
 {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(BaseUnknownWordModelTrainer.class);
+
   // Records the number of times word/tag pair was seen in training data.
   ClassicCounter<IntTaggedWord> seenCounter;
 
@@ -32,14 +37,14 @@ public class ArabicUnknownWordModelTrainer
     this.totalTrees = totalTrees;
     indexToStartUnkCounting = (totalTrees * op.trainOptions.fractionBeforeUnseenCounting);
 
-    seenCounter = new ClassicCounter<IntTaggedWord>(20000);
-    unSeenCounter = new ClassicCounter<IntTaggedWord>(20000);
+    seenCounter = new ClassicCounter<>(20000);
+    unSeenCounter = new ClassicCounter<>(20000);
 
     model = new ArabicUnknownWordModel(op, lex, wordIndex, tagIndex,
                                        unSeenCounter);
 
     if (DOCUMENT_UNKNOWNS) {
-      System.err.println("Collecting " + UNKNOWN_WORD + " from trees " +
+      log.info("Collecting " + UNKNOWN_WORD + " from trees " +
                          (indexToStartUnkCounting + 1) + " to " + totalTrees);
     }
   }

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ie.crf;
+package edu.stanford.nlp.ie.crf; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -18,7 +19,10 @@ import edu.stanford.nlp.util.Index;
  * @author Spence Green
  *
  */
-public class LabelDictionary implements Serializable {
+public class LabelDictionary implements Serializable  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(LabelDictionary.class);
 
   private static final long serialVersionUID = 6790400453922524056L;
 
@@ -41,7 +45,7 @@ public class LabelDictionary implements Serializable {
    * Constructor.
    */
   public LabelDictionary() {
-    this.observationCounts = new ClassicCounter<String>(DEFAULT_CAPACITY);
+    this.observationCounts = new ClassicCounter<>(DEFAULT_CAPACITY);
     this.observedLabels = Generics.newHashMap(DEFAULT_CAPACITY);
   }
 
@@ -57,7 +61,7 @@ public class LabelDictionary implements Serializable {
     }
     observationCounts.incrementCount(observation);
     if ( ! observedLabels.containsKey(observation)) {
-      observedLabels.put(observation, new HashSet<String>());
+      observedLabels.put(observation, new HashSet<>());
     }
     observedLabels.get(observation).add(label.intern());
   }
@@ -88,12 +92,12 @@ public class LabelDictionary implements Serializable {
    */
   public void lock(int threshold, Index<String> labelIndex) {
     if (labelDictionary != null) throw new RuntimeException("Label dictionary is already locked");
-    System.err.println("Label dictionary enabled");
+    log.info("Label dictionary enabled");
     System.err.printf("#observations: %d%n", (int) observationCounts.totalCount());
     Counters.retainAbove(observationCounts, threshold);
     Set<String> constrainedObservations = observationCounts.keySet();
     labelDictionary = new int[constrainedObservations.size()][];
-    observationIndex = new HashIndex<String>(constrainedObservations.size());
+    observationIndex = new HashIndex<>(constrainedObservations.size());
     for (String observation : constrainedObservations) {
       int i = observationIndex.addToIndex(observation);
       assert i < labelDictionary.length;

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees;
+package edu.stanford.nlp.trees; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import static java.lang.System.err;
 
@@ -27,7 +28,10 @@ import edu.stanford.nlp.util.StringUtils;
  * @author Eric Yeh
  */
 
-public class CollocationFinder {
+public class CollocationFinder  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(CollocationFinder.class);
 
   private static boolean DEBUG = false;
   private final Tree qTree;
@@ -60,7 +64,7 @@ public class CollocationFinder {
     this.hf = hf;
     this.getCollocationsList();
     if (DEBUG) {
-      System.err.println("Collected collocations: " + collocationCollector);
+      log.info("Collected collocations: " + collocationCollector);
     }
   }
 
@@ -185,7 +189,7 @@ public class CollocationFinder {
     Label headLabel = hf.determineHead(t).label();
     int leftSistersBuffer = 0; //measures the length of sisters in words when reading
     for (int i = 0; i < children.size();i++){
-      ArrayList<Integer> childConstituents = new ArrayList<Integer>();
+      ArrayList<Integer> childConstituents = new ArrayList<>();
       childConstituents.add(i);
       Tree subtree = children.get(i);
       int currWindowLength = 0; //measures the length in words of the current collocation.
@@ -221,9 +225,9 @@ public class CollocationFinder {
                 testString);
           }
         } else if (wordNetContains(testString.toString())) {
-          Pair <Integer, Integer> c = new Pair<Integer,Integer>(leftMostLeaf+leftSistersBuffer,leftMostLeaf+leftSistersBuffer+currWindowLength-1);
+          Pair <Integer, Integer> c = new Pair<>(leftMostLeaf + leftSistersBuffer, leftMostLeaf + leftSistersBuffer + currWindowLength - 1);
 
-          ArrayList<Integer> childConstituentsClone = new ArrayList<Integer>(childConstituents);
+          ArrayList<Integer> childConstituentsClone = new ArrayList<>(childConstituents);
           Collocation col = new Collocation(c,t,childConstituentsClone,testString.toString(),headLabel);
           collocationCollector.add(col);
           if (DEBUG) {
@@ -239,9 +243,9 @@ public class CollocationFinder {
                 testStringNonStemmed);
           }
         } else if (wordNetContains(testStringNonStemmed.toString())) {
-          Pair <Integer, Integer> c = new Pair<Integer,Integer>(leftMostLeaf+leftSistersBuffer,leftMostLeaf+leftSistersBuffer+currWindowLength-1);
+          Pair <Integer, Integer> c = new Pair<>(leftMostLeaf + leftSistersBuffer, leftMostLeaf + leftSistersBuffer + currWindowLength - 1);
 
-          ArrayList<Integer> childConstituentsClone = new ArrayList<Integer>(childConstituents);
+          ArrayList<Integer> childConstituentsClone = new ArrayList<>(childConstituents);
           Collocation col = new Collocation(c,t,childConstituentsClone,testStringNonStemmed.toString(),headLabel);
           collocationCollector.add(col);
           if (DEBUG) {

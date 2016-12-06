@@ -1,4 +1,4 @@
-Stanford Lexicalized Parser v3.5.2 - 2015-04-20
+Stanford Lexicalized Parser v3.6.0 - 2015-12-09
 -----------------------------------------------
 
 Copyright (c) 2002-2015 The Board of Trustees of The Leland Stanford Junior
@@ -182,7 +182,7 @@ cross-linguistically valid representation. Note that some constructs such as pre
 phrases are now analyzed differently and that the set of relations was updated. Please 
 look at the Universal Dependencies documentation for more information:
 
-      http://universaldependencies.github.io/docs/
+      http://www.universaldependencies.org
 
 The parser also still supports the original Stanford Dependencies representation 
 as described in the StanfordDependenciesManual.pdf. Use the flag
@@ -223,6 +223,8 @@ LICENSE
 ---------------------------------
 CHANGES
 ---------------------------------
+
+2015-12-09    3.6.0     Updated for compatibility 
 
 2015-04-20    3.5.2     Switch to universal dependencies 
 

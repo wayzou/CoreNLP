@@ -4,6 +4,8 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.semgraph.SemanticGraph;
+import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import org.junit.*;
 
 import java.util.List;
@@ -21,11 +23,12 @@ import static org.junit.Assert.*;
 public class PolarityITest {
 
   private static final StanfordCoreNLP pipeline = new StanfordCoreNLP(new Properties(){{
-    setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,natlog");
+    setProperty("annotators", "tokenize,ssplit,pos,lemma,depparse,natlog");
     setProperty("ssplit.isOneSentence", "true");
     setProperty("tokenize.class", "PTBTokenizer");
     setProperty("tokenize.language", "en");
     setProperty("enforceRequirements", "false");
+    setProperty("natlog.neQuantifiers", "true");
   }});
 
   @SuppressWarnings("unchecked")
@@ -33,6 +36,7 @@ public class PolarityITest {
     Annotation ann = new Annotation(text);
     pipeline.annotate(ann);
     List<CoreLabel> tokens = ann.get(CoreAnnotations.SentencesAnnotation.class).get(0).get(CoreAnnotations.TokensAnnotation.class);
+    SemanticGraph tree = ann.get(CoreAnnotations.SentencesAnnotation.class).get(0).get(SemanticGraphCoreAnnotations.BasicDependenciesAnnotation.class);
     Polarity[] polarities = new Polarity[tokens.size()];
     for (int i = 0; i < tokens.size(); ++i) {
       polarities[i] = tokens.get(i).get(NaturalLogicAnnotations.PolarityAnnotation.class);
@@ -47,6 +51,17 @@ public class PolarityITest {
     assertTrue(p[1].isDownwards());
     assertTrue(p[2].isUpwards());
     assertTrue(p[3].isUpwards());
+  }
+
+  @Test
+  public void thereIsNoDoubtThatCatsHaveTails() {
+    Polarity[] p = annotate("There is no doubt that cats have tails.");
+    assertTrue(p[0].isUpwards());
+    assertTrue(p[1].isUpwards());
+    assertTrue(p[2].isUpwards());
+    assertTrue(p[3].isDownwards());
+    assertTrue(p[4].isUpwards());
+    assertTrue(p[5].isUpwards());
   }
 
   @Test

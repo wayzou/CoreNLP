@@ -1,4 +1,5 @@
 package edu.stanford.nlp.international.spanish.process;
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,7 +48,10 @@ import edu.stanford.nlp.international.spanish.SpanishVerbStripper;
  *
  * @author Ishita Prasad
  */
-public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
+public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(SpanishTokenizer.class);
 
   // The underlying JFlex lexer
   private final SpanishLexer lexer;
@@ -78,7 +82,7 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
     this.splitContractions = splitContractions;
     this.splitAny = (splitCompounds || splitVerbs || splitContractions);
 
-    if (splitAny) compoundBuffer = Generics.newLinkedList();
+    if (splitAny) compoundBuffer = Generics.newArrayList(4);
     if (splitVerbs) verbStripper = SpanishVerbStripper.getInstance();
   }
 
@@ -118,12 +122,18 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
 
 
   /** Copies the CoreLabel cl with the new word part */
-  private static CoreLabel copyCoreLabel(CoreLabel cl, String part) {
+  private static CoreLabel copyCoreLabel(CoreLabel cl, String part, int beginPosition, int endPosition) {
     CoreLabel newLabel = new CoreLabel(cl);
     newLabel.setWord(part);
     newLabel.setValue(part);
+    newLabel.setBeginPosition(beginPosition);
+    newLabel.setEndPosition(endPosition);
     newLabel.set(OriginalTextAnnotation.class, part);
     return newLabel;
+  }
+
+  private static CoreLabel copyCoreLabel(CoreLabel cl, String part, int beginPosition) {
+    return copyCoreLabel(cl, part, beginPosition, beginPosition + part.length());
   }
 
   /**
@@ -139,6 +149,7 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
     String word = cl.word();
     String first;
     String second;
+    int secondOffset = 0, secondLength = 0;
 
     String lowered = word.toLowerCase();
     switch (lowered) {
@@ -149,22 +160,30 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
         if (Character.isLowerCase(lastChar))
           second = "el";
         else second = "EL";
+        secondOffset = 1;
+        secondLength = lowered.length() - 1;
         break;
       case "conmigo":
       case "consigo":
         first = word.substring(0, 3);
         second = word.charAt(3) + "í";
+        secondOffset = 3;
+        secondLength = 4;
         break;
       case "contigo":
         first = word.substring(0, 3);
         second = word.substring(3, 5);
+        secondOffset = 3;
+        secondLength = 4;
         break;
       default:
         throw new IllegalArgumentException("Invalid contraction provided to processContraction");
     }
 
-    compoundBuffer.add(copyCoreLabel(cl, second));
-    return copyCoreLabel(cl, first);
+    int secondStart = cl.beginPosition() + secondOffset;
+    int secondEnd = secondStart + secondLength;
+    compoundBuffer.add(copyCoreLabel(cl, second, secondStart, secondEnd));
+    return copyCoreLabel(cl, first, cl.beginPosition(), secondStart);
   }
 
   /**
@@ -181,10 +200,19 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
     if (parts == null) {
       return cl;
     }
+
+    // Split the CoreLabel into separate labels, tracking changing begin + end
+    // positions.
+    int stemEnd = cl.beginPosition() + parts.first().length();
+    int lengthRemoved = 0;
     for (String pronoun : parts.second()) {
-      compoundBuffer.add(copyCoreLabel(cl, pronoun));
+      int beginOffset = stemEnd + lengthRemoved;
+      compoundBuffer.add(copyCoreLabel(cl, pronoun, beginOffset));
+      lengthRemoved += pronoun.length();
     }
-    return copyCoreLabel(cl, parts.first());
+
+    CoreLabel stem = copyCoreLabel(cl, parts.first(), cl.beginPosition(), stemEnd);
+    return stem;
   }
 
   private static final Pattern pDash = Pattern.compile("\\-");
@@ -195,13 +223,19 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
    */
   private CoreLabel processCompound(CoreLabel cl) {
     cl.remove(ParentAnnotation.class);
+
     String[] parts = pSpace.split(pDash.matcher(cl.word()).replaceAll(" - "));
+    int lengthAccum = 0;
     for (String part : parts) {
       CoreLabel newLabel = new CoreLabel(cl);
       newLabel.setWord(part);
       newLabel.setValue(part);
+      newLabel.setBeginPosition(cl.beginPosition() + lengthAccum);
+      newLabel.setEndPosition(cl.beginPosition() + lengthAccum + part.length());
       newLabel.set(OriginalTextAnnotation.class, part);
       compoundBuffer.add(newLabel);
+
+      lengthAccum += part.length();
     }
     return compoundBuffer.remove(0);
   }
@@ -210,11 +244,11 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
    * recommended factory method
    */
   public static <T extends HasWord> TokenizerFactory<T> factory(LexedTokenFactory<T> factory, String options) {
-    return new SpanishTokenizerFactory<T>(factory, options);
+    return new SpanishTokenizerFactory<>(factory, options);
   }
 
   public static <T extends HasWord> TokenizerFactory<T> factory(LexedTokenFactory<T> factory) {
-    return new SpanishTokenizerFactory<T>(factory, ANCORA_OPTIONS);
+    return new SpanishTokenizerFactory<>(factory, ANCORA_OPTIONS);
   }
 
   /**
@@ -236,7 +270,7 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
     protected boolean splitContractionOption = false;
 
     public static TokenizerFactory<CoreLabel> newCoreLabelTokenizerFactory() {
-      return new SpanishTokenizerFactory<CoreLabel>(new CoreLabelTokenFactory());
+      return new SpanishTokenizerFactory<>(new CoreLabelTokenFactory());
     }
 
 
@@ -274,7 +308,7 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
 
     @Override
     public Tokenizer<T> getTokenizer(Reader r) {
-      return new SpanishTokenizer<T>(r, factory, lexerProperties, splitCompoundOption, splitVerbOption, splitContractionOption);
+      return new SpanishTokenizer<>(r, factory, lexerProperties, splitCompoundOption, splitVerbOption, splitContractionOption);
     }
 
     /**
@@ -367,7 +401,7 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
 
   private static String usage() {
     StringBuilder sb = new StringBuilder();
-    String nl = System.getProperty("line.separator");
+    String nl = System.lineSeparator();
     sb.append(String.format("Usage: java %s [OPTIONS] < file%n%n", SpanishTokenizer.class.getName()));
     sb.append("Options:").append(nl);
     sb.append("   -help          : Print this message.").append(nl);
@@ -375,7 +409,8 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
     sb.append("   -lowerCase     : Apply lowercasing.").append(nl);
     sb.append("   -encoding type : Encoding format.").append(nl);
     sb.append("   -options str   : Orthographic options (see SpanishLexer.java)").append(nl);
-    sb.append("   -tokens        : Output tokens as line-separated instead of space-separted.").append(nl);
+    sb.append("   -tokens        : Output tokens as line-separated instead of space-separated.").append(nl);
+    sb.append("   -onePerLine    : Output tokens one per line.").append(nl);
     return sb.toString();
   }
 
@@ -405,7 +440,7 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
   public static void main(String[] args) {
     final Properties options = StringUtils.argsToProperties(args, argOptionDefs());
     if (options.containsKey("help")) {
-      System.err.println(usage());
+      log.info(usage());
       return;
     }
 
@@ -425,6 +460,7 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
     final String encoding = options.getProperty("encoding", "UTF-8");
     final boolean toLower = PropertiesUtils.getBool(options, "lowerCase", false);
     final Locale es = new Locale("es");
+    boolean onePerLine = PropertiesUtils.getBool(options, "onePerLine", false);
 
     // Read the file from stdin
     int nLines = 0;
@@ -438,13 +474,21 @@ public class SpanishTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
         String word = tokenizer.next().word();
         if (word.equals(SpanishLexer.NEWLINE_TOKEN)) {
           ++nLines;
-          printSpace = false;
           System.out.println();
+          if ( ! onePerLine) {
+            printSpace = false;
+          }
         } else {
-          if (printSpace) System.out.print(" ");
           String outputToken = toLower ? word.toLowerCase(es) : word;
-          System.out.print(outputToken);
-          printSpace = true;
+          if (onePerLine) {
+            System.out.println(outputToken);
+          } else {
+            if (printSpace) {
+              System.out.print(" ");
+            }
+            System.out.print(outputToken);
+            printSpace = true;
+          }
         }
       }
     } catch (UnsupportedEncodingException e) {

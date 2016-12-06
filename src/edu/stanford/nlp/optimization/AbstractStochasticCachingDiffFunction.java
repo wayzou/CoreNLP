@@ -1,6 +1,7 @@
 package edu.stanford.nlp.optimization;
 
 import edu.stanford.nlp.math.ArrayMath;
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +14,10 @@ import java.util.Random;
  *
  * @author Alex Kleeman
  */
+public abstract class AbstractStochasticCachingDiffFunction extends AbstractCachingDiffFunction  {
 
-public abstract class AbstractStochasticCachingDiffFunction extends AbstractCachingDiffFunction {
+  /** A logger for this class */
+  private static final Redwood.RedwoodChannels log = Redwood.channels(AbstractStochasticCachingDiffFunction.class);
 
   public boolean hasNewVals = true;
   public boolean recalculatePrevBatch = false;
@@ -49,7 +52,7 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
   }
 
   public void incrementRandom(int numTimes) {
-    System.err.println("incrementing random "+numTimes+" times.");
+    log.info("incrementing random "+numTimes+" times.");
     for (int i = 0; i < numTimes; i++) {
       randGenerator.nextInt(this.dataDimension());
     }
@@ -98,11 +101,11 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
   public abstract int dataDimension();
 
   /**
-   * Clears the cache in a way that doesn't require reallocation :-)
+   * Clears the cache in a way that doesn't require reallocation :-).
    */
   @Override
   protected void clearCache() {
-    if (lastX != null) lastX[0] = Double.NaN;
+    super.clearCache();
     if (lastXBatch != null) lastXBatch[0] = Double.NaN;
     if (lastVBatch != null) lastVBatch[0] = Double.NaN;
   }
@@ -110,7 +113,7 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
   @Override
   public double[] initial() {
     double[] initial = new double[domainDimension()];
-    Arrays.fill(initial, 0.0);
+    // Arrays.fill(initial, 0.0); // not needed; Java arrays zero initialized
     return initial;
   }
 
@@ -178,7 +181,7 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
     } else if (sampleMethod == SamplingMethod.RandomWithReplacement) {
       for(int i = 0; i<batchSize;i++){
         thisBatch[i] = randGenerator.nextInt(this.dataDimension());        //Just generate a random index
-//        System.err.println("numCalls = "+(numCalls++));
+//        log.info("numCalls = "+(numCalls++));
       }
       //-----------------------------
       //ORDERED
@@ -196,7 +199,7 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
       //Declare the indices array if needed.
       if (allIndices == null || allIndices.size()!= this.dataDimension()){
 
-        allIndices = new ArrayList<Integer>();
+        allIndices = new ArrayList<>();
         for(int i=0;i<this.dataDimension();i++){
           allIndices.add(i);
         }
@@ -208,7 +211,7 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
       }
 
       if (curElement + batchSize > this.dataDimension()){
-        Collections.shuffle(Arrays.asList(allIndices),randGenerator);                   //Shuffle if we got to the end of the list
+        Collections.shuffle(Collections.singletonList(allIndices),randGenerator);                   //Shuffle if we got to the end of the list
       }
 
       //watch out for overflow
@@ -228,27 +231,27 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
 
     if (lastXBatch == null) {
       lastXBatch = new double[domainDimension()];
-      System.err.println("Setting previous position (x).");
+      log.info("Setting previous position (x).");
     }
 
     if (lastVBatch == null) {
       lastVBatch = new double[domainDimension()];
-      System.err.println("Setting previous gain (v)");
+      log.info("Setting previous gain (v)");
     }
 
     if (derivative == null) {
       derivative = new double[domainDimension()];
-      System.err.println("Setting Derivative.");
+      log.info("Setting Derivative.");
     }
 
     if (HdotV == null) {
       HdotV = new double[domainDimension()];
-      System.err.println("Setting HdotV.");
+      log.info("Setting HdotV.");
     }
 
     if (lastBatch == null){
       lastBatch = new int[batchSize];
-      System.err.println("Setting last batch");
+      log.info("Setting last batch");
     }
     //If we want to recalculate using the previous batch
     if(recalculatePrevBatch && batchSize == lastBatch.length){
@@ -493,7 +496,7 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
   public double[] HdotVAt(double[] x, double[] v, int batchSize){
 
     if (method == StochasticCalculateMethods.ExternalFiniteDifference){
-      System.err.println("Attempt to use ExternalFiniteDifference without passing currentDerivative");
+      log.info("Attempt to use ExternalFiniteDifference without passing currentDerivative");
       throw new RuntimeException();
       /*
       if( extFiniteDiffDerivative == null )
@@ -529,7 +532,7 @@ public abstract class AbstractStochasticCachingDiffFunction extends AbstractCach
 
     if (method == StochasticCalculateMethods.ExternalFiniteDifference){
 
-      System.err.println("Attempt to use ExternalFiniteDifference without passing currentDerivative");
+      log.info("Attempt to use ExternalFiniteDifference without passing currentDerivative");
       throw new RuntimeException();
 
     }

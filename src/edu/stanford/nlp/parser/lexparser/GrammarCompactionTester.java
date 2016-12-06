@@ -1,4 +1,5 @@
-package edu.stanford.nlp.parser.lexparser;
+package edu.stanford.nlp.parser.lexparser; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.fsm.*;
 import edu.stanford.nlp.io.NumberRangeFileFilter;
@@ -11,7 +12,10 @@ import java.util.*;
 /**
  * @author Teg Grenager (grenager@cs.stanford.edu)
  */
-public class GrammarCompactionTester {
+public class GrammarCompactionTester  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(GrammarCompactionTester.class);
 
   // for debugging
   //  public static MergeableGraph debugGraph = null;
@@ -78,7 +82,7 @@ public class GrammarCompactionTester {
       op.trainOptions.postSplitters = ParentAnnotationStats.getSplitCategories(annotatedTB, op.trainOptions.selectivePostSplitCutOff, op.tlpParams.treebankLanguagePack());
     }
 
-    List<Tree> trainTrees = new ArrayList<Tree>();
+    List<Tree> trainTrees = new ArrayList<>();
     HeadFinder hf = null;
     if (op.trainOptions.leftToRight) {
       hf = new LeftHeadFinder();
@@ -105,8 +109,8 @@ public class GrammarCompactionTester {
   public void runTest(String[] args) {
     System.out.println("Currently " + new Date());
     System.out.print("Invoked with arguments:");
-    for (int i = 0; i < args.length; i++) {
-      System.out.print(" " + args[i]);
+    for (String arg : args) {
+      System.out.print(" " + arg);
     }
 
     System.out.println();
@@ -221,7 +225,7 @@ public class GrammarCompactionTester {
         cArgs[12] = verboseString;
         compactor = (GrammarCompactor) Class.forName("fsm.LossyGrammarCompactor").getConstructor(argTypes).newInstance(cArgs);
       } catch (Exception e) {
-        System.err.println("Couldn't instantiate GrammarCompactor: " + e);
+        log.info("Couldn't instantiate GrammarCompactor: " + e);
         e.printStackTrace();
       }
     } else if (op.trainOptions.compactGrammar() == 5) {
@@ -441,7 +445,7 @@ public class GrammarCompactionTester {
   public Pair<UnaryGrammar, BinaryGrammar> translateAndSort(Pair<UnaryGrammar, BinaryGrammar> grammar, Index<String> oldIndex, Index<String> newIndex) {
     System.out.println("oldIndex.size()" + oldIndex.size() + " newIndex.size()" + newIndex.size());
     UnaryGrammar ug = grammar.first;
-    List<UnaryRule> unaryRules = new ArrayList<UnaryRule>();
+    List<UnaryRule> unaryRules = new ArrayList<>();
     for (UnaryRule rule : ug.rules()) {
       rule.parent = translate(rule.parent, oldIndex, newIndex);
       rule.child = translate(rule.child, oldIndex, newIndex);
@@ -456,7 +460,7 @@ public class GrammarCompactionTester {
     newUG.purgeRules();
 
     BinaryGrammar bg = grammar.second;
-    List<BinaryRule> binaryRules = new ArrayList<BinaryRule>();
+    List<BinaryRule> binaryRules = new ArrayList<>();
     for (BinaryRule rule : bg.rules()) {
       rule.parent = translate(rule.parent, oldIndex, newIndex);
       rule.leftChild = translate(rule.leftChild, oldIndex, newIndex);
@@ -633,7 +637,7 @@ public class GrammarCompactionTester {
     for (String key : allTrainPaths.keySet()) {
       System.out.println("creating graph for " + key);
       List<List<String>> paths = allTrainPaths.get(key);
-      ClassicCounter<List<String>> pathCounter = new ClassicCounter<List<String>>();
+      ClassicCounter<List<String>> pathCounter = new ClassicCounter<>();
       for (List<String> o : paths) {
         pathCounter.incrementCount(o);
       }
@@ -676,7 +680,7 @@ public class GrammarCompactionTester {
   }
 
   private static ClassicCounter<List<String>> removeLowCountPaths(ClassicCounter<List<String>> paths, double thresh) {
-    ClassicCounter<List<String>> result = new ClassicCounter<List<String>>();
+    ClassicCounter<List<String>> result = new ClassicCounter<>();
     int numRetained = 0;
     for (List<String> path : paths.keySet()) {
       double count = paths.getCount(path);

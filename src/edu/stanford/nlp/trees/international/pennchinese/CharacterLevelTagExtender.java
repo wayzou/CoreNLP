@@ -1,8 +1,9 @@
-package edu.stanford.nlp.trees.international.pennchinese;
+package edu.stanford.nlp.trees.international.pennchinese; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.io.NumberRangesFileFilter;
 import edu.stanford.nlp.io.IOUtils;
-import edu.stanford.nlp.ling.Sentence;
+import edu.stanford.nlp.ling.SentenceUtils;
 import edu.stanford.nlp.parser.lexparser.ChineseTreebankParserParams;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 import edu.stanford.nlp.parser.lexparser.Options;
@@ -30,7 +31,10 @@ import java.util.List;
  *
  * @author Galen Andrew (galand@cs.stanford.edu) Date: May 13, 2004
  */
-public class CharacterLevelTagExtender extends BobChrisTreeNormalizer implements TreeTransformer {
+public class CharacterLevelTagExtender extends BobChrisTreeNormalizer implements TreeTransformer  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(CharacterLevelTagExtender.class);
 
   private static final long serialVersionUID = 7893996593626523700L;
 
@@ -57,7 +61,7 @@ public class CharacterLevelTagExtender extends BobChrisTreeNormalizer implements
     if (tree.isPreTerminal()) {
       String word = tree.firstChild().label().value();
 
-      List<Tree> newPreterms = new ArrayList<Tree>();
+      List<Tree> newPreterms = new ArrayList<>();
       for (int i = 0, size = word.length(); i < size; i++) {
         String singleCharLabel = new String(new char[]{word.charAt(i)});
         Tree newLeaf = tf.newLeaf(singleCharLabel);
@@ -83,7 +87,7 @@ public class CharacterLevelTagExtender extends BobChrisTreeNormalizer implements
       }
       return tf.newTreeNode(tag, newPreterms);
     } else {
-      List<Tree> newChildren = new ArrayList<Tree>();
+      List<Tree> newChildren = new ArrayList<>();
       for (int i = 0; i < tree.children().length; i++) {
         Tree child = tree.children()[i];
         newChildren.add(transformTree(child));
@@ -155,13 +159,13 @@ public class CharacterLevelTagExtender extends BobChrisTreeNormalizer implements
       lp = LexicalizedParser.trainFromTreebank(args[0], trainFilt, op);
       try {
         String filename = "chineseCharTagPCFG.ser.gz";
-        System.err.println("Writing parser in serialized format to file " + filename + " ");
+        log.info("Writing parser in serialized format to file " + filename + " ");
         System.err.flush();
         ObjectOutputStream out = IOUtils.writeStreamFromString(filename);
 
         out.writeObject(lp);
         out.close();
-        System.err.println("done.");
+        log.info("done.");
       } catch (IOException ioe) {
         ioe.printStackTrace();
       }
@@ -191,8 +195,8 @@ public class CharacterLevelTagExtender extends BobChrisTreeNormalizer implements
         continue;
       }
       gold = gold.firstChild();
-      pw.println(Sentence.listToString(gold.preTerminalYield()));
-      pw.println(Sentence.listToString(gold.yield()));
+      pw.println(SentenceUtils.listToString(gold.preTerminalYield()));
+      pw.println(SentenceUtils.listToString(gold.yield()));
       gold.pennPrint(pw);
 
       pw.println(tree.preTerminalYield());

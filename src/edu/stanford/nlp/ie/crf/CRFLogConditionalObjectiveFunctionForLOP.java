@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ie.crf;
+package edu.stanford.nlp.ie.crf; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.math.ArrayMath;
 import edu.stanford.nlp.optimization.AbstractCachingDiffFunction;
@@ -13,7 +14,10 @@ import java.util.*;
  * in EHat and E calculations for each lopExpert
  */
 
-public class CRFLogConditionalObjectiveFunctionForLOP extends AbstractCachingDiffFunction implements HasCliquePotentialFunction {
+public class CRFLogConditionalObjectiveFunctionForLOP extends AbstractCachingDiffFunction implements HasCliquePotentialFunction  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(CRFLogConditionalObjectiveFunctionForLOP.class);
 
   /** label indices - for all possible label sequences - for each feature */
   List<Index<CRFLabel>> labelIndices;
@@ -176,12 +180,11 @@ public class CRFLogConditionalObjectiveFunctionForLOP extends AbstractCachingDif
           Index<CRFLabel> labelIndex = labelIndices.get(j);
 
           int observedLabelIndex = labelIndex.indexOf(crfLabel);
-          //System.err.println(crfLabel + " " + observedLabelIndex);
+          //log.info(crfLabel + " " + observedLabelIndex);
           for (int lopIter = 0; lopIter < numLopExpert; lopIter++) {
             double[][] ehatOfIter = Ehat[lopIter];
             Set<Integer> indicesSet = featureIndicesSetArray.get(lopIter);
-            for (int k = 0; k < docDataIJ.length; k++) { // k iterates over features
-              int featureIdx = docDataIJ[k];
+            for (int featureIdx : docDataIJ) { // k iterates over features
               if (indicesSet.contains(featureIdx)) {
                 ehatOfIter[featureIdx][observedLabelIndex]++;
               }
@@ -229,12 +232,11 @@ public class CRFLogConditionalObjectiveFunctionForLOP extends AbstractCachingDif
           double[][] sumOfELPmij = new double[numLopExpert][];  
 
           int observedLabelIndex = labelIndex.indexOf(crfLabel);
-          //System.err.println(crfLabel + " " + observedLabelIndex);
+          //log.info(crfLabel + " " + observedLabelIndex);
           for (int lopIter = 0; lopIter < numLopExpert; lopIter++) {
             double[] sumOfELPmijIter = new double[labelIndex.size()]; 
             Set<Integer> indicesSet = featureIndicesSetArray.get(lopIter);
-            for (int k = 0; k < docDataIJ.length; k++) { // k iterates over features
-              int featureIdx = docDataIJ[k];
+            for (int featureIdx : docDataIJ) { // k iterates over features
               if (indicesSet.contains(featureIdx)) {
                 sumOfObservedLogPotential[lopIter] += learnedLopExpertWeights2D[lopIter][featureIdx][observedLabelIndex];
                 // sum over potential of this clique over all possible labels, used later in calculating expected counts
@@ -364,7 +366,7 @@ public class CRFLogConditionalObjectiveFunctionForLOP extends AbstractCachingDif
         int label = docLabels[i];
         double p = cliqueTree.condLogProbGivenPrevious(i, label, given);
         if (VERBOSE) {
-          System.err.println("P(" + label + "|" + ArrayMath.toString(given) + ")=" + p);
+          log.info("P(" + label + "|" + ArrayMath.toString(given) + ")=" + p);
         }
         prob += p;
         System.arraycopy(given, 1, given, 0, given.length - 1);
@@ -414,7 +416,7 @@ public class CRFLogConditionalObjectiveFunctionForLOP extends AbstractCachingDif
 
     value = -prob;
     if(VERBOSE){
-      System.err.println("value is " + value);
+      log.info("value is " + value);
     }
     // compute the partial derivative for each feature by comparing expected counts to empirical counts
     for (int lopIter = 0; lopIter < numLopExpert; lopIter++) {
@@ -428,7 +430,7 @@ public class CRFLogConditionalObjectiveFunctionForLOP extends AbstractCachingDif
 
       derivative[lopIter] = (expected - observed);
       if (VERBOSE) {
-        System.err.println("deriv(" + lopIter + ") = " + expected + " - " + observed + " = " + derivative[lopIter]);
+        log.info("deriv(" + lopIter + ") = " + expected + " - " + observed + " = " + derivative[lopIter]);
       }
     }
     if (backpropTraining) {
@@ -442,7 +444,7 @@ public class CRFLogConditionalObjectiveFunctionForLOP extends AbstractCachingDif
           for (int j = 0; j < eOfExpert[fIndex].length; j++) {
             derivative[dIndex++] = scale * (eOfExpert[fIndex][j] - ehatOfExpert[fIndex][j]);
             if (VERBOSE) {
-              System.err.println("deriv[" + lopIter+ "](" + fIndex + "," + j + ") = " + scale + " * (" + eOfExpert[fIndex][j] + " - " + ehatOfExpert[fIndex][j] + ") = " + derivative[dIndex - 1]);
+              log.info("deriv[" + lopIter+ "](" + fIndex + "," + j + ") = " + scale + " * (" + eOfExpert[fIndex][j] + " - " + ehatOfExpert[fIndex][j] + ") = " + derivative[dIndex - 1]);
             }
           }
         }

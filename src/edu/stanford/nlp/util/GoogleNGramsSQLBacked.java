@@ -1,8 +1,9 @@
-package edu.stanford.nlp.util;
+package edu.stanford.nlp.util; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.io.IOUtils;
-import edu.stanford.nlp.util.Execution.Option;
-import edu.stanford.nlp.util.Execution;
+import edu.stanford.nlp.util.ArgumentParser.Option;
+
 import java.io.File;
 import java.sql.*;
 import java.util.*;
@@ -14,7 +15,10 @@ import java.util.zip.GZIPInputStream;
  * Created by Sonal Gupta
  */
 
-public class GoogleNGramsSQLBacked {
+public class GoogleNGramsSQLBacked  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(GoogleNGramsSQLBacked.class);
 
   @Option(name="populateTables")
   static boolean populateTables = false;
@@ -59,7 +63,7 @@ public class GoogleNGramsSQLBacked {
 
   public static boolean existsTable(String tablename) throws SQLException {
     if(existingTablenames == null){
-      existingTablenames = new HashSet<String>();
+      existingTablenames = new HashSet<>();
       DatabaseMetaData md = connection.getMetaData();
       ResultSet rs = md.getTables(null, null, "%", null);
       while (rs.next()) {
@@ -101,7 +105,7 @@ public class GoogleNGramsSQLBacked {
     }else
       return -1;
     }catch(SQLException e){
-      System.err.println("Error getting count for " + str+ ". The query was " + query);
+      log.info("Error getting count for " + str+ ". The query was " + query);
       e.printStackTrace();
       throw new RuntimeException(e);
     }
@@ -109,7 +113,7 @@ public class GoogleNGramsSQLBacked {
 
   public static List<Pair<String, Long>> getCounts(Collection<String> strs) throws SQLException {
     connect();
-    List<Pair<String, Long>> counts = new ArrayList<Pair<String, Long>>();
+    List<Pair<String, Long>> counts = new ArrayList<>();
     String query = "";
     for(String str: strs) {
       str = str.trim();
@@ -216,7 +220,7 @@ public class GoogleNGramsSQLBacked {
       }else
         return -1;
     }catch(SQLException e){
-      System.err.println("Error getting count for " + str+ ". The query was " + query);
+      log.info("Error getting count for " + str+ ". The query was " + query);
       e.printStackTrace();
       throw new RuntimeException(e);
     }
@@ -232,7 +236,7 @@ public class GoogleNGramsSQLBacked {
   public static void main(String[] args){
     try{
       Properties props = StringUtils.argsToPropertiesWithResolve(args);
-      Execution.fillOptions(GoogleNGramsSQLBacked.class, props);
+      ArgumentParser.fillOptions(GoogleNGramsSQLBacked.class, props);
 
       connect();
 

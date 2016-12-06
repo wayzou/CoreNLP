@@ -1,4 +1,5 @@
-package edu.stanford.nlp.process;
+package edu.stanford.nlp.process; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -22,7 +23,10 @@ import edu.stanford.nlp.util.Timing;
  * @author Christopher Manning
  * @author Dan Klein
  */
-public class WordShapeClassifier {
+public class WordShapeClassifier  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(WordShapeClassifier.class);
 
   public static final int NOWORDSHAPE = -1;
   public static final int WORDSHAPEDAN1 = 0;
@@ -279,7 +283,7 @@ public class WordShapeClassifier {
         sb.append('k');
       }
     }
-    // System.err.println("wordShapeDan2: " + s + " became " + sb);
+    // log.info("wordShapeDan2: " + s + " became " + sb);
     return sb.toString();
   }
 
@@ -418,7 +422,7 @@ public class WordShapeClassifier {
     final char[] endChars = new char[BOUNDARY_SIZE];
     int beginUpto = 0;
     int endUpto = 0;
-    final Set<Character> seenSet = new TreeSet<Character>();  // TreeSet guarantees stable ordering; has no size parameter
+    final Set<Character> seenSet = new TreeSet<>();  // TreeSet guarantees stable ordering; has no size parameter
 
     boolean nonLetters = false;
 
@@ -618,7 +622,7 @@ public class WordShapeClassifier {
     StringBuilder sb = new StringBuilder(s.length() + 1);
     StringBuilder endSB = new StringBuilder(BOUNDARY_SIZE);
     Set<Character> boundSet = Generics.newHashSet(BOUNDARY_SIZE * 2);
-    Set<Character> seenSet = new TreeSet<Character>();  // TreeSet guarantees stable ordering
+    Set<Character> seenSet = new TreeSet<>();  // TreeSet guarantees stable ordering
     boolean nonLetters = false;
     for (int i = 0; i < len; i++) {
       char c = s.charAt(i);
@@ -911,7 +915,7 @@ public class WordShapeClassifier {
 
     public static Map<String,String> loadWordClusters(String file, String format) {
       Timing.startDoing("Loading distsim lexicon from " + file);
-      Map<String,String> lexicon = new LcMap<String, String>();
+      Map<String,String> lexicon = new LcMap<>();
       if ("terryKoo".equals(format)) {
         for (String line : ObjectBank.getLineIterator(file)) {
           String[] bits = line.split("\\t");
@@ -958,7 +962,7 @@ public class WordShapeClassifier {
         classifierToUse = lookupShaper(args[1]);
         i += 2;
       } else {
-        System.err.println("Unknown flag: " + args[0]);
+        log.info("Unknown flag: " + args[0]);
         i++;
       }
     }

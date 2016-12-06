@@ -1,4 +1,5 @@
-package edu.stanford.nlp.parser.lexparser;
+package edu.stanford.nlp.parser.lexparser; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.classify.LinearClassifier;
 import edu.stanford.nlp.classify.LinearClassifierFactory;
@@ -27,7 +28,10 @@ import java.util.regex.Pattern;
  *
  * @author Galen Andrew
  */
-public class ChineseMaxentLexicon implements Lexicon {
+public class ChineseMaxentLexicon implements Lexicon  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ChineseMaxentLexicon.class);
 
   private static final long serialVersionUID = 238834703409896852L;
   private static final boolean verbose = true;
@@ -40,12 +44,12 @@ public class ChineseMaxentLexicon implements Lexicon {
   private static final Pattern bigramPattern = Pattern.compile(".*-.B");
   private static final Pattern conjPattern = Pattern.compile(".*&&.*");
 
-  private final Pair<Pattern, Integer> wordThreshold = new Pair<Pattern, Integer>(wordPattern, 0);
-  private final Pair<Pattern, Integer> charThreshold = new Pair<Pattern, Integer>(charPattern, 2);
-  private final Pair<Pattern, Integer> bigramThreshold = new Pair<Pattern, Integer>(bigramPattern, 3);
-  private final Pair<Pattern, Integer> conjThreshold = new Pair<Pattern, Integer>(conjPattern, 3);
+  private final Pair<Pattern, Integer> wordThreshold = new Pair<>(wordPattern, 0);
+  private final Pair<Pattern, Integer> charThreshold = new Pair<>(charPattern, 2);
+  private final Pair<Pattern, Integer> bigramThreshold = new Pair<>(bigramPattern, 3);
+  private final Pair<Pattern, Integer> conjThreshold = new Pair<>(conjPattern, 3);
 
-  private final List<Pair<Pattern, Integer>> featureThresholds = new ArrayList<Pair<Pattern, Integer>>();
+  private final List<Pair<Pattern, Integer>> featureThresholds = new ArrayList<>();
   private final int universalThreshold = 0;
 
   private LinearClassifier scorer;
@@ -84,7 +88,7 @@ public class ChineseMaxentLexicon implements Lexicon {
   /** {@inheritDoc} */
   @Override
   public Set<String> tagSet(Function<String,String> basicCategoryFunction) {
-    Set<String> tagSet = new HashSet<String>();
+    Set<String> tagSet = new HashSet<>();
     for (String tag : tagIndex.objectsList()) {
       tagSet.add(basicCategoryFunction.apply(tag));
     }
@@ -102,7 +106,7 @@ public class ChineseMaxentLexicon implements Lexicon {
     }
     lastWord = word;
     if (functionWordTags.containsKey(wordIndex.get(word))) {
-      logProbs = new ClassicCounter<String>();
+      logProbs = new ClassicCounter<>();
       String trueTag = functionWordTags.get(wordIndex.get(word));
       for (String tag : tagIndex.objectsList()) {
         if (ctlp.basicCategory(tag).equals(trueTag)) {
@@ -123,11 +127,11 @@ public class ChineseMaxentLexicon implements Lexicon {
     }
   }
 
-  public CollectionValuedMap<String, String> tagsForWord = new CollectionValuedMap<String, String>();
+  public CollectionValuedMap<String, String> tagsForWord = new CollectionValuedMap<>();
 
   public Iterator<IntTaggedWord> ruleIteratorByWord(int word, int loc, String featureSpec) {
     ensureProbs(word);
-    List<IntTaggedWord> rules = new ArrayList<IntTaggedWord>();
+    List<IntTaggedWord> rules = new ArrayList<>();
     if (seenTagsOnly) {
       String wordString = wordIndex.get(word);
       Collection<String> tags = tagsForWord.get(wordString);
@@ -176,7 +180,7 @@ public class ChineseMaxentLexicon implements Lexicon {
 
   private void verbose(String s) {
     if (verbose) {
-      System.err.println(s);
+      log.info(s);
     }
   }
 
@@ -214,7 +218,7 @@ public class ChineseMaxentLexicon implements Lexicon {
       featExtractor = new ChineseWordFeatureExtractor(featureLevel);
     }
 
-    this.datumCounter = new IntCounter<TaggedWord>();
+    this.datumCounter = new IntCounter<>();
   }
 
   /**
@@ -276,7 +280,7 @@ public class ChineseMaxentLexicon implements Lexicon {
 
   @Override
   public void finishTraining() {
-    IntCounter<String> tagCounter = new IntCounter<String>();
+    IntCounter<String> tagCounter = new IntCounter<>();
 
     WeightedDataset data = new WeightedDataset(datumCounter.size());
 
@@ -348,22 +352,22 @@ public class ChineseMaxentLexicon implements Lexicon {
     Options op = new Options(tlpParams);
     TreeAnnotator ta = new TreeAnnotator(tlpParams.headFinder(), tlpParams, op);
 
-    System.err.println("Reading Trees...");
+    log.info("Reading Trees...");
     FileFilter trainFilter = new NumberRangesFileFilter(args[1], true);
     Treebank trainTreebank = tlpParams.memoryTreebank();
     trainTreebank.loadPath(args[0], trainFilter);
 
-    System.err.println("Annotating trees...");
-    Collection<Tree> trainTrees = new ArrayList<Tree>();
+    log.info("Annotating trees...");
+    Collection<Tree> trainTrees = new ArrayList<>();
     for (Tree tree : trainTreebank) {
       trainTrees.add(ta.transformTree(tree));
     }
     trainTreebank = null; // saves memory
 
-    System.err.println("Training lexicon...");
+    log.info("Training lexicon...");
 
-    Index<String> wordIndex = new HashIndex<String>();
-    Index<String> tagIndex = new HashIndex<String>();
+    Index<String> wordIndex = new HashIndex<>();
+    Index<String> tagIndex = new HashIndex<>();
     int featureLevel = DEFAULT_FEATURE_LEVEL;
     if (args.length > 3) {
       featureLevel = Integer.parseInt(args[3]);
@@ -373,12 +377,12 @@ public class ChineseMaxentLexicon implements Lexicon {
     lex.train(trainTrees);
     lex.finishTraining();
 
-    System.err.print("Testing");
+    log.info("Testing");
 
     FileFilter testFilter = new NumberRangesFileFilter(args[2], true);
     Treebank testTreebank = tlpParams.memoryTreebank();
     testTreebank.loadPath(args[0], testFilter);
-    List<TaggedWord> testWords = new ArrayList<TaggedWord>();
+    List<TaggedWord> testWords = new ArrayList<>();
     for (Tree t : testTreebank) {
       for (TaggedWord tw : t.taggedYield()) {
         testWords.add(tw);
@@ -387,7 +391,7 @@ public class ChineseMaxentLexicon implements Lexicon {
     }
     int[] totalAndCorrect = lex.testOnTreebank(testWords);
 
-    System.err.println("done.");
+    log.info("done.");
     System.out.println(totalAndCorrect[1] + " correct out of " + totalAndCorrect[0] + " -- ACC: " + ((double) totalAndCorrect[1]) / totalAndCorrect[0]);
   }
 

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees;
+package edu.stanford.nlp.trees; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.*;
 import java.util.*;
@@ -21,12 +22,15 @@ import edu.stanford.nlp.ling.HasIndex;
  * @author Christopher Manning
  * @author Spence Green
  */
-public final class DiskTreebank extends Treebank {
+public final class DiskTreebank extends Treebank  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(DiskTreebank.class);
 
   private static boolean PRINT_FILENAMES = false;
 
-  private final List<File> filePaths = new ArrayList<File>();
-  private final List<FileFilter> fileFilters = new ArrayList<FileFilter>();
+  private final List<File> filePaths = new ArrayList<>();
+  private final List<FileFilter> fileFilters = new ArrayList<>();
 
   /*
    * Absolute path of the file currently being read.
@@ -166,8 +170,8 @@ public final class DiskTreebank extends Treebank {
     private Iterator<File> curPathIter;
 
     private DiskTreebankIterator() {
-      localPathList = new ArrayList<File>(filePaths);
-      localFilterList = new ArrayList<FileFilter>(fileFilters);
+      localPathList = new ArrayList<>(filePaths);
+      localFilterList = new ArrayList<>(fileFilters);
 
       if(primeNextPath() && primeNextFile())
         storedTree = primeNextTree();
@@ -186,7 +190,7 @@ public final class DiskTreebank extends Treebank {
         if(pathListing != null) {
           if(pathListing.size() > 1) Collections.sort(pathListing);
 
-          curFileList = new ArrayList<File>();
+          curFileList = new ArrayList<>();
           for(File path : pathListing) {
             if(path.isDirectory()) {
               localPathList.add(path);
@@ -211,7 +215,7 @@ public final class DiskTreebank extends Treebank {
         if(curPathIter.hasNext() || (primeNextPath() && curPathIter.hasNext())) {
           currentFile = curPathIter.next();
           currentFilename = currentFile.getAbsolutePath();
-          if(PRINT_FILENAMES) System.err.println(currentFile);
+          if(PRINT_FILENAMES) log.info(currentFile);
 
           if (tr != null) { tr.close(); }
           tr = treeReaderFactory().newTreeReader(IOUtils.readerFromFile(currentFile, encoding()));

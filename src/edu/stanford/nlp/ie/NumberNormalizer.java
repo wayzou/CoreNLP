@@ -10,12 +10,11 @@ import edu.stanford.nlp.pipeline.ChunkAnnotationUtils;
 import edu.stanford.nlp.pipeline.CoreMapAggregator;
 import edu.stanford.nlp.pipeline.CoreMapAttributeAggregator;
 import edu.stanford.nlp.util.*;
+import edu.stanford.nlp.util.logging.Redwood;
+import edu.stanford.nlp.util.logging.RedwoodConfiguration;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.function.Function;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,14 +56,16 @@ public class NumberNormalizer {
 
   private NumberNormalizer() {} // static class
 
-  private static final Logger logger = Logger.getLogger(NumberNormalizer.class.getName());
-  // TODO: make this not static, let different NumberNormalizers use
-  // different loggers
+  /** A logger for this class */
+  private static final Redwood.RedwoodChannels logger = Redwood.channels(NumberNormalizer.class);
+
+
+  // TODO: make this not static, let different NumberNormalizers use different loggers
   public static void setVerbose(boolean verbose) {
     if (verbose) {
-      logger.setLevel(Level.FINE);
+      RedwoodConfiguration.debugLevel().apply();
     } else {
-      logger.setLevel(Level.SEVERE);
+      RedwoodConfiguration.errorLevel().apply();
     }
   }
 
@@ -88,7 +89,7 @@ public class NumberNormalizer {
 
   // Converts numbers in words to numeric form
   // works through trillions
-  protected static final Pattern digitsPattern = Pattern.compile("\\d+");
+  private static final Pattern digitsPattern = Pattern.compile("\\d+");
   private static final Pattern numPattern = Pattern.compile("[-+]?(?:\\d+(?:,\\d\\d\\d)*(?:\\.\\d*)?|\\.\\d+)");
   private static final Pattern numRangePattern = Pattern.compile("(" + numPattern.pattern() + ")-(" + numPattern.pattern() + ")");
   // private static final Pattern[] endUnitWordsPattern = new Pattern[endUnitWords.length];
@@ -448,7 +449,7 @@ public class NumberNormalizer {
     // TODO: Should we allow "," in written out numbers?
     // TODO: Handle "-" that is not with token?
     TokenSequenceMatcher matcher = numberPattern.getMatcher(tokens);
-    List<CoreMap> numbers = new ArrayList<CoreMap>();
+    List<CoreMap> numbers = new ArrayList<>();
     while (matcher.find()) {
       @SuppressWarnings("unused")
       List<CoreMap> matchedTokens = matcher.groupNodes();
@@ -640,7 +641,7 @@ public class NumberNormalizer {
           t.set(CoreAnnotations.NumericCompositeTypeAnnotation.class, label);
         }
       } catch (NumberFormatException ex) {
-        logger.log(Level.WARNING, "Invalid number for: \"" + exp + "\"", ex);
+        logger.warning("Invalid number for: \"" + exp + "\"", ex);
       }
     }
     return numbers;
@@ -674,7 +675,7 @@ public class NumberNormalizer {
           if (v2.doubleValue() > v1.doubleValue()) {
             token.set(CoreAnnotations.NumericTypeAnnotation.class, "NUMBER_RANGE");
             token.set(CoreAnnotations.NumericCompositeTypeAnnotation.class, "NUMBER_RANGE");
-            Pair<Number,Number> range = new Pair<Number,Number>(v1,v2);
+            Pair<Number,Number> range = new Pair<>(v1, v2);
             token.set(CoreAnnotations.NumericCompositeObjectAnnotation.class, range);
           }
         } catch (Exception ex) {
@@ -682,7 +683,7 @@ public class NumberNormalizer {
         }
       }
     }
-    List<CoreMap> numberRanges = new ArrayList<CoreMap>();
+    List<CoreMap> numberRanges = new ArrayList<>();
     TokenSequenceMatcher matcher = rangePattern.getMatcher(numerizedTokens);
     while (matcher.find()) {
       List<CoreMap> matched = matcher.groupNodes();
@@ -692,10 +693,9 @@ public class NumberNormalizer {
         Number v1 = matched.get(0).get(CoreAnnotations.NumericCompositeValueAnnotation.class);
         Number v2 = matched.get(matched.size()-1).get(CoreAnnotations.NumericCompositeValueAnnotation.class);
         if (v2.doubleValue() > v1.doubleValue()) {
-          CoreMap newChunk = ChunkAnnotationUtils.getMergedChunk(numerizedTokens,  matcher.start(), matcher.end(),
-                  CoreMapAttributeAggregator.getDefaultAggregators());
+          CoreMap newChunk = CoreMapAggregator.getDefaultAggregator().merge(numerizedTokens, matcher.start(), matcher.end());
           newChunk.set(CoreAnnotations.NumericCompositeTypeAnnotation.class, "NUMBER_RANGE");
-          Pair<Number,Number> range = new Pair<Number,Number>(v1,v2);
+          Pair<Number,Number> range = new Pair<>(v1, v2);
           newChunk.set(CoreAnnotations.NumericCompositeObjectAnnotation.class, range);
           numberRanges.add(newChunk);
         }
@@ -730,8 +730,8 @@ public class NumberNormalizer {
     }
     //set token offsets
     int i = 0;
-    List<Integer> savedTokenBegins = new LinkedList<Integer>();
-    List<Integer> savedTokenEnds = new LinkedList<Integer>();
+    List<Integer> savedTokenBegins = new LinkedList<>();
+    List<Integer> savedTokenEnds = new LinkedList<>();
     for (CoreMap c:annotation.get(CoreAnnotations.TokensAnnotation.class)) {
       //set token begin
       if( (i==0 && c.get(CoreAnnotations.TokenBeginAnnotation.class) != null) || (i > 0 && !savedTokenBegins.isEmpty()) ){

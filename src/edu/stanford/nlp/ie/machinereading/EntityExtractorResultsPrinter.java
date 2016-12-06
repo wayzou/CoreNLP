@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ie.machinereading;
+package edu.stanford.nlp.ie.machinereading; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
@@ -17,7 +18,10 @@ import edu.stanford.nlp.stats.Counter;
 import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.util.StringUtils;
 
-public class EntityExtractorResultsPrinter extends ResultsPrinter {
+public class EntityExtractorResultsPrinter extends ResultsPrinter  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(EntityExtractorResultsPrinter.class);
 
 	/** Contains a set of labels that should be excluded from scoring */
 	private Set<String> excludedClasses;
@@ -51,9 +55,9 @@ public class EntityExtractorResultsPrinter extends ResultsPrinter {
 	    List<CoreMap> extractorOutput) {
 		ResultsPrinter.align(goldStandard, extractorOutput);
 
-		Counter<String> correct = new ClassicCounter<String>();
-		Counter<String> predicted = new ClassicCounter<String>();
-		Counter<String> gold = new ClassicCounter<String>();
+		Counter<String> correct = new ClassicCounter<>();
+		Counter<String> predicted = new ClassicCounter<>();
+		Counter<String> gold = new ClassicCounter<>();
 
 		for (int i = 0; i < goldStandard.size(); i++) {
 			CoreMap goldSent = goldStandard.get(i);
@@ -62,15 +66,15 @@ public class EntityExtractorResultsPrinter extends ResultsPrinter {
 			String goldText = goldSent.get(TextAnnotation.class);
 
 			if (verbose) {
-			  System.err.println("SCORING THE FOLLOWING SENTENCE:");
-				System.err.println(sysSent.get(CoreAnnotations.TokensAnnotation.class));
+			  log.info("SCORING THE FOLLOWING SENTENCE:");
+				log.info(sysSent.get(CoreAnnotations.TokensAnnotation.class));
 			}
 
-			HashSet<String> matchedGolds = new HashSet<String>();
+			HashSet<String> matchedGolds = new HashSet<>();
 			List<EntityMention> goldEntities = goldSent
 			    .get(MachineReadingAnnotations.EntityMentionsAnnotation.class);
 			if (goldEntities == null) {
-				goldEntities = new ArrayList<EntityMention>();
+				goldEntities = new ArrayList<>();
 			}
 
 			for (EntityMention m : goldEntities) {
@@ -83,7 +87,7 @@ public class EntityExtractorResultsPrinter extends ResultsPrinter {
 			List<EntityMention> sysEntities = sysSent
 			    .get(MachineReadingAnnotations.EntityMentionsAnnotation.class);
 			if (sysEntities == null) {
-				sysEntities = new ArrayList<EntityMention>();
+				sysEntities = new ArrayList<>();
 			}
 			for (EntityMention m : sysEntities) {
 				String label = makeLabel(m);
@@ -91,21 +95,21 @@ public class EntityExtractorResultsPrinter extends ResultsPrinter {
 					continue;
 				predicted.incrementCount(label);
 				if (verbose)
-					System.err.println("COMPARING PREDICTED MENTION: " + m);
+					log.info("COMPARING PREDICTED MENTION: " + m);
 
 				boolean found = false;
 				for (EntityMention gm : goldEntities) {
 					if (matchedGolds.contains(gm.getObjectId()))
 						continue;
 					if (verbose)
-						System.err.println("\tagainst: " + gm);
+						log.info("\tagainst: " + gm);
 					if(gm.equals(m, useSubTypes)){
-						if (verbose) System.err.println("\t\t\tMATCH!");
+						if (verbose) log.info("\t\t\tMATCH!");
 						found = true;
 						matchedGolds.add(gm.getObjectId());
 						if(verboseInstances){
-						  System.err.println("TRUE POSITIVE: " + m + " matched " + gm);
-						  System.err.println("In sentence: " + sysText);
+						  log.info("TRUE POSITIVE: " + m + " matched " + gm);
+						  log.info("In sentence: " + sysText);
 						}
 						break;
 					}
@@ -114,8 +118,8 @@ public class EntityExtractorResultsPrinter extends ResultsPrinter {
 				if (found) {
 					correct.incrementCount(label);
 				} else if(verboseInstances){
-				  System.err.println("FALSE POSITIVE: " + m.toString());
-				  System.err.println("In sentence: " + sysText);
+				  log.info("FALSE POSITIVE: " + m.toString());
+				  log.info("In sentence: " + sysText);
 				}
 			}
 			
@@ -124,8 +128,8 @@ public class EntityExtractorResultsPrinter extends ResultsPrinter {
 					String label = makeLabel(m);
 					if (!matchedGolds.contains(m.getObjectId())
 					    && (excludedClasses == null || !excludedClasses.contains(label))) {
-					  System.err.println("FALSE NEGATIVE: " + m.toString());
-	          System.err.println("In sentence: " + goldText);
+					  log.info("FALSE NEGATIVE: " + m.toString());
+	          log.info("In sentence: " + goldText);
 					}
 				}
 			}
@@ -135,7 +139,7 @@ public class EntityExtractorResultsPrinter extends ResultsPrinter {
 		double totalCorrect = 0;
 		double totalPredicted = 0;
 		pw.println("Label\tCorrect\tPredict\tActual\tPrecn\tRecall\tF");
-		List<String> labels = new ArrayList<String>(gold.keySet());
+		List<String> labels = new ArrayList<>(gold.keySet());
 		Collections.sort(labels);
 		for (String label : labels) {
 			if (excludedClasses != null && excludedClasses.contains(label))

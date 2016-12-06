@@ -5,7 +5,8 @@
  * @author Mihai
  */
 
-package edu.stanford.nlp.ie.machinereading.domains.ace.reader;
+package edu.stanford.nlp.ie.machinereading.domains.ace.reader; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,10 @@ import edu.stanford.nlp.ling.Word;
 import edu.stanford.nlp.process.AbstractTokenizer;
 import edu.stanford.nlp.util.Generics;
 
-public class RobustTokenizer<T extends Word> extends AbstractTokenizer<Word> {
+public class RobustTokenizer<T extends Word> extends AbstractTokenizer<Word>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(RobustTokenizer.class);
   
   /** Buffer to tokenize */
   String buffer;
@@ -437,7 +441,7 @@ public class RobustTokenizer<T extends Word> extends AbstractTokenizer<Word> {
    * @return List of WordTokens
    */
   public List<WordToken> tokenizeToWordTokens() {
-    List<WordToken> result = new ArrayList<WordToken>();
+    List<WordToken> result = new ArrayList<>();
 
     //
     // replace illegal characters with SPACE
@@ -452,7 +456,7 @@ public class RobustTokenizer<T extends Word> extends AbstractTokenizer<Word> {
     	if(c > 31 && c < 127) buffer.append((char) c);
 
     	else{
-    		System.err.println("Control character at position " + i + ": " + c);
+    		log.info("Control character at position " + i + ": " + c);
 
     		//
     		// DOS new line counts as two characters
@@ -521,7 +525,7 @@ public class RobustTokenizer<T extends Word> extends AbstractTokenizer<Word> {
     //
     // Merge known abreviations
     //
-    List<WordToken> resultWithAbs = new ArrayList<WordToken>();
+    List<WordToken> resultWithAbs = new ArrayList<>();
     for(int i = 0; i < result.size(); i ++){
       // where the mw ends
       int end = result.size();
@@ -591,7 +595,7 @@ public class RobustTokenizer<T extends Word> extends AbstractTokenizer<Word> {
 
     private static List<String> normalizeCase(boolean caseInsensitive, List<String> words) {
       if(! caseInsensitive) return words;
-      List<String> normWords = new ArrayList<String>();
+      List<String> normWords = new ArrayList<>();
       for(String word: words) normWords.add(word.toLowerCase());
       return normWords;
     }
@@ -1121,7 +1125,7 @@ public class RobustTokenizer<T extends Word> extends AbstractTokenizer<Word> {
 
   public static void main(String argv[]) throws Exception {
     if(argv.length != 1){
-      System.err.println("Usage: java edu.stanford.nlp.ie.machinereading.common.RobustTokenizer <file to tokenize>");
+      log.info("Usage: java edu.stanford.nlp.ie.machinereading.common.RobustTokenizer <file to tokenize>");
       System.exit(1);
     }
 
@@ -1136,11 +1140,11 @@ public class RobustTokenizer<T extends Word> extends AbstractTokenizer<Word> {
     while((ch = is.read()) != -1) buffer.append((char) ch);
     
     // create the tokenizer object
-    RobustTokenizer<Word> t = new RobustTokenizer<Word>(buffer.toString());
+    RobustTokenizer<Word> t = new RobustTokenizer<>(buffer.toString());
 
     List<Word> tokens = t.tokenize();
-    for(int i = 0; i < tokens.size(); i ++){
-      System.out.println(tokens.get(i));
+    for (Word token : tokens) {
+      System.out.println(token);
     }
   }
 }

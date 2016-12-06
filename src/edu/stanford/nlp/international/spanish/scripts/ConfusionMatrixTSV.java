@@ -1,4 +1,5 @@
-package edu.stanford.nlp.international.spanish.scripts;
+package edu.stanford.nlp.international.spanish.scripts; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.util.ConfusionMatrix;
 
@@ -9,7 +10,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-public class ConfusionMatrixTSV {
+public class ConfusionMatrixTSV  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ConfusionMatrixTSV.class);
 
   public static void main(String[] args) {
     if (args.length < 1) {
@@ -18,7 +22,7 @@ public class ConfusionMatrixTSV {
     }
 
     try {
-      ConfusionMatrix<String> cm = new ConfusionMatrix<String>();
+      ConfusionMatrix<String> cm = new ConfusionMatrix<>();
 
       String answersFile = args[0];
       BufferedReader br = new BufferedReader(

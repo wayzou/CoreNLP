@@ -1,4 +1,5 @@
-package edu.stanford.nlp.international.french.process;
+package edu.stanford.nlp.international.french.process; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -46,7 +47,10 @@ import edu.stanford.nlp.util.StringUtils;
  *
  * @author Spence Green
  */
-public class FrenchTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
+public class FrenchTokenizer<T extends HasWord> extends AbstractTokenizer<T>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(FrenchTokenizer.class);
 
   // The underlying JFlex lexer
   private final FrenchLexer lexer;
@@ -133,7 +137,7 @@ public class FrenchTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
     protected boolean splitCompoundOption = false;
 
     public static TokenizerFactory<CoreLabel> newTokenizerFactory() {
-      return new FrenchTokenizerFactory<CoreLabel>(new CoreLabelTokenFactory());
+      return new FrenchTokenizerFactory<>(new CoreLabelTokenFactory());
     }
 
     /**
@@ -143,7 +147,7 @@ public class FrenchTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
      * @return A TokenizerFactory that returns Word objects
      */
     public static TokenizerFactory<Word> newWordTokenizerFactory(String options) {
-      return new FrenchTokenizerFactory<Word>(new WordTokenFactory(), options);
+      return new FrenchTokenizerFactory<>(new WordTokenFactory(), options);
     }
 
 
@@ -163,7 +167,7 @@ public class FrenchTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
 
     @Override
     public Tokenizer<T> getTokenizer(Reader r) {
-      return new FrenchTokenizer<T>(r, factory, lexerProperties, splitCompoundOption);
+      return new FrenchTokenizer<>(r, factory, lexerProperties, splitCompoundOption);
     }
 
     /**
@@ -214,7 +218,7 @@ public class FrenchTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
 
   public static <T extends HasWord> TokenizerFactory<T> factory(LexedTokenFactory<T> factory,
                                                                 String options) {
-    return new FrenchTokenizerFactory<T>(factory, options);
+    return new FrenchTokenizerFactory<>(factory, options);
   }
 
   /**
@@ -264,7 +268,7 @@ public class FrenchTokenizer<T extends HasWord> extends AbstractTokenizer<T> {
   public static void main(String[] args) {
     final Properties options = StringUtils.argsToProperties(args, argOptionDefs());
     if (options.containsKey("help")) {
-      System.err.println(usage());
+      log.info(usage());
       return;
     }
 

@@ -14,29 +14,33 @@ import edu.stanford.nlp.util.Generics;
 import edu.stanford.nlp.util.Index;
 import edu.stanford.nlp.util.Pair;
 import edu.stanford.nlp.util.Triple;
+import edu.stanford.nlp.util.logging.Redwood;
 
 
 /**
- * A Dependency grammar that smooths by averaging over similar words.
+ * A Dependency grammar that smoothes by averaging over similar words.
  *
  * @author Galen Andrew
  * @author Pi-Chuan Chang
  */
 @SuppressWarnings("deprecation")
-public class ChineseSimWordAvgDepGrammar extends MLEDependencyGrammar {
+public class ChineseSimWordAvgDepGrammar extends MLEDependencyGrammar  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ChineseSimWordAvgDepGrammar.class);
 
   private static final long serialVersionUID = -1845503582705055342L;
 
-  private double simSmooth = 10.0;
+  private static final double simSmooth = 10.0;
 
   private static final String argHeadFile = "simWords/ArgHead.5";
   private static final String headArgFile = "simWords/HeadArg.5";
   private Map<Pair<Integer, String>, List<Triple<Integer, String, Double>>> simArgMap;
   private Map<Pair<Integer, String>, List<Triple<Integer, String, Double>>> simHeadMap;
 
-  private boolean debug = true;
+  private static final boolean debug = true;
 
-  private boolean verbose = false;
+  private static final boolean verbose = false;
   //private static final double MIN_PROBABILITY = Math.exp(-100.0);
 
   public ChineseSimWordAvgDepGrammar(TreebankLangParserParams tlpParams, boolean directional, boolean distance, boolean coarseDistance, boolean basicCategoryTagsInDependencyGrammar, Options op, Index<String> wordIndex, Index<String> tagIndex) {
@@ -56,20 +60,20 @@ public class ChineseSimWordAvgDepGrammar extends MLEDependencyGrammar {
       while ((wordMapLine = wordMapBReader.readLine()) != null) {
         Matcher m = linePattern.matcher(wordMapLine);
         if (!m.matches()) {
-          System.err.println("Ill-formed line in similar word map file: " + wordMapLine);
+          log.info("Ill-formed line in similar word map file: " + wordMapLine);
           continue;
         }
 
-        Pair<Integer, String> iTW = new Pair<Integer, String>(wordIndex.addToIndex(m.group(1)), m.group(2));
+        Pair<Integer, String> iTW = new Pair<>(wordIndex.addToIndex(m.group(1)), m.group(2));
         double score = Double.parseDouble(m.group(5));
 
         List<Triple<Integer, String, Double>> tripleList = hashMap.get(iTW);
         if (tripleList == null) {
-          tripleList = new ArrayList<Triple<Integer, String, Double>>();
+          tripleList = new ArrayList<>();
           hashMap.put(iTW, tripleList);
         }
 
-        tripleList.add(new Triple<Integer, String, Double>(wordIndex.addToIndex(m.group(3)), m.group(4), score));
+        tripleList.add(new Triple<>(wordIndex.addToIndex(m.group(3)), m.group(4), score));
       }
     } catch (IOException e) {
       throw new RuntimeException("Problem reading similar words file!");
@@ -88,19 +92,12 @@ public class ChineseSimWordAvgDepGrammar extends MLEDependencyGrammar {
     this.lex = lex;
   }
 
-  private ClassicCounter<String> statsCounter = new ClassicCounter<String>();
+  private ClassicCounter<String> statsCounter = new ClassicCounter<>();
 
-  static {
-    System.runFinalizersOnExit(true);
+  public void dumpSimWordAvgStats() {
+    log.info("SimWordAvg stats:");
+    log.info(statsCounter);
   }
-
-  @Override
-  protected void finalize() throws Throwable {
-    super.finalize();
-    System.err.println("SimWordAvg stats:");
-    System.err.println(statsCounter);
-  }
-
 
   /*
   ** An alternative kind of smoothing.
@@ -118,10 +115,10 @@ public class ChineseSimWordAvgDepGrammar extends MLEDependencyGrammar {
     }
 
     short distance = dependency.distance;
-    int hW = dependency.head.word;
-    int aW = dependency.arg.word;
+    // int hW = dependency.head.word;
+    // int aW = dependency.arg.word;
     IntTaggedWord aTW = dependency.arg;
-    IntTaggedWord hTW = dependency.head;
+    // IntTaggedWord hTW = dependency.head;
 
     double pb_stop_hTWds = getStopProb(dependency);
 
@@ -183,17 +180,12 @@ public class ChineseSimWordAvgDepGrammar extends MLEDependencyGrammar {
     double score; // = (interp * pb_aTW_hTWd + (1.0 - interp) * p_aTW_aT * pb_aT_hTWd) * pb_go_hTWds;
 
 
-    /* smooth by simWords
-    **               -pichuan
-    */
-    List<Triple<Integer, String, Double>> sim2head = null;
-    List<Triple<Integer, String, Double>> sim2arg = null;
+    /* smooth by simWords -pichuan */
+    List<Triple<Integer, String, Double>> sim2arg = simArgMap.get(new Pair<>(dependency.arg.word, stringBasicCategory(dependency.arg.tag)));
+    List<Triple<Integer, String, Double>> sim2head = simHeadMap.get(new Pair<>(dependency.head.word, stringBasicCategory(dependency.head.tag)));
 
-    sim2arg = simArgMap.get(new Pair<Integer,String>(dependency.arg.word, stringBasicCategory(dependency.arg.tag)));
-    sim2head = simHeadMap.get(new Pair<Integer,String>(dependency.head.word, stringBasicCategory(dependency.head.tag)));
-
-    List<Integer> simArg = new ArrayList<Integer>();
-    List<Integer> simHead= new ArrayList<Integer>();
+    List<Integer> simArg = new ArrayList<>();
+    List<Integer> simHead= new ArrayList<>();
 
     if (sim2arg != null) {
       for (Triple<Integer,String,Double> t : sim2arg) {
@@ -281,11 +273,8 @@ public class ChineseSimWordAvgDepGrammar extends MLEDependencyGrammar {
     double regProb = probTB(dep);
     statsCounter.incrementCount("total");
 
-    List<Triple<Integer, String, Double>> sim2head = null;
-    List<Triple<Integer, String, Double>> sim2arg = null;
-
-    sim2arg = simArgMap.get(new Pair<Integer,String>(dep.arg.word, stringBasicCategory(dep.arg.tag)));
-    sim2head = simHeadMap.get(new Pair<Integer,String>(dep.head.word, stringBasicCategory(dep.head.tag)));
+    List<Triple<Integer, String, Double>> sim2arg = simArgMap.get(new Pair<>(dep.arg.word, stringBasicCategory(dep.arg.tag)));
+    List<Triple<Integer, String, Double>> sim2head = simHeadMap.get(new Pair<>(dep.head.word, stringBasicCategory(dep.head.tag)));
 
     if (sim2head == null && sim2arg == null) {
       return regProb;
@@ -373,12 +362,12 @@ public class ChineseSimWordAvgDepGrammar extends MLEDependencyGrammar {
       statsCounter.incrementCount("simProbZero");
     }
     if (regProb == 0) {
-      //      System.err.println("zero reg prob");
+      //      log.info("zero reg prob");
       statsCounter.incrementCount("regProbZero");
     }
     double smoothProb = (countHead * regProb + simSmooth * simProb) / (countHead + simSmooth);
     if (smoothProb == 0) {
-      //      System.err.println("zero smooth prob");
+      //      log.info("zero smooth prob");
       statsCounter.incrementCount("smoothProbZero");
     }
 

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.sequences;
+package edu.stanford.nlp.sequences; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.PrintWriter;
 import java.io.Reader;
@@ -19,7 +20,10 @@ import java.util.function.Function;
  * @author Jenny Finkel
  */
 //TODO: repair this so it works with the feature label/coreLabel change
-public class LibSVMReaderAndWriter implements DocumentReaderAndWriter<CoreLabel> {
+public class LibSVMReaderAndWriter implements DocumentReaderAndWriter<CoreLabel>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(LibSVMReaderAndWriter.class);
 
   /**
    * 
@@ -41,26 +45,26 @@ public class LibSVMReaderAndWriter implements DocumentReaderAndWriter<CoreLabel>
   private class ColumnDocParser implements Function<String,List<CoreLabel>> {
     public List<CoreLabel> apply(String doc) {
 
-      if (num % 1000 == 0) { System.err.print("["+num+"]"); }
+      if (num % 1000 == 0) { log.info("["+num+"]"); }
       num++;
       
-      List<CoreLabel> words = new ArrayList<CoreLabel>();
+      List<CoreLabel> words = new ArrayList<>();
       
       String[] lines = doc.split("\n");
-      
-      for (int i = 0; i < lines.length; i++) {
-        if (lines[i].trim().length() < 1) {
+
+      for (String line : lines) {
+        if (line.trim().length() < 1) {
           continue;
         }
         CoreLabel wi = new CoreLabel();
-        String[] info = lines[i].split("\\s+");              
+        String[] info = line.split("\\s+");
         wi.set(CoreAnnotations.AnswerAnnotation.class, info[0]);
         wi.set(CoreAnnotations.GoldAnswerAnnotation.class, info[0]);
         for (int j = 1; j < info.length; j++) {
           String[] bits = info[j].split(":");
           //wi.set(bits[0], bits[1]);
         }
-//        System.err.println(wi);
+//        log.info(wi);
         words.add(wi);
       }
       return words;

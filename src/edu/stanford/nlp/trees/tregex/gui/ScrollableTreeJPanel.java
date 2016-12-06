@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees.tregex.gui;
+package edu.stanford.nlp.trees.tregex.gui; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -24,7 +25,10 @@ import edu.stanford.nlp.util.IntPair;
  * @author Anna Rafferty
  */
 @SuppressWarnings("serial")
-public class ScrollableTreeJPanel extends TreeJPanel   {
+public class ScrollableTreeJPanel extends TreeJPanel    {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ScrollableTreeJPanel.class);
 
   private int fontSize = 12;
   private Color defaultColor = Color.BLACK;
@@ -34,8 +38,8 @@ public class ScrollableTreeJPanel extends TreeJPanel   {
   private int style = Font.PLAIN;
   private Dimension preferredSize = null;
 
-  private List<Tree> matchedParts = new ArrayList<Tree>();
-  private List<Point2D.Double> matchedPartCoordinates = new ArrayList<Point2D.Double>();
+  private List<Tree> matchedParts = new ArrayList<>();
+  private List<Point2D.Double> matchedPartCoordinates = new ArrayList<>();
 
   public ScrollableTreeJPanel() {
     super();
@@ -103,13 +107,13 @@ public class ScrollableTreeJPanel extends TreeJPanel   {
 
     //Greedily draw the constituents
     final float rowOrigin = (float) (yieldHeight + 2.0*layerHeight);
-    List<List<IntPair>> rows = new ArrayList<List<IntPair>>();
+    List<List<IntPair>> rows = new ArrayList<>();
     for(Constituent c : diffConstituents) {
       for(int rowIdx = 0; rowIdx < diffConstituents.size(); rowIdx++) {
         float rowHeight = rowOrigin + (float) (rowIdx*layerHeight);
         int ext = (c.end() == (yieldOffsets.length - 1)) ? 0 : 1;
         if(rowIdx >= rows.size()) {
-          rows.add(new ArrayList<IntPair>());
+          rows.add(new ArrayList<>());
           rows.get(rowIdx).add(new IntPair(c.start(),c.end()));
           double nodeWidth = fM.stringWidth(c.value());
           g2.drawString(c.value(), yieldOffsets[c.start()], rowHeight);
@@ -198,7 +202,7 @@ public class ScrollableTreeJPanel extends TreeJPanel   {
         cWidth = paintTree(child, coord, g2, fM, matchedColor);
       } else {
         Color col = defaultColor;
-        if(((CoreLabel) child.label()).has(CoreAnnotations.DoAnnotation.class))
+        if(((CoreLabel) child.label()).containsKey(CoreAnnotations.DoAnnotation.class))
           col = (((CoreLabel) child.label()).get(CoreAnnotations.DoAnnotation.class)) ? tdiffColor : defaultColor;
         cWidth = paintTree(child, new Point2D.Double(childStartX, childStartY), g2, fM, col);
       }

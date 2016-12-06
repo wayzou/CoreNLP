@@ -28,7 +28,8 @@
 //    http://www-nlp.stanford.edu/software/tregex.shtml
 
 
-package edu.stanford.nlp.trees.tregex;
+package edu.stanford.nlp.trees.tregex; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.*;
 import java.util.*;
@@ -342,7 +343,10 @@ import edu.stanford.nlp.util.Timing;
  * @author Anna Rafferty (filter mode)
  * @author John Bauer (extensively tested and bugfixed)
  */
-public abstract class TregexPattern implements Serializable {
+public abstract class TregexPattern implements Serializable  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(TregexPattern.class);
   private boolean neg = false;
   private boolean opt = false;
   private String patternString;
@@ -454,7 +458,7 @@ public abstract class TregexPattern implements Serializable {
       result = TregexPatternCompiler.defaultCompiler.compile(tregex);
     } catch (TregexParseException ex) {
       if (verbose) {
-        System.err.println("Could not parse " + tregex + ":");
+        log.info("Could not parse " + tregex + ":");
         ex.printStackTrace();
       }
     }
@@ -504,11 +508,11 @@ public abstract class TregexPattern implements Serializable {
   private static final Pattern codePattern = Pattern.compile("([0-9]+):([0-9]+)");
 
   private static void extractSubtrees(List<String> codeStrings, String treeFile) {
-    List<Pair<Integer,Integer>> codes = new ArrayList<Pair<Integer,Integer>>();
+    List<Pair<Integer,Integer>> codes = new ArrayList<>();
     for(String s : codeStrings) {
       Matcher m = codePattern.matcher(s);
       if(m.matches())
-        codes.add(new Pair<Integer,Integer>(Integer.parseInt(m.group(1)),Integer.parseInt(m.group(2))));
+        codes.add(new Pair<>(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2))));
       else
         throw new RuntimeException("Error: illegal node code " + s);
     }
@@ -631,7 +635,7 @@ public abstract class TregexPattern implements Serializable {
 
     if (argsMap.containsKey(encodingOption)) {
       encoding = argsMap.get(encodingOption)[0];
-      System.err.println("Encoding set to " + encoding);
+      log.info("Encoding set to " + encoding);
     }
     PrintWriter errPW = new PrintWriter(new OutputStreamWriter(System.err, encoding), true);
 
@@ -815,7 +819,7 @@ public abstract class TregexPattern implements Serializable {
         pw = new PrintWriter(new OutputStreamWriter(System.out, encoding),true);
       }
       catch (UnsupportedEncodingException e) {
-        System.err.println("Error -- encoding " + encoding + " is unsupported.  Using platform default PrintWriter instead.");
+        log.info("Error -- encoding " + encoding + " is unsupported.  Using platform default PrintWriter instead.");
         pw = new PrintWriter(System.out,true);
       }
     }
@@ -872,7 +876,7 @@ public abstract class TregexPattern implements Serializable {
             for (String handle : handles) {
               Tree labeledNode = match.getNode(handle);
               if (labeledNode == null) {
-                System.err.println("Error!!  There is no matched node \"" + handle + "\"!  Did you specify such a label in the pattern?");
+                log.info("Error!!  There is no matched node \"" + handle + "\"!  Did you specify such a label in the pattern?");
               } else {
                 tp.printTree(labeledNode,pw);
               }

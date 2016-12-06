@@ -16,20 +16,18 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
- * Extracts quantifiable entities using rules
+ * Extracts quantifiable entities using rules.
  *
  * @author Angel Chang
  */
 public class QuantifiableEntityExtractor {
-  protected static final Logger logger = Logger.getLogger(QuantifiableEntityExtractor.class.getName());
-  Env env;
-  Options options;
-  CoreMapExpressionExtractor extractor;
+
+  private Env env;
+  private Options options;
+  private CoreMapExpressionExtractor extractor;
 
   public SimpleQuantifiableEntity get(double amount, String unitName) {
     return new SimpleQuantifiableEntity(amount, (Unit) env.get(unitName));
@@ -49,18 +47,10 @@ public class QuantifiableEntityExtractor {
     init(new Options(name, props));
   }
 
-  public void init(Options options)
-  {
+  public void init(Options options) {
     this.options = options;
     initEnv();
     extractor = createExtractor();
-
-    if (options.verbose) {
-      logger.setLevel(Level.FINE);
-    } else {
-      logger.setLevel(Level.SEVERE);
-    }
-    extractor.setLogger(logger);
   }
 
   public CoreMapExpressionExtractor createExtractor() {
@@ -68,8 +58,7 @@ public class QuantifiableEntityExtractor {
     return CoreMapExpressionExtractor.createExtractorFromFiles(env, filenames);
   }
 
-  private void initEnv()
-  {
+  private void initEnv() {
     env = TokenSequencePattern.getNewEnv();
     env.setDefaultTokensAnnotationKey(CoreAnnotations.NumerizedTokensAnnotation.class);
 
@@ -92,11 +81,11 @@ public class QuantifiableEntityExtractor {
     env.bind("numcompvalue", CoreAnnotations.NumericCompositeValueAnnotation.class);
   }
 
-  public static void generatePrefixDefs(String infile, String outfile) throws IOException {
+  private static void generatePrefixDefs(String infile, String outfile) throws IOException {
     List<UnitPrefix> prefixes = UnitPrefix.loadPrefixes(infile);
     PrintWriter pw = IOUtils.getPrintWriter(outfile);
     pw.println("SI_PREFIX_MAP = {");
-    List<String> items = new ArrayList<String>();
+    List<String> items = new ArrayList<>();
     for (UnitPrefix prefix:prefixes) {
       if ("SI".equals(prefix.system)) {
         items.add("\"" + prefix.name + "\": " + prefix.getName().toUpperCase());
@@ -119,13 +108,13 @@ public class QuantifiableEntityExtractor {
     pw.close();
   }
 
-  public static void generateUnitsStage0Rules(String unitsFiles, String infile, String outfile) throws IOException {
+  private static void generateUnitsStage0Rules(String unitsFiles, String infile, String outfile) throws IOException {
     Pattern tabPattern = Pattern.compile("\t");
     PrintWriter pw = IOUtils.getPrintWriter(outfile);
 
     List<Unit> units = Units.loadUnits(unitsFiles);
     pw.println("SI_UNIT_MAP = {");
-    List<String> items = new ArrayList<String>();
+    List<String> items = new ArrayList<>();
     for (Unit unit:units) {
       if ("SI".equals(unit.prefixSystem)) {
         items.add("\"" + unit.name + "\": " + (unit.getType() + "_" + unit.getName()).toUpperCase());
@@ -169,11 +158,12 @@ public class QuantifiableEntityExtractor {
     pw.close();
   }
 
-  public static void main(String args[]) throws Exception {
+  public static void main(String[] args) throws Exception {
     // Generate rules files
     Properties props = StringUtils.argsToProperties(args);
     Options options = new Options("qe", props);
     generatePrefixDefs(options.prefixFilename, options.prefixRulesFilename);
     generateUnitsStage0Rules(options.unitsFilename, options.text2UnitMapping, options.unitsRulesFilename);
   }
+
 }

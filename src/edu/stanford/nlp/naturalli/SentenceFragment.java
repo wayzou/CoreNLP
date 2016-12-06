@@ -18,22 +18,27 @@ import java.util.stream.Collectors;
  * @author Gabor Angeli
  */
 public class SentenceFragment {
+
   /**
    * The words in this sentence fragment (e.g., for use as the gloss of the fragment).
    */
   public final List<CoreLabel> words = new ArrayList<>();
+
   /**
    * The parse tree for this sentence fragment.
    */
   public final SemanticGraph parseTree;
+
   /**
    * The assumed truth of this fragment; this is relevant for what entailments are supported
    */
   public final boolean assumedTruth;
+
   /**
    * A score for this fragment. This is 1.0 by default.
    */
   public double score = 1.0;
+
 
   public SentenceFragment(SemanticGraph tree, boolean assumedTruth, boolean copy) {
     if (copy) {
@@ -81,17 +86,14 @@ public class SentenceFragment {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof SentenceFragment)) return false;
-    if (!super.equals(o)) return false;
     SentenceFragment that = (SentenceFragment) o;
-    return parseTree.equals(that.parseTree);
+    return this.parseTree.vertexSet().equals((that.parseTree.vertexSet()));
 
   }
 
   @Override
   public int hashCode() {
-    int result = super.hashCode();
-    result = 31 * result + parseTree.hashCode();
-    return result;
+    return this.parseTree.vertexSet().hashCode();
   }
 
   @Override
@@ -104,10 +106,8 @@ public class SentenceFragment {
       // Find additional connectives
       for (SemanticGraphEdge edge : parseTree.incomingEdgeIterable(new IndexedWord(word))) {
         String rel = edge.getRelation().toString();
-        if (rel.contains(":") && !rel.endsWith("npmod")) {
-          addedConnective = rel.substring(rel.indexOf(":") + 1);
-        } else if (rel.contains("_")) {
-          addedConnective = rel.substring(rel.indexOf("_") + 1);
+        if (rel.contains("_")) {  // for Stanford dependencies only
+          addedConnective = rel.substring(rel.indexOf('_') + 1);
         }
       }
       if (addedConnective != null) {
@@ -121,4 +121,5 @@ public class SentenceFragment {
     // Return the sentence
     return StringUtils.join(glosses.stream().map(Pair::first), " ");
   }
+
 }

@@ -8,7 +8,7 @@ import edu.stanford.nlp.patterns.DataInstance;
 import edu.stanford.nlp.patterns.PatternFactory;
 import edu.stanford.nlp.sequences.SeqClassifierFlags;
 import edu.stanford.nlp.util.CollectionUtils;
-import edu.stanford.nlp.util.Execution;
+import edu.stanford.nlp.util.ArgumentParser;
 import edu.stanford.nlp.util.StringUtils;
 import edu.stanford.nlp.util.Triple;
 
@@ -24,45 +24,45 @@ public class SurfacePatternFactory extends PatternFactory {
    * Use POS tag restriction in the target term: One of this and
    * <code>addPatWithoutPOS</code> has to be true.
    */
-  @Execution.Option(name = "usePOS4Pattern")
+  @ArgumentParser.Option(name = "usePOS4Pattern")
   public static boolean usePOS4Pattern = true;
 
   /**
    * Use first two letters of the POS tag
    */
-  @Execution.Option(name="useCoarsePOS")
+  @ArgumentParser.Option(name="useCoarsePOS")
   public static boolean useCoarsePOS = true;
 
   /**
    * Add patterns without POS restriction as well: One of this and
    * <code>usePOS4Pattern</code> has to be true.
    */
-  @Execution.Option(name = "addPatWithoutPOS")
+  @ArgumentParser.Option(name = "addPatWithoutPOS")
   public static boolean addPatWithoutPOS = true;
 
   /**
    * Consider contexts longer or equal to these many tokens.
    */
-  @Execution.Option(name = "minWindow4Pattern")
+  @ArgumentParser.Option(name = "minWindow4Pattern")
   public static int minWindow4Pattern = 2;
 
   /**
    * Consider contexts less than or equal to these many tokens -- total of left
    * and right contexts be can double of this.
    */
-  @Execution.Option(name = "maxWindow4Pattern")
+  @ArgumentParser.Option(name = "maxWindow4Pattern")
   public static int maxWindow4Pattern = 4;
 
   /**
    * Consider contexts on the left of a token.
    */
-  @Execution.Option(name = "usePreviousContext")
+  @ArgumentParser.Option(name = "usePreviousContext")
   public static boolean usePreviousContext = true;
 
   /**
    * Consider contexts on the right of a token.
    */
-  @Execution.Option(name = "useNextContext")
+  @ArgumentParser.Option(name = "useNextContext")
   public static boolean useNextContext = false;;
 
   /**
@@ -70,27 +70,27 @@ public class SurfacePatternFactory extends PatternFactory {
    * pattern only if number of tokens is equal or more than this. This is get
    * patterns like "I am on X" but ignore "on X".
    */
-  @Execution.Option(name = "numMinStopWordsToAdd")
+  @ArgumentParser.Option(name = "numMinStopWordsToAdd")
   public static int numMinStopWordsToAdd = 3;
 
 
   /**
    * Adds the parent's tag from the parse tree to the target phrase in the patterns
    */
-  @Execution.Option(name = "useTargetParserParentRestriction")
+  @ArgumentParser.Option(name = "useTargetParserParentRestriction")
   public static boolean useTargetParserParentRestriction = false;
 
   /**
    * If the NER tag of the context tokens is not the background symbol,
    * generalize the token with the NER tag
    */
-  @Execution.Option(name = "useContextNERRestriction")
+  @ArgumentParser.Option(name = "useContextNERRestriction")
   public static boolean useContextNERRestriction = false;
 
   /**
    * Ignore words like "a", "an", "the" when matching a pattern.
    */
-  @Execution.Option(name = "useFillerWordsInPat")
+  @ArgumentParser.Option(name = "useFillerWordsInPat")
   public static boolean useFillerWordsInPat = true;
 
 
@@ -102,9 +102,9 @@ public class SurfacePatternFactory extends PatternFactory {
   static Token fw, sw;
 
   public static void setUp(Properties props){
-    Execution.fillOptions(PatternFactory.class, props);
-    Execution.fillOptions(SurfacePatternFactory.class, props);
-    Execution.fillOptions(SurfacePattern.class, props);
+    ArgumentParser.fillOptions(PatternFactory.class, props);
+    ArgumentParser.fillOptions(SurfacePatternFactory.class, props);
+    ArgumentParser.fillOptions(SurfacePattern.class, props);
 
     if (!addPatWithoutPOS && !usePOS4Pattern) {
       throw new RuntimeException(
@@ -127,9 +127,9 @@ public class SurfacePatternFactory extends PatternFactory {
   public static Set<SurfacePattern> getContext(List<CoreLabel> sent, int i, Set<CandidatePhrase> stopWords) {
 
 
-    Set<SurfacePattern> prevpatterns = new HashSet<SurfacePattern>();
-    Set<SurfacePattern> nextpatterns = new HashSet<SurfacePattern>();
-    Set<SurfacePattern> prevnextpatterns = new HashSet<SurfacePattern>();
+    Set<SurfacePattern> prevpatterns = new HashSet<>();
+    Set<SurfacePattern> nextpatterns = new HashSet<>();
+    Set<SurfacePattern> prevnextpatterns = new HashSet<>();
     CoreLabel token = sent.get(i);
     String tag = null;
     if (usePOS4Pattern) {
@@ -141,9 +141,9 @@ public class SurfacePatternFactory extends PatternFactory {
     }
     String nerTag = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
     for (int maxWin = 1; maxWin <= maxWindow4Pattern; maxWin++) {
-      List<Token> previousTokens = new ArrayList<Token>();
-      List<String> originalPrev = new ArrayList<String>(), originalNext = new ArrayList<String>();
-      List<Token> nextTokens = new ArrayList<Token>();
+      List<Token> previousTokens = new ArrayList<>();
+      List<String> originalPrev = new ArrayList<>(), originalNext = new ArrayList<>();
+      List<Token> nextTokens = new ArrayList<>();
 
       int numStopWordsprev = 0, numStopWordsnext = 0;
       // int numPrevTokensSpecial = 0, numNextTokensSpecial = 0;
@@ -304,8 +304,8 @@ public class SurfacePatternFactory extends PatternFactory {
 
         // prevContext = StringUtils.join(previousTokens, fw);
 
-        List<Token> prevContextList = new ArrayList<Token>();
-        List<String> prevOriginal = new ArrayList<String>();
+        List<Token> prevContextList = new ArrayList<>();
+        List<String> prevOriginal = new ArrayList<>();
         for (Token p : previousTokens) {
           prevContextList.add(p);
           if (!fw.isEmpty())
@@ -354,9 +354,9 @@ public class SurfacePatternFactory extends PatternFactory {
       if (nextTokens.size() > 0
         && (numNonStopWordsNext > 0 || numStopWordsnext > numMinStopWordsToAdd)) {
         // nextContext = StringUtils.join(nextTokens, fw);
-        List<Token> nextContextList = new ArrayList<Token>();
+        List<Token> nextContextList = new ArrayList<>();
 
-        List<String> nextOriginal = new ArrayList<String>();
+        List<String> nextOriginal = new ArrayList<>();
 
         if (!sw.isEmpty()) {
           nextContextList.add(sw);
@@ -481,8 +481,8 @@ public class SurfacePatternFactory extends PatternFactory {
       }
     }
 
-    return new Triple<Boolean, Token, String>(isLabeledO, strgeneric,
-      strOriginal);
+    return new Triple<>(isLabeledO, strgeneric,
+            strOriginal);
   }
 
   public static boolean isASCII(String text) {
@@ -496,7 +496,7 @@ public class SurfacePatternFactory extends PatternFactory {
   }
 
   public static Map<Integer, Set> getPatternsAroundTokens(DataInstance sent, Set<CandidatePhrase> stopWords) {
-    Map<Integer, Set> p = new HashMap<Integer, Set>();
+    Map<Integer, Set> p = new HashMap<>();
     List<CoreLabel> tokens = sent.getTokens();
     for (int i = 0; i < tokens.size(); i++) {
 //          p.put(

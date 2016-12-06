@@ -39,7 +39,7 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
   public static final String LEFT_PARENTHESIS = "=LRB=";
   public static final String RIGHT_PARENTHESIS = "=RRB=";
 
-  private static final Map<String, String> spellingFixes = new HashMap<String, String>();
+  private static final Map<String, String> spellingFixes = new HashMap<>();
   static {
     spellingFixes.put("embargp", "embargo"); // 18381_20000322.tbf-4
     spellingFixes.put("jucio", "juicio"); // 4800_2000406.tbf-5
@@ -167,17 +167,17 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
    * Note that this is only the case for constituents with a *single*
    * child which is a multi-word token.
    */
-  private static final Set<String> mergeWithConstituentWhenPossible = new HashSet<String>(
-    Arrays.asList(
-      "grup.adv",
-      "grup.nom",
-      "grup.nom.loc",
-      "grup.nom.org",
-      "grup.nom.otros",
-      "grup.nom.pers",
-      "grup.verb",
-      "spec"
-    ));
+  private static final Set<String> mergeWithConstituentWhenPossible = new HashSet<>(
+          Arrays.asList(
+                  "grup.adv",
+                  "grup.nom",
+                  "grup.nom.loc",
+                  "grup.nom.org",
+                  "grup.nom.otros",
+                  "grup.nom.pers",
+                  "grup.verb",
+                  "spec"
+          ));
 
   // Customization
   private boolean simplifiedTagset;
@@ -501,14 +501,14 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
     };
 
     markSimpleNEs =
-      new ArrayList<Pair<TregexPattern, TsurgeonPattern>>(patternTemplates.length * namedEntityTypes.length);
+            new ArrayList<>(patternTemplates.length * namedEntityTypes.length);
     for (Pair<String, String> template : patternTemplates) {
       for (Pair<Character, String> namedEntityType : namedEntityTypes) {
         String tregex = String.format(template.first(), namedEntityType.first());
         String tsurgeon = String.format(template.second(), namedEntityType.second());
 
-        markSimpleNEs.add(new Pair<TregexPattern, TsurgeonPattern>(TregexPattern.compile(tregex),
-                                                                   Tsurgeon.parseOperation(tsurgeon)));
+        markSimpleNEs.add(new Pair<>(TregexPattern.compile(tregex),
+                Tsurgeon.parseOperation(tsurgeon)));
       }
     }
   };
@@ -562,9 +562,9 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
 
       // Leaf is a multi-word token; build new nodes for each of its
       // constituent words
-      List<Tree> newNodes = new ArrayList<Tree>(words.length);
-      for (int j = 0; j < words.length; j++) {
-        String word = normalizeTerminal(words[j]);
+      List<Tree> newNodes = new ArrayList<>(words.length);
+      for (String word1 : words) {
+        String word = normalizeTerminal(word1);
 
         Tree newLeaf = tf.newLeaf(word);
         if (newLeaf.label() instanceof HasWord)
@@ -603,6 +603,11 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
   private static final Pattern pQuoted = Pattern.compile("\"(.+)\"");
 
   /**
+   * Strings of punctuation which should remain a single token.
+   */
+  private static final Pattern pPunct = Pattern.compile("[.,!?:/'=()-]+");
+
+  /**
    * Characters which may separate words in a single token.
    */
   private static final String WORD_SEPARATORS = ",-_¡!¿?()/%";
@@ -618,18 +623,18 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
    * which they are joined by hyphen.
    */
   // TODO how to handle clitics? chino-japonés
-  private static final Set<String> hyphenBoundMorphemes = new HashSet<String>(Arrays.asList(
-      "anti", // anti-Gil
-      "co", // co-promotora
-      "ex", // ex-diputado
-      "meso", // meso-americano
-      "neo", // neo-proteccionismo
-      "pre", // pre-presidencia
-      "pro", // pro-indonesias
-      "quasi", // quasi-unidimensional
-      "re", // re-flotamiento
-      "semi", // semi-negro
-      "sub" // sub-18
+  private static final Set<String> hyphenBoundMorphemes = new HashSet<>(Arrays.asList(
+          "anti", // anti-Gil
+          "co", // co-promotora
+          "ex", // ex-diputado
+          "meso", // meso-americano
+          "neo", // neo-proteccionismo
+          "pre", // pre-presidencia
+          "pro", // pro-indonesias
+          "quasi", // quasi-unidimensional
+          "re", // re-flotamiento
+          "semi", // semi-negro
+          "sub" // sub-18
   ));
 
   /**
@@ -650,6 +655,10 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
   private String[] getMultiWords(String token) {
     token = prepareForMultiWordExtraction(token);
 
+    Matcher punctMatcher = pPunct.matcher(token);
+    if (punctMatcher.matches())
+      return new String[] {token};
+
     Matcher quoteMatcher = pQuoted.matcher(token);
     if (quoteMatcher.matches()) {
       String[] ret = new String[3];
@@ -666,7 +675,7 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
                                                    true);
     int remainingTokens = splitter.countTokens();
 
-    List<String> words = new ArrayList<String>();
+    List<String> words = new ArrayList<>();
 
     while (splitter.hasMoreTokens()) {
       String word = splitter.nextToken();
@@ -936,10 +945,10 @@ public class SpanishTreeNormalizer extends BobChrisTreeNormalizer {
   }
 
   private static List<Pair<TregexPattern, TsurgeonPattern>> compilePatterns(Pair<String, String>[] patterns) {
-    List<Pair<TregexPattern, TsurgeonPattern>> ret = new ArrayList<Pair<TregexPattern, TsurgeonPattern>>(patterns.length);
+    List<Pair<TregexPattern, TsurgeonPattern>> ret = new ArrayList<>(patterns.length);
     for (Pair<String, String> pattern : patterns)
-      ret.add(new Pair<TregexPattern, TsurgeonPattern>(TregexPattern.compile(pattern.first()),
-                                                       Tsurgeon.parseOperation(pattern.second())));
+      ret.add(new Pair<>(TregexPattern.compile(pattern.first()),
+              Tsurgeon.parseOperation(pattern.second())));
 
     return ret;
   }

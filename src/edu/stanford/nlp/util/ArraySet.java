@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * An array-backed set.
@@ -11,7 +12,7 @@ import java.util.Iterator;
  */
 public class ArraySet<E> extends AbstractSet<E> implements Serializable {
 
-  private final ArrayList<E> backer;
+  private final List<E> backer;
 
   /**
    * Constructs an ArraySet.
@@ -21,11 +22,19 @@ public class ArraySet<E> extends AbstractSet<E> implements Serializable {
   }
 
   /**
+   * Constructs an ArraySet, using the given list as the backing collection.
+   * Note that this is not a copy constructor!
+   */
+  public ArraySet(List<E> source) {
+    this.backer = source;
+  }
+
+  /**
    * Constructs an ArraySet with specified initial size of backing array.
    * @param initialSize initial size of the backing array.
    */
   public ArraySet(int initialSize) {
-    backer = new ArrayList<E>(initialSize);
+    backer = new ArrayList<>(initialSize);
   }
 
   /**

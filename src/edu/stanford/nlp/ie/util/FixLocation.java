@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ie.util;
+package edu.stanford.nlp.ie.util; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.*;
 import java.io.*;
@@ -12,7 +13,10 @@ import edu.stanford.nlp.util.Generics;
  *
  * @author jrfinkel
  */
-public class FixLocation {
+public class FixLocation  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(FixLocation.class);
 
   public static final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
@@ -23,13 +27,13 @@ public class FixLocation {
 
   public static void main(String[] args) throws Exception {
     if (args.length < 1) {
-      System.err.println("Input filename?");
+      log.info("Input filename?");
       inputFilename = in.readLine();
     } else {
       inputFilename = args[0];
     }
     if (args.length < 2) {
-      System.err.println("Output filename?");
+      log.info("Output filename?");
       outputFilename = in.readLine();
     } else {
       outputFilename = args[1];
@@ -110,11 +114,11 @@ public class FixLocation {
     String ans = (answers == null) ? "": answers.readLine();
     String loc = pre+","+post+" ?";
 
-    System.err.println(loc);
+    log.info(loc);
 
     if (ans.equals(loc)) {
       String response = answers.readLine();
-      System.err.println(response);
+      log.info(response);
       if (ans.equalsIgnoreCase("Y")) {
         cols[pos][1] = "LOCATION";
       }
@@ -129,16 +133,16 @@ public class FixLocation {
         }
       } else if (ans.equalsIgnoreCase("Y")) {
         cols[pos][1] = "LOCATION";
-        System.err.println("Y");
+        log.info("Y");
       }
     }
   }
 
   public static void print(String[][] cols) throws Exception {
     BufferedWriter out = new BufferedWriter(new FileWriter(outputFilename));
-    for (int i = 0; i < cols.length; i++) {
-      if (cols[i].length >= 2) {
-        out.write(cols[i][0]+"\t"+cols[i][1]+"\n");
+    for (String[] col : cols) {
+      if (col.length >= 2) {
+        out.write(col[0] + "\t" + col[1] + "\n");
       } else {
         out.write("\n");
       }

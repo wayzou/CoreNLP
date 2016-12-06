@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees;
+package edu.stanford.nlp.trees; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.*;
 import java.util.*;
@@ -19,7 +20,10 @@ import edu.stanford.nlp.objectbank.ObjectBank;
  * @author Christopher Manning
  * @version 2004/09/01
  */
-public final class MemoryTreebank extends Treebank implements FileProcessor, List<Tree> {
+public final class MemoryTreebank extends Treebank implements FileProcessor, List<Tree>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(MemoryTreebank.class);
 
   private static final boolean PRINT_FILENAMES = false;
 
@@ -78,7 +82,7 @@ public final class MemoryTreebank extends Treebank implements FileProcessor, Lis
    */
   public MemoryTreebank(TreeReaderFactory trf) {
     super(trf);
-    parseTrees = new ArrayList<Tree>();
+    parseTrees = new ArrayList<>();
   }
 
 
@@ -91,7 +95,7 @@ public final class MemoryTreebank extends Treebank implements FileProcessor, Lis
    */
   public MemoryTreebank(TreeReaderFactory trf, String encoding) {
     super(trf, encoding);
-    parseTrees = new ArrayList<Tree>();
+    parseTrees = new ArrayList<>();
   }
 
   /**
@@ -128,7 +132,7 @@ public final class MemoryTreebank extends Treebank implements FileProcessor, Lis
    */
   public MemoryTreebank(int initialCapacity, TreeReaderFactory trf) {
     super(initialCapacity, trf);
-    parseTrees = new ArrayList<Tree>(initialCapacity);
+    parseTrees = new ArrayList<>(initialCapacity);
   }
 
 
@@ -169,7 +173,7 @@ public final class MemoryTreebank extends Treebank implements FileProcessor, Lis
       String info = bits[2];
       CollectionValuedMap<Integer,String> cvm = srlMap.get(filename);
       if (cvm == null) {
-        cvm = new CollectionValuedMap<Integer,String>();
+        cvm = new CollectionValuedMap<>();
         srlMap.put(filename, cvm);
       }
       cvm.add(treeNum, info);
@@ -199,14 +203,14 @@ public final class MemoryTreebank extends Treebank implements FileProcessor, Lis
         }
       }
       if (srlMap == null) {
-        System.err.println("could not find SRL entries for file: "+file);
+        log.info("could not find SRL entries for file: "+file);
       }
     }
 
     try {
       // maybe print file name to stdout to get some feedback
       if (PRINT_FILENAMES) {
-        System.err.println(file);
+        log.info(file);
       }
       // could throw an IO exception if can't open for reading
       tr = treeReaderFactory().newTreeReader(new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding())));
@@ -223,7 +227,7 @@ public final class MemoryTreebank extends Treebank implements FileProcessor, Lis
         } else {
           Collection<String> srls = srlMap.get(sentIndex);
 //           pt.pennPrint();
-//           System.err.println(srls);
+//           log.info(srls);
           parseTrees.add(pt);
           if (srls.isEmpty()) {
 //            parseTrees.add(pt);
@@ -343,7 +347,7 @@ public final class MemoryTreebank extends Treebank implements FileProcessor, Lis
         sentIndex++;
       }
     } catch (IOException e) {
-      System.err.println("load IO Exception: " + e);
+      log.info("load IO Exception: " + e);
     }
   }
 
@@ -369,8 +373,8 @@ public final class MemoryTreebank extends Treebank implements FileProcessor, Lis
    */
   @Override
   public void apply(TreeVisitor tp) {
-    for (int i = 0, size = parseTrees.size(); i < size; i++) {
-      tp.visitTree(parseTrees.get(i));
+    for (Tree parseTree : parseTrees) {
+      tp.visitTree(parseTree);
     }
     // or could do as Iterator but slower
     // Iterator iter = parseTrees.iterator();

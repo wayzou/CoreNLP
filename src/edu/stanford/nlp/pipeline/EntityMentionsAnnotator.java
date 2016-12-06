@@ -1,5 +1,6 @@
 package edu.stanford.nlp.pipeline;
 
+import edu.stanford.nlp.ling.CoreAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.time.TimeAnnotations;
@@ -149,6 +150,18 @@ public class EntityMentionsAnnotator implements Annotator {
           if (timex != null) {
             mention.set(TimeAnnotations.TimexAnnotation.class, timex);
           }
+
+          // Set the entity link from the tokens
+          if (mention.get(CoreAnnotations.WikipediaEntityAnnotation.class) == null) {
+            for (CoreLabel token : mentionTokens) {
+              if ( (mention.get(CoreAnnotations.WikipediaEntityAnnotation.class) == null ||
+                    "O".equals(mention.get(CoreAnnotations.WikipediaEntityAnnotation.class))) &&
+                  ( token.get(CoreAnnotations.WikipediaEntityAnnotation.class) != null &&
+                    !"O".equals(token.get(CoreAnnotations.WikipediaEntityAnnotation.class))) ) {
+                mention.set(CoreAnnotations.WikipediaEntityAnnotation.class, token.get(CoreAnnotations.WikipediaEntityAnnotation.class));
+              }
+            }
+          }
         }
       }
       if (mentions != null) {
@@ -166,7 +179,7 @@ public class EntityMentionsAnnotator implements Annotator {
   }
 
 
-  private void addAcronyms(Annotation ann, List<CoreMap> mentions) {
+  private static void addAcronyms(Annotation ann, List<CoreMap> mentions) {
     // Find all the organizations in a document
     List<List<CoreLabel>> organizations = new ArrayList<>();
     for (CoreMap mention : mentions) {
@@ -189,9 +202,11 @@ public class EntityMentionsAnnotator implements Annotator {
             // ... and actually are an acronym
             if (AcronymMatcher.isAcronym(token.word(), org)) {
               // ... and add them.
+              // System.out.println("found ACRONYM ORG");
               token.setNER("ORGANIZATION");
               CoreMap chunk = ChunkAnnotationUtils.getAnnotatedChunk(tokens,
                   i, i + 1, totalTokensOffset, null, null, null);
+              chunk.set(CoreAnnotations.NamedEntityTagAnnotation.class,"ORGANIZATION");
               mentions.add(chunk);
 
             }
@@ -203,14 +218,17 @@ public class EntityMentionsAnnotator implements Annotator {
 
 
   @Override
-  public Set<Requirement> requires() {
-    return new ArraySet<>(TOKENIZE_REQUIREMENT, NER_REQUIREMENT);
+  public Set<Class<? extends CoreAnnotation>> requires() {
+    return Collections.unmodifiableSet(new ArraySet<>(Arrays.asList(
+        CoreAnnotations.TokensAnnotation.class,
+        CoreAnnotations.SentencesAnnotation.class,
+        CoreAnnotations.NamedEntityTagAnnotation.class
+    )));
   }
 
   @Override
-  public Set<Requirement> requirementsSatisfied() {
-    // TODO: figure out what this produces
-    return Collections.emptySet();
+  public Set<Class<? extends CoreAnnotation>> requirementsSatisfied() {
+    return Collections.singleton(CoreAnnotations.MentionsAnnotation.class);
   }
 
 }

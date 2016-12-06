@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees;
+package edu.stanford.nlp.trees; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import static edu.stanford.nlp.trees.GrammaticalRelation.DEPENDENT;
 
@@ -25,7 +26,10 @@ import edu.stanford.nlp.stats.Counters;
  * @author danielcer
  *
  */
-public class DependencyScoring {
+public class DependencyScoring  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(DependencyScoring.class);
   public final static boolean VERBOSE = false;
 
   public final List<Set<TypedDependency>> goldDeps;
@@ -41,15 +45,15 @@ public class DependencyScoring {
       depSet.add(new TypedDependencyStringEquality(dep.reln(), dep.gov(), dep.dep()));
     }
 
-    List<Set<TypedDependency>> l = new ArrayList<Set<TypedDependency>>(2);
+    List<Set<TypedDependency>> l = new ArrayList<>(2);
     l.add(depSet);
     l.add(unlabeledDepSet);
     return l;
   }
 
   public DependencyScoring(List<Collection<TypedDependency>> goldDeps, boolean ignorePunc) {
-    this.goldDeps = new ArrayList<Set<TypedDependency>>(goldDeps.size());
-    this.goldDepsUnlabeled = new ArrayList<Set<TypedDependency>>(goldDeps.size());
+    this.goldDeps = new ArrayList<>(goldDeps.size());
+    this.goldDepsUnlabeled = new ArrayList<>(goldDeps.size());
     this.ignorePunc = ignorePunc;
 
     for (Collection<TypedDependency> depCollection : goldDeps) {
@@ -64,7 +68,7 @@ public class DependencyScoring {
   }
 
   private static void removeHeadsAssignedToPunc(Set<TypedDependency> depSet) {
-    List<TypedDependency> deps = new ArrayList<TypedDependency>(depSet);
+    List<TypedDependency> deps = new ArrayList<>(depSet);
     for (TypedDependency dep : deps) {
       if (langIndependentPuncCheck(dep.dep().word())) {
         if (VERBOSE) {
@@ -106,7 +110,7 @@ public class DependencyScoring {
   }
 
   public static List<Collection<TypedDependency>> convertStringEquality(List<Collection<TypedDependency>> deps){
-    List<Collection<TypedDependency>> convertedDeps = new ArrayList<Collection<TypedDependency>>();
+    List<Collection<TypedDependency>> convertedDeps = new ArrayList<>();
     for(Collection<TypedDependency> depSet : deps){
       Collection<TypedDependency> converted = Generics.newHashSet();
       for(TypedDependency dep : depSet){
@@ -157,7 +161,7 @@ public class DependencyScoring {
   static protected List<Collection<TypedDependency>> readDepsCoNLLX(String filename) throws IOException {
 	  List<GrammaticalStructure> gss = GrammaticalStructure.readCoNLLXGrammaticalStructureCollection(filename,
                   new fakeShortNameToGRel(), new GraphLessGrammaticalStructureFactory());
-	  List<Collection<TypedDependency>> readDeps = new ArrayList<Collection<TypedDependency>>(gss.size());
+	  List<Collection<TypedDependency>> readDeps = new ArrayList<>(gss.size());
 	  for (GrammaticalStructure gs : gss) {
 	    Collection<TypedDependency> deps = gs.typedDependencies();
 	    readDeps.add(deps);
@@ -174,12 +178,12 @@ public class DependencyScoring {
    */
   static protected List<Collection<TypedDependency>> readDeps(String filename) throws IOException {
     LineNumberReader breader = new LineNumberReader(new FileReader(filename));
-    List<Collection<TypedDependency>> readDeps = new ArrayList<Collection<TypedDependency>>();
-    Collection<TypedDependency> deps = new ArrayList<TypedDependency>();
+    List<Collection<TypedDependency>> readDeps = new ArrayList<>();
+    Collection<TypedDependency> deps = new ArrayList<>();
     for (String line = breader.readLine(); line != null; line = breader.readLine()) {
       if (line.equals("null(-0,-0)") || line.equals("null(-1,-1)")) {
          readDeps.add(deps);
-         deps = new ArrayList<TypedDependency>();
+         deps = new ArrayList<>();
          continue; // relex parse error
       }
       try {
@@ -187,7 +191,7 @@ public class DependencyScoring {
          if (deps.size() != 0) {
           //System.out.println(deps);
           readDeps.add(deps);
-          deps = new ArrayList<TypedDependency>();
+          deps = new ArrayList<>();
         }
         continue;
       }
@@ -232,7 +236,7 @@ public class DependencyScoring {
        readDeps.add(deps);
     }
 
-    //System.err.println("last: "+readDeps.get(readDeps.size()-1));
+    //log.info("last: "+readDeps.get(readDeps.size()-1));
     breader.close();
     return readDeps;
   }
@@ -254,8 +258,8 @@ public class DependencyScoring {
     int labelCnt = 0;
     int labelCorrect = 0;
 
-    ClassicCounter<String> unlabeledErrorCounts = new ClassicCounter<String>();
-    ClassicCounter<String> labeledErrorCounts = new ClassicCounter<String>();
+    ClassicCounter<String> unlabeledErrorCounts = new ClassicCounter<>();
+    ClassicCounter<String> labeledErrorCounts = new ClassicCounter<>();
     //System.out.println("Gold size: "+ goldDeps.size() + " System size: "+system.size());
     for (int i = 0; i < system.size(); i++) {
       List<Set<TypedDependency>> l = toSets(system.get(i));
@@ -334,8 +338,8 @@ public class DependencyScoring {
       this.correctUnlabeledAttachment = correctUnlabeledAttachment;
       this.labelCnt = labelCnt;
       this.labelCorrect = labelCorrect;
-      this.unlabeledErrorCounts = new ClassicCounter<String>(unlabeledErrorCounts);
-      this.labeledErrorCounts = new ClassicCounter<String>(labeledErrorCounts);
+      this.unlabeledErrorCounts = new ClassicCounter<>(unlabeledErrorCounts);
+      this.labeledErrorCounts = new ClassicCounter<>(labeledErrorCounts);
     }
 
     public String toString() {
@@ -428,8 +432,8 @@ public class DependencyScoring {
     String goldFilename = props.getProperty("g");
     String systemFilename = props.getProperty("s");
     if (goldFilename == null || systemFilename == null) {
-      System.err.println("Usage:\n\tjava ...DependencyScoring [-v True/False] [-conllx True/False] [-jsonOutput True/False] [-ignorePunc True/False] -g goldFile -s systemFile\n");
-      System.err.println("\nOptions:\n\t-v verbose output");
+      log.info("Usage:\n\tjava ...DependencyScoring [-v True/False] [-conllx True/False] [-jsonOutput True/False] [-ignorePunc True/False] -g goldFile -s systemFile\n");
+      log.info("\nOptions:\n\t-v verbose output");
       System.exit(-1);
     }
 

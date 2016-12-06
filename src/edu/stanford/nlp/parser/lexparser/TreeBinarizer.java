@@ -1,4 +1,5 @@
-package edu.stanford.nlp.parser.lexparser;
+package edu.stanford.nlp.parser.lexparser; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.trees.*;
@@ -19,7 +20,10 @@ import java.io.Reader;
  * @author Teg Grenager
  * @author Christopher Manning
  */
-public class TreeBinarizer implements TreeTransformer {
+public class TreeBinarizer implements TreeTransformer  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(TreeBinarizer.class);
 
   private static final boolean DEBUG = false;
 
@@ -34,7 +38,7 @@ public class TreeBinarizer implements TreeTransformer {
   private boolean markFinalStates;
   private boolean unaryAtTop;
   private boolean doSelectiveSplit = false;
-  private ClassicCounter<String> stateCounter = new ClassicCounter<String>();
+  private ClassicCounter<String> stateCounter = new ClassicCounter<>();
   private final boolean simpleLabels;
   private final boolean noRebinarization;
 
@@ -49,7 +53,7 @@ public class TreeBinarizer implements TreeTransformer {
   public void setDoSelectiveSplit(boolean doSelectiveSplit) {
     this.doSelectiveSplit = doSelectiveSplit;
     if (!doSelectiveSplit) {
-      stateCounter = new ClassicCounter<String>();
+      stateCounter = new ClassicCounter<>();
     }
   }
 
@@ -96,7 +100,7 @@ public class TreeBinarizer implements TreeTransformer {
         t2 = markovInsideBinarizeLocalTreeNew(t, headNum, 0, t.numChildren() - 1, true);
         //          t2 = markovInsideBinarizeLocalTree(t, head, headNum, topCat, false);
       } else {
-        t2 = markovOutsideBinarizeLocalTree(t, head, headNum, topCat, new LinkedList<Tree>(), false);
+        t2 = markovOutsideBinarizeLocalTree(t, head, headNum, topCat, new LinkedList<>(), false);
       }
 
       if (DEBUG) {
@@ -120,13 +124,13 @@ public class TreeBinarizer implements TreeTransformer {
   private Tree markovOutsideBinarizeLocalTree(Tree t, TaggedWord head, int headLoc, String topCat, LinkedList<Tree> ll, boolean doneLeft) {
     String word = head.word();
     String tag = head.tag();
-    List<Tree> newChildren = new ArrayList<Tree>(2);
+    List<Tree> newChildren = new ArrayList<>(2);
     // call with t, headNum, head, topCat, false
     if (headLoc == 0) {
       if (!doneLeft) {
         // insert a unary to separate the sides
         if (tlp.isStartSymbol(topCat)) {
-          return markovOutsideBinarizeLocalTree(t, head, headLoc, topCat, new LinkedList<Tree>(), true);
+          return markovOutsideBinarizeLocalTree(t, head, headLoc, topCat, new LinkedList<>(), true);
         }
         String subLabelStr;
         if (simpleLabels) {
@@ -137,7 +141,7 @@ public class TreeBinarizer implements TreeTransformer {
         }
         Label subLabel = new CategoryWordTag(subLabelStr, word, tag);
         Tree subTree = tf.newTreeNode(subLabel, t.getChildrenAsList());
-        newChildren.add(markovOutsideBinarizeLocalTree(subTree, head, headLoc, topCat, new LinkedList<Tree>(), true));
+        newChildren.add(markovOutsideBinarizeLocalTree(subTree, head, headLoc, topCat, new LinkedList<>(), true));
         return tf.newTreeNode(t.label(), newChildren);
 
       }
@@ -218,17 +222,17 @@ public class TreeBinarizer implements TreeTransformer {
       newChildren = Collections.singletonList(children[headLoc]);
     } else if (left < headLoc) {
       // generate a left if we can
-      newChildren = new ArrayList<Tree>(2);
+      newChildren = new ArrayList<>(2);
       newChildren.add(children[left]);
       newChildren.add(markovInsideBinarizeLocalTreeNew(t, headLoc, left + 1, right, false));
     } else if (right > headLoc) {
       // generate a right if we can
-      newChildren = new ArrayList<Tree>(2);
+      newChildren = new ArrayList<>(2);
       newChildren.add(markovInsideBinarizeLocalTreeNew(t, headLoc, left, right - 1, false));
       newChildren.add(children[right]);
     } else {
       // this shouldn't happen, should have been caught above
-      System.err.println("UHOH, bad parameters passed to markovInsideBinarizeLocalTree");
+      log.info("UHOH, bad parameters passed to markovInsideBinarizeLocalTree");
     }
     // newChildren should be set up now with two children
     // make our new label
@@ -379,7 +383,7 @@ public class TreeBinarizer implements TreeTransformer {
     StringBuilder sb = new StringBuilder(leng);
     sb.append("@").append(topCat).append("| ").append(headStr).append("_").append(middlePiece).append(finalPiece);
     String labelStr = sb.toString();
-    // System.err.println("makeSyntheticLabel2: " + labelStr);
+    // log.info("makeSyntheticLabel2: " + labelStr);
 
     String word = ((HasWord) t.label()).word();
     String tag = ((HasTag) t.label()).tag();
@@ -389,7 +393,7 @@ public class TreeBinarizer implements TreeTransformer {
   private Tree insideBinarizeLocalTree(Tree t, int headNum, TaggedWord head, int leftProcessed, int rightProcessed) {
     String word = head.word();
     String tag = head.tag();
-    List<Tree> newChildren = new ArrayList<Tree>(2);      // check done
+    List<Tree> newChildren = new ArrayList<>(2);      // check done
     if (t.numChildren() <= leftProcessed + rightProcessed + 2) {
       Tree leftChild = t.getChild(leftProcessed);
       newChildren.add(leftChild);
@@ -433,7 +437,7 @@ public class TreeBinarizer implements TreeTransformer {
   }
 
   private Tree outsideBinarizeLocalTree(Tree t, String labelStr, String finalCat, int headNum, TaggedWord head, int leftProcessed, String leftStr, int rightProcessed, String rightStr) {
-    List<Tree> newChildren = new ArrayList<Tree>(2);
+    List<Tree> newChildren = new ArrayList<>(2);
     Label label = new CategoryWordTag(labelStr, head.word(), head.tag());
     // check if there are <=2 children already
     if (t.numChildren() - leftProcessed - rightProcessed <= 2) {
@@ -499,7 +503,7 @@ public class TreeBinarizer implements TreeTransformer {
     if (t.isPreTerminal()) {
       Tree childResult = transformTree(t.getChild(0));
       String word = childResult.value();  // would be nicer if Word/CWT ??
-      List<Tree> newChildren = new ArrayList<Tree>(1);
+      List<Tree> newChildren = new ArrayList<>(1);
       newChildren.add(childResult);
       return tf.newTreeNode(new CategoryWordTag(cat, word, cat), newChildren);
     }
@@ -512,12 +516,12 @@ public class TreeBinarizer implements TreeTransformer {
     headChild.pennPrint();
     */
     if (headChild == null && ! t.label().value().startsWith(tlp.startSymbol())) {
-      System.err.println("### No head found for:");
+      log.info("### No head found for:");
       t.pennPrint();
     }
     int headNum = -1;
     Tree[] kids = t.children();
-    List<Tree> newChildren = new ArrayList<Tree>(kids.length);
+    List<Tree> newChildren = new ArrayList<>(kids.length);
     for (int childNum = 0; childNum < kids.length; childNum++) {
       Tree child = kids[childNum];
       Tree childResult = transformTree(child);   // recursive call
@@ -641,7 +645,7 @@ public class TreeBinarizer implements TreeTransformer {
 	try {
 	  tlp = (TreebankLanguagePack) Class.forName(args[i+1]).newInstance();
 	} catch (Exception e) {
-	  System.err.println("Couldn't instantiate: " + args[i+1]);
+	  log.info("Couldn't instantiate: " + args[i+1]);
           throw new RuntimeException(e);
 	}
 	i++;
@@ -649,7 +653,7 @@ public class TreeBinarizer implements TreeTransformer {
 	try {
 	  tlpp = (TreebankLangParserParams) Class.forName(args[i+1]).newInstance();
 	} catch (Exception e) {
-	  System.err.println("Couldn't instantiate: " + args[i+1]);
+	  log.info("Couldn't instantiate: " + args[i+1]);
           throw new RuntimeException(e);
 	}
 	i++;
@@ -663,12 +667,12 @@ public class TreeBinarizer implements TreeTransformer {
       } else if (args[i].equalsIgnoreCase("-noRebinarization")) {
         noRebinarization = true;
       } else {
-        System.err.println("Unknown option:" + args[i]);
+        log.info("Unknown option:" + args[i]);
       }
       i++;
     }
     if (i >= args.length) {
-      System.err.println("usage: java TreeBinarizer [-tlpp class|-markovOrder int|...] treebankPath");
+      log.info("usage: java TreeBinarizer [-tlpp class|-markovOrder int|...] treebankPath");
       System.exit(0);
     }
     Treebank treebank;

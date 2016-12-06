@@ -1,4 +1,6 @@
-package edu.stanford.nlp.dcoref;
+package edu.stanford.nlp.dcoref; 
+import edu.stanford.nlp.trees.*;
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +13,6 @@ import java.util.regex.Pattern;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.MultiTokenTag;
-import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.Label;
 import edu.stanford.nlp.parser.common.ParserAnnotations;
@@ -20,20 +21,16 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.AnnotationPipeline;
 import edu.stanford.nlp.pipeline.Annotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.trees.HeadFinder;
-import edu.stanford.nlp.trees.SemanticHeadFinder;
-import edu.stanford.nlp.trees.Tree;
-import edu.stanford.nlp.trees.Trees;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.trees.tregex.TregexMatcher;
 import edu.stanford.nlp.trees.tregex.TregexPattern;
-import edu.stanford.nlp.util.CoreMap;
-import edu.stanford.nlp.util.Generics;
-import edu.stanford.nlp.util.IntPair;
-import edu.stanford.nlp.util.StringUtils;
+import edu.stanford.nlp.util.*;
 
-public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
+public class RuleBasedCorefMentionFinder implements CorefMentionFinder  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(RuleBasedCorefMentionFinder.class);
 
   protected boolean assignIds = true;
 //  protected int maxID = -1;
@@ -54,12 +51,12 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
 
   /** When mention boundaries are given */
   public List<List<Mention>> filterPredictedMentions(List<List<Mention>> allGoldMentions, Annotation doc, Dictionaries dict){
-    List<List<Mention>> predictedMentions = new ArrayList<List<Mention>>();
+    List<List<Mention>> predictedMentions = new ArrayList<>();
 
     for(int i = 0 ; i < allGoldMentions.size(); i++){
       CoreMap s = doc.get(CoreAnnotations.SentencesAnnotation.class).get(i);
       List<Mention> goldMentions = allGoldMentions.get(i);
-      List<Mention> mentions = new ArrayList<Mention>();
+      List<Mention> mentions = new ArrayList<>();
       predictedMentions.add(mentions);
       mentions.addAll(goldMentions);
       findHead(s, mentions);
@@ -86,10 +83,10 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
   @Override
   public List<List<Mention>> extractPredictedMentions(Annotation doc, int maxID, Dictionaries dict) {
 //    this.maxID = _maxID;
-    List<List<Mention>> predictedMentions = new ArrayList<List<Mention>>();
+    List<List<Mention>> predictedMentions = new ArrayList<>();
     for (CoreMap s : doc.get(CoreAnnotations.SentencesAnnotation.class)) {
 
-      List<Mention> mentions = new ArrayList<Mention>();
+      List<Mention> mentions = new ArrayList<>();
       predictedMentions.add(mentions);
       Set<IntPair> mentionSpanSet = Generics.newHashSet();
       Set<IntPair> namedEntitySpanSet = Generics.newHashSet();
@@ -126,7 +123,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
 
   protected static void extractPremarkedEntityMentions(CoreMap s, List<Mention> mentions, Set<IntPair> mentionSpanSet, Set<IntPair> namedEntitySpanSet) {
     List<CoreLabel> sent = s.get(CoreAnnotations.TokensAnnotation.class);
-    SemanticGraph dependency = s.get(SemanticGraphCoreAnnotations.AlternativeDependenciesAnnotation.class);
+    SemanticGraph dependency = s.get(SemanticGraphCoreAnnotations.EnhancedDependenciesAnnotation.class);
     int beginIndex = -1;
     for(CoreLabel w : sent) {
       MultiTokenTag t = w.get(CoreAnnotations.MentionTokenAnnotation.class);
@@ -142,7 +139,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
           if (beginIndex >= 0) {
             IntPair mSpan = new IntPair(beginIndex, endIndex);
             int dummyMentionId = -1;
-            Mention m = new Mention(dummyMentionId, beginIndex, endIndex, dependency, new ArrayList<CoreLabel>(sent.subList(beginIndex, endIndex)));
+            Mention m = new Mention(dummyMentionId, beginIndex, endIndex, dependency, new ArrayList<>(sent.subList(beginIndex, endIndex)));
             mentions.add(m);
             mentionSpanSet.add(mSpan);
             beginIndex = -1;
@@ -158,7 +155,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
 
   protected static void extractNamedEntityMentions(CoreMap s, List<Mention> mentions, Set<IntPair> mentionSpanSet, Set<IntPair> namedEntitySpanSet) {
     List<CoreLabel> sent = s.get(CoreAnnotations.TokensAnnotation.class);
-    SemanticGraph dependency = s.get(SemanticGraphCoreAnnotations.AlternativeDependenciesAnnotation.class);
+    SemanticGraph dependency = s.get(SemanticGraphCoreAnnotations.EnhancedDependenciesAnnotation.class);
     String preNE = "O";
     int beginIndex = -1;
     for(CoreLabel w : sent) {
@@ -173,7 +170,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
           // attached to the previous NER by the earlier heuristic
           if(beginIndex < endIndex && !mentionSpanSet.contains(mSpan)) {
             int dummyMentionId = -1;
-            Mention m = new Mention(dummyMentionId, beginIndex, endIndex, dependency, new ArrayList<CoreLabel>(sent.subList(beginIndex, endIndex)));
+            Mention m = new Mention(dummyMentionId, beginIndex, endIndex, dependency, new ArrayList<>(sent.subList(beginIndex, endIndex)));
             mentions.add(m);
             mentionSpanSet.add(mSpan);
             namedEntitySpanSet.add(mSpan);
@@ -188,7 +185,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
       IntPair mSpan = new IntPair(beginIndex, sent.size());
       if(!mentionSpanSet.contains(mSpan)) {
         int dummyMentionId = -1;
-        Mention m = new Mention(dummyMentionId, beginIndex, sent.size(), dependency, new ArrayList<CoreLabel>(sent.subList(beginIndex, sent.size())));
+        Mention m = new Mention(dummyMentionId, beginIndex, sent.size(), dependency, new ArrayList<>(sent.subList(beginIndex, sent.size())));
         mentions.add(m);
         mentionSpanSet.add(mSpan);
         namedEntitySpanSet.add(mSpan);
@@ -202,7 +199,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
     List<CoreLabel> sent = s.get(CoreAnnotations.TokensAnnotation.class);
     Tree tree = s.get(TreeCoreAnnotations.TreeAnnotation.class);
     tree.indexLeaves();
-    SemanticGraph dependency = s.get(SemanticGraphCoreAnnotations.AlternativeDependenciesAnnotation.class);
+    SemanticGraph dependency = s.get(SemanticGraphCoreAnnotations.EnhancedDependenciesAnnotation.class);
 
     TregexPattern tgrepPattern = npOrPrpMentionPattern;
     TregexMatcher matcher = tgrepPattern.matcher(tree);
@@ -215,7 +212,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
       IntPair mSpan = new IntPair(beginIdx, endIdx);
       if(!mentionSpanSet.contains(mSpan) && !insideNE(mSpan, namedEntitySpanSet)) {
         int dummyMentionId = -1;
-        Mention m = new Mention(dummyMentionId, beginIdx, endIdx, dependency, new ArrayList<CoreLabel>(sent.subList(beginIdx, endIdx)), t);
+        Mention m = new Mention(dummyMentionId, beginIdx, endIdx, dependency, new ArrayList<>(sent.subList(beginIdx, endIdx)), t);
         mentions.add(m);
         mentionSpanSet.add(mSpan);
       }
@@ -227,7 +224,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
   protected static void extractEnumerations(CoreMap s, List<Mention> mentions, Set<IntPair> mentionSpanSet, Set<IntPair> namedEntitySpanSet) {
     List<CoreLabel> sent = s.get(CoreAnnotations.TokensAnnotation.class);
     Tree tree = s.get(TreeCoreAnnotations.TreeAnnotation.class);
-    SemanticGraph dependency = s.get(SemanticGraphCoreAnnotations.AlternativeDependenciesAnnotation.class);
+    SemanticGraph dependency = s.get(SemanticGraphCoreAnnotations.EnhancedDependenciesAnnotation.class);
 
     TregexPattern tgrepPattern = enumerationsMentionPattern;
     TregexMatcher matcher = tgrepPattern.matcher(tree);
@@ -252,7 +249,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
       if(!mentionSpanSet.contains(mSpan) && !insideNE(mSpan, namedEntitySpanSet)) {
         int dummyMentionId = -1;
         Mention m = new Mention(dummyMentionId, mSpan.get(0), mSpan.get(1), dependency,
-                                new ArrayList<CoreLabel>(sent.subList(mSpan.get(0), mSpan.get(1))), spanToMentionSubTree.get(mSpan));
+                new ArrayList<>(sent.subList(mSpan.get(0), mSpan.get(1))), spanToMentionSubTree.get(mSpan));
         mentions.add(m);
         mentionSpanSet.add(mSpan);
       }
@@ -310,7 +307,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
     // context, so as to make the parser work better :-)
     if (allowReparsing) {
       int approximateness = 0;
-      List<CoreLabel> extentTokens = new ArrayList<CoreLabel>();
+      List<CoreLabel> extentTokens = new ArrayList<>();
       extentTokens.add(initCoreLabel("It"));
       extentTokens.add(initCoreLabel("was"));
       final int ADDED_WORDS = 2;
@@ -396,7 +393,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
   }
 
   private static Tree funkyFindLeafWithApproximateSpan(Tree root, String token, int index, int approximateness) {
-    // System.err.println("Searching " + root + "\n  for " + token + " at position " + index + " (plus up to " + approximateness + ")");
+    // log.info("Searching " + root + "\n  for " + token + " at position " + index + " (plus up to " + approximateness + ")");
     List<Tree> leaves = root.getLeaves();
     for (Tree leaf : leaves) {
       CoreLabel label = CoreLabel.class.cast(leaf.label());
@@ -414,7 +411,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
                        "token = |" + token + "|" + index + "|, approx=" + approximateness);
     for (Tree leaf : leaves) {
       if (token.equals(leaf.value())) {
-        //System.err.println("Found something: returning " + leaf);
+        //log.info("Found something: returning " + leaf);
         return leaf;
       }
     }
@@ -440,7 +437,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
     sent.set(CoreAnnotations.TokensAnnotation.class, tokens);
     sent.set(ParserAnnotations.ConstraintAnnotation.class, constraints);
     Annotation doc = new Annotation("");
-    List<CoreMap> sents = new ArrayList<CoreMap>(1);
+    List<CoreMap> sents = new ArrayList<>(1);
     sents.add(sent);
     doc.set(CoreAnnotations.SentencesAnnotation.class, sents);
     getParser().annotate(doc);
@@ -455,7 +452,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
         // TODO: these assertions rule out the possibility of alternately named parse/pos annotators
         throw new AssertionError("Failed to get parser - this should not be possible");
       }
-      if (parser.requires().contains(Annotator.POS_REQUIREMENT)) {
+      if (parser.requires().contains(CoreAnnotations.PartOfSpeechAnnotation.class)) {
         Annotator tagger = StanfordCoreNLP.getExistingAnnotator("pos");
         if (tagger == null) {
           throw new AssertionError("Parser required tagger, but failed to find the pos annotator");
@@ -527,7 +524,7 @@ public class RuleBasedCorefMentionFinder implements CorefMentionFinder {
 
   private static Tree findTreeWithSpan(Tree tree, int start, int end) {
     CoreLabel l = (CoreLabel) tree.label();
-    if (l != null && l.has(CoreAnnotations.BeginIndexAnnotation.class) && l.has(CoreAnnotations.EndIndexAnnotation.class)) {
+    if (l != null && l.containsKey(CoreAnnotations.BeginIndexAnnotation.class) && l.containsKey(CoreAnnotations.EndIndexAnnotation.class)) {
       int myStart = l.get(CoreAnnotations.BeginIndexAnnotation.class);
       int myEnd = l.get(CoreAnnotations.EndIndexAnnotation.class);
       if (start == myStart && end == myEnd){

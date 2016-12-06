@@ -2,12 +2,9 @@ package edu.stanford.nlp.pipeline;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Properties;
+import java.util.*;
 
+import edu.stanford.nlp.ling.CoreAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.process.TokenizerFactory;
@@ -18,6 +15,8 @@ import edu.stanford.nlp.process.WhitespaceTokenizer;
 import edu.stanford.nlp.international.spanish.process.SpanishTokenizer;
 import edu.stanford.nlp.international.french.process.FrenchTokenizer;
 import edu.stanford.nlp.util.Generics;
+import edu.stanford.nlp.util.PropertiesUtils;
+import edu.stanford.nlp.util.logging.Redwood;
 
 
 /**
@@ -31,7 +30,10 @@ import edu.stanford.nlp.util.Generics;
  * @author Christopher Manning
  * @author Ishita Prasad
  */
-public class TokenizerAnnotator implements Annotator {
+public class TokenizerAnnotator implements Annotator  {
+
+  /** A logger for this class */
+  private static final Redwood.RedwoodChannels log = Redwood.channels(TokenizerAnnotator.class);
 
   /**
    * Enum to identify the different TokenizerTypes. To add a new
@@ -40,6 +42,8 @@ public class TokenizerAnnotator implements Annotator {
    */
   public enum TokenizerType {
     Unspecified(null, null, "invertible,ptb3Escaping=true"),
+    Arabic     ("ar", null, ""),
+    Chinese    ("zh", null, ""),
     Spanish    ("es", "SpanishTokenizer", "invertible,ptb3Escaping=true,splitAll=true"),
     English    ("en", "PTBTokenizer", "invertible,ptb3Escaping=true"),
     German     ("de", null, "invertible,ptb3Escaping=true"),
@@ -85,8 +89,11 @@ public class TokenizerAnnotator implements Annotator {
       return Collections.unmodifiableMap(map);
     }
 
-    /***
-     * Get TokenizerType based on what's in the properties
+    /**
+     * Get TokenizerType based on what's in the properties.
+     *
+     * @param props Properties to find tokenizer options in
+     * @return An element of the TokenizerType enum indicating the tokenizer to use
      */
     public static TokenizerType getTokenizerType(Properties props) {
       String tokClass = props.getProperty("tokenize.class", null);
@@ -117,15 +124,21 @@ public class TokenizerAnnotator implements Annotator {
     }
   } // end enum TokenizerType
 
+
   public static final String EOL_PROPERTY = "tokenize.keepeol";
 
   private final boolean VERBOSE;
   private final TokenizerFactory<CoreLabel> factory;
 
+  /** new segmenter properties **/
+  private final boolean useSegmenter;
+  private final Annotator segmenterAnnotator;
+
   // CONSTRUCTORS
 
+  /** Gives a non-verbose, English tokenizer. */
   public TokenizerAnnotator() {
-    this(true);
+    this(false);
   }
 
   public TokenizerAnnotator(boolean verbose) {
@@ -145,14 +158,7 @@ public class TokenizerAnnotator implements Annotator {
   }
 
   public TokenizerAnnotator(boolean verbose, String lang, String options) {
-    VERBOSE = verbose;
-    Properties props = new Properties();
-    if (lang != null) {
-      props.setProperty("tokenize.language", lang);
-    }
-
-    TokenizerType type = TokenizerType.getTokenizerType(props);
-    factory = initFactory(type, props, options);
+    this(verbose, lang == null ? null : PropertiesUtils.asProperties("tokenize.language", lang), options);
   }
 
   public TokenizerAnnotator(boolean verbose, Properties props) {
@@ -160,11 +166,29 @@ public class TokenizerAnnotator implements Annotator {
   }
 
   public TokenizerAnnotator(boolean verbose, Properties props, String options) {
-    VERBOSE = verbose;
     if (props == null) {
       props = new Properties();
     }
-
+    // check if segmenting must be done
+    if (props.getProperty("tokenize.language") != null &&
+            LanguageInfo.isSegmenterLanguage(props.getProperty("tokenize.language"))) {
+      useSegmenter = true;
+      if (LanguageInfo.getLanguageFromString(
+              props.getProperty("tokenize.language")) == LanguageInfo.HumanLanguage.ARABIC)
+        segmenterAnnotator = new ArabicSegmenterAnnotator("segment", props);
+      else if (LanguageInfo.getLanguageFromString(
+              props.getProperty("tokenize.language")) == LanguageInfo.HumanLanguage.CHINESE)
+        segmenterAnnotator = new ChineseSegmenterAnnotator("segment", props);
+      else {
+        segmenterAnnotator = null;
+        throw new RuntimeException("No segmenter implemented for: "+
+                LanguageInfo.getLanguageFromString(props.getProperty("tokenize.language")));
+      }
+    } else {
+      useSegmenter = false;
+      segmenterAnnotator = null;
+    }
+    VERBOSE = PropertiesUtils.getBool(props, "tokenize.verbose", verbose);
     TokenizerType type = TokenizerType.getTokenizerType(props);
     factory = initFactory(type, props, options);
   }
@@ -200,6 +224,12 @@ public class TokenizerAnnotator implements Annotator {
     }
 
     switch(type) {
+
+    case Arabic:
+    case Chinese:
+      factory = null;
+      break;
+
     case Spanish:
       factory = SpanishTokenizer.factory(new CoreLabelTokenFactory(), options);
       break;
@@ -220,7 +250,7 @@ public class TokenizerAnnotator implements Annotator {
       break;
 
     case Unspecified:
-      System.err.println("TokenizerAnnotator: No tokenizer type provided. Defaulting to PTBTokenizer.");
+      log.info("No tokenizer type provided. Defaulting to PTBTokenizer.");
       factory = PTBTokenizer.factory(new CoreLabelTokenFactory(), options);
       break;
 
@@ -228,7 +258,6 @@ public class TokenizerAnnotator implements Annotator {
       throw new IllegalArgumentException("No valid tokenizer type provided.\n" +
                                          "Use -tokenize.language, -tokenize.class, or -tokenize.whitespace \n" +
                                          "to specify a tokenizer.");
-
     }
     return factory;
   }
@@ -247,10 +276,16 @@ public class TokenizerAnnotator implements Annotator {
   @Override
   public void annotate(Annotation annotation) {
     if (VERBOSE) {
-      System.err.print("Tokenizing ... ");
+      log.info("Tokenizing ... ");
     }
 
-    if (annotation.has(CoreAnnotations.TextAnnotation.class)) {
+    // for Arabic and Chinese use a segmenter instead
+    if (useSegmenter) {
+      segmenterAnnotator.annotate(annotation);
+      return;
+    }
+
+    if (annotation.containsKey(CoreAnnotations.TextAnnotation.class)) {
       String text = annotation.get(CoreAnnotations.TextAnnotation.class);
       Reader r = new StringReader(text);
       // don't wrap in BufferedReader.  It gives you nothing for in-memory String unless you need the readLine() method!
@@ -263,8 +298,8 @@ public class TokenizerAnnotator implements Annotator {
 
       annotation.set(CoreAnnotations.TokensAnnotation.class, tokens);
       if (VERBOSE) {
-        System.err.println("done.");
-        System.err.println("Tokens: " + annotation.get(CoreAnnotations.TokensAnnotation.class));
+        log.info("done.");
+        log.info("Tokens: " + annotation.get(CoreAnnotations.TokensAnnotation.class));
       }
     } else {
       throw new RuntimeException("Tokenizer unable to find text in annotation: " + annotation);
@@ -272,12 +307,26 @@ public class TokenizerAnnotator implements Annotator {
   }
 
   @Override
-  public Set<Requirement> requires() {
+  public Set<Class<? extends CoreAnnotation>> requires() {
     return Collections.emptySet();
   }
 
   @Override
-  public Set<Requirement> requirementsSatisfied() {
-    return Collections.singleton(TOKENIZE_REQUIREMENT);
+  public Set<Class<? extends CoreAnnotation>> requirementsSatisfied() {
+    return new HashSet<>(Arrays.asList(
+        CoreAnnotations.TextAnnotation.class,
+        CoreAnnotations.TokensAnnotation.class,
+        CoreAnnotations.CharacterOffsetBeginAnnotation.class,
+        CoreAnnotations.CharacterOffsetEndAnnotation.class,
+        CoreAnnotations.BeforeAnnotation.class,
+        CoreAnnotations.AfterAnnotation.class,
+        CoreAnnotations.TokenBeginAnnotation.class,
+        CoreAnnotations.TokenEndAnnotation.class,
+        CoreAnnotations.PositionAnnotation.class,
+        CoreAnnotations.IndexAnnotation.class,
+        CoreAnnotations.OriginalTextAnnotation.class,
+        CoreAnnotations.ValueAnnotation.class
+    ));
   }
+
 }

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.parser.metrics;
+package edu.stanford.nlp.parser.metrics; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.*;
 import java.io.PrintWriter;
@@ -16,7 +17,10 @@ import edu.stanford.nlp.util.Generics;
  *
  * @author Dan Klein
  */
-public abstract class AbstractEval implements Eval {
+public abstract class AbstractEval implements Eval  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(AbstractEval.class);
 
   private static final boolean DEBUG = false;
 
@@ -99,14 +103,14 @@ public abstract class AbstractEval implements Eval {
       }
       if (DEBUG) {
         if (s2.contains(o1)) {
-          System.err.println("Eval Found: "+o1);
+          log.info("Eval Found: "+o1);
         } else {
-          System.err.println("Eval Failed to find: "+o1);
+          log.info("Eval Failed to find: "+o1);
         }
       }
       n += 1.0;
     }
-    if (DEBUG) System.err.println("Matched " + p + " of " + n);
+    if (DEBUG) log.info("Matched " + p + " of " + n);
     return (n > 0.0 ? p / n : 0.0);
   }
 
@@ -126,9 +130,9 @@ public abstract class AbstractEval implements Eval {
 
   public void evaluate(Tree guess, Tree gold, PrintWriter pw, double weight) {
     if (DEBUG) {
-      System.err.println("Evaluating gold tree:");
+      log.info("Evaluating gold tree:");
       gold.pennPrint(System.err);
-      System.err.println("and guess tree");
+      log.info("and guess tree");
       guess.pennPrint(System.err);
     }
     Set<?> dep1 = makeObjects(guess);
@@ -228,8 +232,8 @@ public abstract class AbstractEval implements Eval {
 
     //private boolean verbose = false;
 
-    private ClassicCounter<String> over = new ClassicCounter<String>();
-    private ClassicCounter<String> under = new ClassicCounter<String>();
+    private ClassicCounter<String> over = new ClassicCounter<>();
+    private ClassicCounter<String> under = new ClassicCounter<>();
 
     protected static String localize(Tree tree) {
       if (tree.isLeaf()) {
@@ -271,7 +275,7 @@ public abstract class AbstractEval implements Eval {
     }
 
     private static <T> void display(ClassicCounter<T> c, int num, PrintWriter pw) {
-      List<T> rules = new ArrayList<T>(c.keySet());
+      List<T> rules = new ArrayList<>(c.keySet());
       Collections.sort(rules, Counters.toComparatorDescending(c));
       int rSize = rules.size();
       if (num > rSize) {
@@ -302,8 +306,8 @@ public abstract class AbstractEval implements Eval {
    */
   public static class CatErrorEval extends AbstractEval {
 
-    private ClassicCounter<String> over = new ClassicCounter<String>();
-    private ClassicCounter<String> under = new ClassicCounter<String>();
+    private ClassicCounter<String> over = new ClassicCounter<>();
+    private ClassicCounter<String> under = new ClassicCounter<>();
 
     /** Unused. Fake satisfying the abstract class. */
     @Override
@@ -312,7 +316,7 @@ public abstract class AbstractEval implements Eval {
     }
 
     private static List<String> myMakeObjects(Tree tree) {
-      List<String> cats = new LinkedList<String>();
+      List<String> cats = new LinkedList<>();
       for (Tree st : tree.subTreeList()) {
         cats.add(st.value());
       }
@@ -323,7 +327,7 @@ public abstract class AbstractEval implements Eval {
     public void evaluate(Tree t1, Tree t2, PrintWriter pw) {
       List<String> s1 = myMakeObjects(t1);
       List<String> s2 = myMakeObjects(t2);
-      List<String> del2 = new LinkedList<String>(s2);
+      List<String> del2 = new LinkedList<>(s2);
       // we delete out as we find them so we can score correctly a cat with
       // a certain cardinality in a tree.
       for (String o1 : s1) {
@@ -339,7 +343,7 @@ public abstract class AbstractEval implements Eval {
     }
 
     private static <T> void display(ClassicCounter<T> c, PrintWriter pw) {
-      List<T> cats = new ArrayList<T>(c.keySet());
+      List<T> cats = new ArrayList<>(c.keySet());
       Collections.sort(cats, Counters.toComparatorDescending(c));
       for (T ob : cats) {
         pw.println(ob + " " + c.getCount(ob));

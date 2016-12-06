@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ie.crf;
+package edu.stanford.nlp.ie.crf; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.math.ArrayMath;
 import edu.stanford.nlp.optimization.AbstractCachingDiffFunction;
@@ -12,7 +13,10 @@ import java.util.*;
  * @author Mengqiu Wang
  */
 
-public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends AbstractCachingDiffFunction implements HasCliquePotentialFunction {
+public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends AbstractCachingDiffFunction implements HasCliquePotentialFunction  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(CRFNonLinearSecondOrderLogConditionalObjectiveFunction.class);
 
   public static final int NO_PRIOR = 0;
   public static final int QUADRATIC_PRIOR = 1;
@@ -110,7 +114,7 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
     this.useSigmoid = flags.useSigmoid;
     this.docWindowLabels = new int[data.length][];
     if (!useOutputLayer) {
-      System.err.println("Output layer not activated, inputLayerSize must be equal to numClasses, setting it to " + numClasses);
+      log.info("Output layer not activated, inputLayerSize must be equal to numClasses, setting it to " + numClasses);
       this.inputLayerSize = numClasses;
       this.inputLayerSize4Edge = numClasses * numClasses;
     } else if (flags.softmaxOutputLayer && !(flags.sparseOutputLayer || flags.tieOutputLayer)) {
@@ -123,8 +127,8 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
   public int domainDimension() {
     if (domainDimension < 0) {
       originalFeatureCount = 0;
-      for (int i = 0; i < map.length; i++) {
-        int s = labelIndices.get(map[i]).size();
+      for (int aMap : map) {
+        int s = labelIndices.get(aMap).size();
         originalFeatureCount += s;
       }
       domainDimension = 0;
@@ -143,9 +147,9 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
           domainDimension += outputLayerSize * inputLayerSize;
         }
       }
-      System.err.println("originalFeatureCount: "+originalFeatureCount);
-      System.err.println("beforeOutputWeights: "+beforeOutputWeights);
-      System.err.println("domainDimension: "+domainDimension);
+      log.info("originalFeatureCount: "+originalFeatureCount);
+      log.info("beforeOutputWeights: "+beforeOutputWeights);
+      log.info("domainDimension: "+domainDimension);
     }
     return domainDimension;
   }
@@ -339,7 +343,7 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
       }
     }
     assert(index == x.length);
-    return new Quadruple<double[][], double[][], double[][], double[][]>(inputLayerWeights4Edge, outputLayerWeights4Edge, inputLayerWeights, outputLayerWeights);
+    return new Quadruple<>(inputLayerWeights4Edge, outputLayerWeights4Edge, inputLayerWeights, outputLayerWeights);
   }
 
   public CliquePotentialFunction getCliquePotentialFunction(double[] x) {
@@ -422,7 +426,7 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
         int label = docLabels[i];
         double p = cliqueTree.condLogProbGivenPrevious(i, label, given);
         if (VERBOSE) {
-          System.err.println("P(" + label + "|" + ArrayMath.toString(given) + ")=" + p);
+          log.info("P(" + label + "|" + ArrayMath.toString(given) + ")=" + p);
         }
         prob += p;
         System.arraycopy(given, 1, given, 0, given.length - 1);
@@ -583,8 +587,8 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
                   } else {
                     WhatK = What4Edge[k];
                   }
-                  for (int n = 0; n < cliqueFeatures.length; n++) {
-                    WhatK[cliqueFeatures[n]] += deltaK;
+                  for (int cliqueFeature : cliqueFeatures) {
+                    WhatK[cliqueFeature] += deltaK;
                   }
                 }
               } else {
@@ -594,8 +598,8 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
                 } else {
                   WhatK = What4Edge[k];
                 }
-                for (int n = 0; n < cliqueFeatures.length; n++) {
-                  WhatK[cliqueFeatures[n]] += deltaK;
+                for (int cliqueFeature : cliqueFeatures) {
+                  WhatK[cliqueFeature] += deltaK;
                 }
               }
             } else {
@@ -606,8 +610,8 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
                 } else {
                   WhatK = What4Edge[k];
                 }
-                for (int n = 0; n < cliqueFeatures.length; n++) {
-                  WhatK[cliqueFeatures[n]] += deltaK;
+                for (int cliqueFeature : cliqueFeatures) {
+                  WhatK[cliqueFeature] += deltaK;
                 }
               }
             }
@@ -679,8 +683,8 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
                     } else {
                       eWq = eW4Edge[q];
                     }
-                    for (int n = 0; n < cliqueFeatures.length; n++) {
-                      eWq[cliqueFeatures[n]] += deltaQ * p;
+                    for (int cliqueFeature : cliqueFeatures) {
+                      eWq[cliqueFeature] += deltaQ * p;
                     }
                   }
                 } else {
@@ -690,8 +694,8 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
                   } else {
                     eWq = eW4Edge[q];
                   }
-                  for (int n = 0; n < cliqueFeatures.length; n++) {
-                    eWq[cliqueFeatures[n]] += deltaQ * p;
+                  for (int cliqueFeature : cliqueFeatures) {
+                    eWq[cliqueFeature] += deltaQ * p;
                   }
                 }
               }
@@ -705,8 +709,8 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
               } else {
                 eWK = eW4Edge[k];
               }
-              for (int n = 0; n < cliqueFeatures.length; n++) {
-                eWK[cliqueFeatures[n]] += deltaK * p;
+              for (int cliqueFeature : cliqueFeatures) {
+                eWK[cliqueFeature] += deltaK * p;
               }
             }
           }
@@ -720,7 +724,7 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
 
     value = -prob;
     if(VERBOSE){
-      System.err.println("value is " + value);
+      log.info("value is " + value);
     }
 
     // compute the partial derivative for each feature by comparing expected counts to empirical counts
@@ -729,7 +733,7 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
       for (int j = 0; j < eW4Edge[i].length; j++) {
         derivative[index++] = (eW4Edge[i][j] - What4Edge[i][j]);
         if (VERBOSE) {
-          System.err.println("inputLayerWeights4Edge deriv(" + i + "," + j + ") = " + eW4Edge[i][j] + " - " + What4Edge[i][j] + " = " + derivative[index - 1]);
+          log.info("inputLayerWeights4Edge deriv(" + i + "," + j + ") = " + eW4Edge[i][j] + " - " + What4Edge[i][j] + " = " + derivative[index - 1]);
         }
       }
     }
@@ -738,7 +742,7 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
       for (int j = 0; j < eW[i].length; j++) {
         derivative[index++] = (eW[i][j] - What[i][j]);
         if (VERBOSE) {
-          System.err.println("inputLayerWeights deriv(" + i + "," + j + ") = " + eW[i][j] + " - " + What[i][j] + " = " + derivative[index - 1]);
+          log.info("inputLayerWeights deriv(" + i + "," + j + ") = " + eW[i][j] + " - " + What[i][j] + " = " + derivative[index - 1]);
         }
       }
     }
@@ -751,7 +755,7 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
         for (int j = 0; j < eU4Edge[i].length; j++) {
           derivative[index++] = (eU4Edge[i][j] - Uhat4Edge[i][j]);
           if (VERBOSE) {
-            System.err.println("outputLayerWeights4Edge deriv(" + i + "," + j + ") = " + eU4Edge[i][j] + " - " + Uhat4Edge[i][j] + " = " + derivative[index - 1]);
+            log.info("outputLayerWeights4Edge deriv(" + i + "," + j + ") = " + eU4Edge[i][j] + " - " + Uhat4Edge[i][j] + " = " + derivative[index - 1]);
           }
         }
       }
@@ -759,7 +763,7 @@ public class CRFNonLinearSecondOrderLogConditionalObjectiveFunction extends Abst
         for (int j = 0; j < eU[i].length; j++) {
           derivative[index++] = (eU[i][j] - Uhat[i][j]);
           if (VERBOSE) {
-            System.err.println("outputLayerWeights deriv(" + i + "," + j + ") = " + eU[i][j] + " - " + Uhat[i][j] + " = " + derivative[index - 1]);
+            log.info("outputLayerWeights deriv(" + i + "," + j + ") = " + eU[i][j] + " - " + Uhat[i][j] + " = " + derivative[index - 1]);
           }
         }
       }

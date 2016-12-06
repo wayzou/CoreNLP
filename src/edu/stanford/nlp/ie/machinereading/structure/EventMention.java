@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ie.machinereading.structure;
+package edu.stanford.nlp.ie.machinereading.structure; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,10 @@ import edu.stanford.nlp.util.IdentityHashSet;
  * @author Mihai
  * 
  */
-public class EventMention extends RelationMention {
+public class EventMention extends RelationMention  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(EventMention.class);
 
   private static final long serialVersionUID = 1L;
 
@@ -39,7 +43,7 @@ public class EventMention extends RelationMention {
       List<String> argNames) {
     super(objectId, sentence, span, type, subtype, args, argNames);
     this.anchor = anchor;
-    this.parents = new IdentityHashSet<ExtractionObject>();
+    this.parents = new IdentityHashSet<>();
     
     // set ourselves as the parent of any EventMentions in our args 
     for (ExtractionObject arg : args) {
@@ -50,8 +54,8 @@ public class EventMention extends RelationMention {
   }
   
   public void resetArguments() {
-    args = new ArrayList<ExtractionObject>();
-    argNames = new ArrayList<String>();
+    args = new ArrayList<>();
+    argNames = new ArrayList<>();
   }
   
   public void removeFromParents() {
@@ -93,21 +97,21 @@ public class EventMention extends RelationMention {
   public ExtractionObject getSingleParent(CoreMap sentence) {
     if(getParents().size() > 1){
       Set<ExtractionObject> parents = getParents();
-      System.err.println("This event has multiple parents: " + this);
+      log.info("This event has multiple parents: " + this);
       int count = 1;
       for(ExtractionObject po: parents){
-        System.err.println("PARENT #" + count + ": " + po);
+        log.info("PARENT #" + count + ": " + po);
         count ++;
       }
-      System.err.println("DOC " + sentence.get(CoreAnnotations.DocIDAnnotation.class));
-      System.err.print("SENTENCE:");
+      log.info("DOC " + sentence.get(CoreAnnotations.DocIDAnnotation.class));
+      log.info("SENTENCE:");
       for(CoreLabel t: sentence.get(CoreAnnotations.TokensAnnotation.class)){
-        System.err.print(" " + t.word());
+        log.info(" " + t.word());
       }
-      System.err.println("EVENTS IN SENTENCE:");
+      log.info("EVENTS IN SENTENCE:");
       count = 1;
       for(EventMention e: sentence.get(MachineReadingAnnotations.EventMentionsAnnotation.class)){
-        System.err.println("EVENT #" + count + ": " + e);
+        log.info("EVENT #" + count + ": " + e);
         count ++;
       }
     }

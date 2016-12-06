@@ -18,7 +18,7 @@ public class MultiPatternMatcher<T> {
   public MultiPatternMatcher(SequencePatternTrigger<T> patternTrigger,
                              Collection<? extends SequencePattern<T>> patterns)
   {
-    this.patterns = new ArrayList<SequencePattern<T>>();
+    this.patterns = new ArrayList<>();
     this.patterns.addAll(patterns);
     this.patternTrigger = patternTrigger;
   }
@@ -37,7 +37,7 @@ public class MultiPatternMatcher<T> {
 
   public MultiPatternMatcher(SequencePattern<T>... patterns)
   {
-    this.patterns = new ArrayList<SequencePattern<T>>(patterns.length);
+    this.patterns = new ArrayList<>(patterns.length);
     for (SequencePattern<T> p:patterns) {
       this.patterns.add(p);
     }
@@ -71,9 +71,12 @@ public class MultiPatternMatcher<T> {
                                                          Comparator<? super SequenceMatchResult> cmp)
   {
     Collection<SequencePattern<T>> triggered = getTriggeredPatterns(elements);
-    List<SequenceMatchResult<T>> all = new ArrayList<SequenceMatchResult<T>>();
+    List<SequenceMatchResult<T>> all = new ArrayList<>();
     int i = 0;
     for (SequencePattern<T> p:triggered) {
+      if (Thread.interrupted()) {  // Allow interrupting
+        throw new RuntimeInterruptedException();
+      }
       SequenceMatcher<T> m = p.getMatcher(elements);
       m.setMatchWithResult(matchWithResult);
       m.setOrder(i);
@@ -99,9 +102,12 @@ public class MultiPatternMatcher<T> {
   public List<SequenceMatchResult<T>> find(List<? extends T> elements, SequenceMatcher.FindType findType)
   {
     Collection<SequencePattern<T>> triggered = getTriggeredPatterns(elements);
-    List<SequenceMatchResult<T>> all = new ArrayList<SequenceMatchResult<T>>();
+    List<SequenceMatchResult<T>> all = new ArrayList<>();
     int i = 0;
     for (SequencePattern<T> p:triggered) {
+      if (Thread.interrupted()) {  // Allow interrupting
+        throw new RuntimeInterruptedException();
+      }
       SequenceMatcher<T> m = p.getMatcher(elements);
       m.setMatchWithResult(matchWithResult);
       m.setFindType(findType);
@@ -143,7 +149,7 @@ public class MultiPatternMatcher<T> {
                                                                  Function<? super SequenceMatchResult, Double> scorer)
   {
     Collection<SequencePattern<T>> triggered = getTriggeredPatterns(elements);
-    List<SequenceMatchResult<T>> all = new ArrayList<SequenceMatchResult<T>>();
+    List<SequenceMatchResult<T>> all = new ArrayList<>();
     int i = 0;
     for (SequencePattern<T> p:triggered) {
       SequenceMatcher<T> m = p.getMatcher(elements);
@@ -170,7 +176,7 @@ public class MultiPatternMatcher<T> {
   public Iterable<SequenceMatchResult<T>> findAllNonOverlappingMatchesPerPattern(List<? extends T> elements)
   {
     Collection<SequencePattern<T>> triggered = getTriggeredPatterns(elements);
-    List<Iterable<SequenceMatchResult<T>>> allMatches = new ArrayList<Iterable<SequenceMatchResult<T>>>(elements.size());
+    List<Iterable<SequenceMatchResult<T>>> allMatches = new ArrayList<>(elements.size());
     for (SequencePattern<T> p:triggered) {
       SequenceMatcher<T> m = p.getMatcher(elements);
       m.setMatchWithResult(matchWithResult);
@@ -235,8 +241,11 @@ public class MultiPatternMatcher<T> {
     @Override
     public Collection<SequencePattern<T>> apply(List<? extends T> elements) {
       // Use LinkedHashSet to preserve original ordering of patterns.
-      Set<SequencePattern<T>> triggeredPatterns = new LinkedHashSet<SequencePattern<T>>();
+      Set<SequencePattern<T>> triggeredPatterns = new LinkedHashSet<>();
       for (T node:elements) {
+        if (Thread.interrupted()) {  // Allow interrupting
+          throw new RuntimeInterruptedException();
+        }
         Collection<SequencePattern<T>> triggered = trigger.apply(node);
         triggeredPatterns.addAll(triggered);
       }

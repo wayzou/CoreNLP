@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ie.machinereading;
+package edu.stanford.nlp.ie.machinereading; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +35,10 @@ import edu.stanford.nlp.util.CoreMap;
  * @author Mihai
  *
  */
-public class GenericDataSetReader {
+public class GenericDataSetReader  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(GenericDataSetReader.class);
   protected Logger logger;
 
   /** Finds the syntactic head of a syntactic constituent */
@@ -158,7 +162,7 @@ public class GenericDataSetReader {
         for (EntityMention en : entities) {
           //System.out.println("old ner tag for " + en.getExtentString() + " was " + en.getType());
           Span s = en.getExtent();
-          Counter<String> allNertagforSpan = new ClassicCounter<String>();
+          Counter<String> allNertagforSpan = new ClassicCounter<>();
           for (int i = s.start(); i < s.end(); i++) {
             allNertagforSpan.incrementCount(tokens.get(i).ner());
           }
@@ -369,7 +373,7 @@ public class GenericDataSetReader {
     // context, so as to make the parser work better :-)
 
     int approximateness = 0;
-    List<CoreLabel> extentTokens = new ArrayList<CoreLabel>();
+    List<CoreLabel> extentTokens = new ArrayList<>();
     extentTokens.add(initCoreLabel("It"));
     extentTokens.add(initCoreLabel("was"));
     final int ADDED_WORDS = 2;
@@ -419,7 +423,7 @@ public class GenericDataSetReader {
       CoreLabel kidLabel = (CoreLabel) kid.label();
       int kidStart = kidLabel.get(CoreAnnotations.BeginIndexAnnotation.class);
       int kidEnd = kidLabel.get(CoreAnnotations.EndIndexAnnotation.class);
-      // System.err.println("findPartialSpan: Examining " + kidLabel.value() + " from " + kidStart + " to " + kidEnd);
+      // log.info("findPartialSpan: Examining " + kidLabel.value() + " from " + kidStart + " to " + kidEnd);
       if (kidStart <= start && kidEnd > start) {
         return findPartialSpan(kid, start);
       }
@@ -433,7 +437,7 @@ public class GenericDataSetReader {
     for (Tree leaf : leaves) {
       CoreLabel label = CoreLabel.class.cast(leaf.label());
       int ind = label.get(CoreAnnotations.BeginIndexAnnotation.class);
-      // System.err.println("Token #" + ind + ": " + leaf.value());
+      // log.info("Token #" + ind + ": " + leaf.value());
       if (token.equals(leaf.value()) && ind >= index && ind <= index + approximateness) {
         return leaf;
       }
@@ -473,7 +477,7 @@ public class GenericDataSetReader {
     // no exact match found
     // in this case, we parse the actual extent of the mention
     //
-    List<CoreLabel> extentTokens = new ArrayList<CoreLabel>();
+    List<CoreLabel> extentTokens = new ArrayList<>();
     for (int i = ent.getExtentTokenStart(); i < ent.getExtentTokenEnd(); i++)
       extentTokens.add(tokens.get(i));
 
@@ -503,7 +507,7 @@ public class GenericDataSetReader {
   }
 
   protected Tree parseStrings(List<String> tokens) {
-    List<CoreLabel> labels = new ArrayList<CoreLabel>();
+    List<CoreLabel> labels = new ArrayList<>();
     for (String t : tokens) {
       CoreLabel l = initCoreLabel(t);
       labels.add(l);
@@ -521,7 +525,7 @@ public class GenericDataSetReader {
     sent.set(CoreAnnotations.TokensAnnotation.class, tokens);
     sent.set(ParserAnnotations.ConstraintAnnotation.class, constraints);
     Annotation doc = new Annotation("");
-    List<CoreMap> sents = new ArrayList<CoreMap>();
+    List<CoreMap> sents = new ArrayList<>();
     sents.add(sent);
     doc.set(CoreAnnotations.SentencesAnnotation.class, sents);
     getParser().annotate(doc);
@@ -540,7 +544,7 @@ public class GenericDataSetReader {
    */
   private static Tree findTreeWithSpan(Tree tree, int start, int end) {
     CoreLabel l = (CoreLabel) tree.label();
-    if (l != null && l.has(CoreAnnotations.BeginIndexAnnotation.class) && l.has(CoreAnnotations.EndIndexAnnotation.class)) {
+    if (l != null && l.containsKey(CoreAnnotations.BeginIndexAnnotation.class) && l.containsKey(CoreAnnotations.EndIndexAnnotation.class)) {
       int myStart = l.get(CoreAnnotations.BeginIndexAnnotation.class);
       int myEnd = l.get(CoreAnnotations.EndIndexAnnotation.class);
       if (start == myStart && end == myEnd){

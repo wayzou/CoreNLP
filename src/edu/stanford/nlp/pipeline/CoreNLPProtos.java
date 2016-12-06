@@ -57,6 +57,10 @@ public final class CoreNLPProtos {
      * <code>UniversalEnglish = 9;</code>
      */
     UniversalEnglish(9, 9),
+    /**
+     * <code>UniversalChinese = 10;</code>
+     */
+    UniversalChinese(10, 10),
     ;
 
     /**
@@ -99,6 +103,10 @@ public final class CoreNLPProtos {
      * <code>UniversalEnglish = 9;</code>
      */
     public static final int UniversalEnglish_VALUE = 9;
+    /**
+     * <code>UniversalChinese = 10;</code>
+     */
+    public static final int UniversalChinese_VALUE = 10;
 
 
     public final int getNumber() { return value; }
@@ -115,6 +123,7 @@ public final class CoreNLPProtos {
         case 7: return Hebrew;
         case 8: return Spanish;
         case 9: return UniversalEnglish;
+        case 10: return UniversalChinese;
         default: return null;
       }
     }
@@ -492,6 +501,29 @@ public final class CoreNLPProtos {
         getDocIDBytes();
 
     /**
+     * <code>optional string docDate = 7;</code>
+     */
+    boolean hasDocDate();
+    /**
+     * <code>optional string docDate = 7;</code>
+     */
+    java.lang.String getDocDate();
+    /**
+     * <code>optional string docDate = 7;</code>
+     */
+    com.google.protobuf.ByteString
+        getDocDateBytes();
+
+    /**
+     * <code>optional uint64 calendar = 8;</code>
+     */
+    boolean hasCalendar();
+    /**
+     * <code>optional uint64 calendar = 8;</code>
+     */
+    long getCalendar();
+
+    /**
      * <code>repeated .edu.stanford.nlp.pipeline.Token sentencelessToken = 5;</code>
      *
      * <pre>
@@ -567,6 +599,55 @@ public final class CoreNLPProtos {
      * <code>repeated .edu.stanford.nlp.pipeline.Quote quote = 6;</code>
      */
     edu.stanford.nlp.pipeline.CoreNLPProtos.QuoteOrBuilder getQuoteOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention> 
+        getMentionsList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention getMentions(int index);
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    int getMentionsCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder> 
+        getMentionsOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder getMentionsOrBuilder(
         int index);
   }
   /**
@@ -655,19 +736,38 @@ public final class CoreNLPProtos {
               break;
             }
             case 42: {
-              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
                 sentencelessToken_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Token>();
-                mutable_bitField0_ |= 0x00000010;
+                mutable_bitField0_ |= 0x00000040;
               }
               sentencelessToken_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Token.PARSER, extensionRegistry));
               break;
             }
             case 50: {
-              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
                 quote_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Quote>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000080;
               }
               quote_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Quote.PARSER, extensionRegistry));
+              break;
+            }
+            case 58: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              docDate_ = bs;
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000008;
+              calendar_ = input.readUInt64();
+              break;
+            }
+            case 74: {
+              if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+                mentions_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention>();
+                mutable_bitField0_ |= 0x00000100;
+              }
+              mentions_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.PARSER, extensionRegistry));
               break;
             }
           }
@@ -684,11 +784,14 @@ public final class CoreNLPProtos {
         if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
           corefChain_ = java.util.Collections.unmodifiableList(corefChain_);
         }
-        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
           sentencelessToken_ = java.util.Collections.unmodifiableList(sentencelessToken_);
         }
-        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
           quote_ = java.util.Collections.unmodifiableList(quote_);
+        }
+        if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+          mentions_ = java.util.Collections.unmodifiableList(mentions_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -876,6 +979,63 @@ public final class CoreNLPProtos {
       }
     }
 
+    public static final int DOCDATE_FIELD_NUMBER = 7;
+    private java.lang.Object docDate_;
+    /**
+     * <code>optional string docDate = 7;</code>
+     */
+    public boolean hasDocDate() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string docDate = 7;</code>
+     */
+    public java.lang.String getDocDate() {
+      java.lang.Object ref = docDate_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          docDate_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string docDate = 7;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDocDateBytes() {
+      java.lang.Object ref = docDate_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        docDate_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CALENDAR_FIELD_NUMBER = 8;
+    private long calendar_;
+    /**
+     * <code>optional uint64 calendar = 8;</code>
+     */
+    public boolean hasCalendar() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint64 calendar = 8;</code>
+     */
+    public long getCalendar() {
+      return calendar_;
+    }
+
     public static final int SENTENCELESSTOKEN_FIELD_NUMBER = 5;
     private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Token> sentencelessToken_;
     /**
@@ -976,13 +1136,76 @@ public final class CoreNLPProtos {
       return quote_.get(index);
     }
 
+    public static final int MENTIONS_FIELD_NUMBER = 9;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention> mentions_;
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention> getMentionsList() {
+      return mentions_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder> 
+        getMentionsOrBuilderList() {
+      return mentions_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    public int getMentionsCount() {
+      return mentions_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention getMentions(int index) {
+      return mentions_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+     *
+     * <pre>
+     **
+     * This field is for entity mentions across the document.
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder getMentionsOrBuilder(
+        int index) {
+      return mentions_.get(index);
+    }
+
     private void initFields() {
       text_ = "";
       sentence_ = java.util.Collections.emptyList();
       corefChain_ = java.util.Collections.emptyList();
       docID_ = "";
+      docDate_ = "";
+      calendar_ = 0L;
       sentencelessToken_ = java.util.Collections.emptyList();
       quote_ = java.util.Collections.emptyList();
+      mentions_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1008,6 +1231,12 @@ public final class CoreNLPProtos {
       }
       for (int i = 0; i < getSentencelessTokenCount(); i++) {
         if (!getSentencelessToken(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getMentionsCount(); i++) {
+        if (!getMentions(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -1044,6 +1273,15 @@ public final class CoreNLPProtos {
       for (int i = 0; i < quote_.size(); i++) {
         output.writeMessage(6, quote_.get(i));
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(7, getDocDateBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt64(8, calendar_);
+      }
+      for (int i = 0; i < mentions_.size(); i++) {
+        output.writeMessage(9, mentions_.get(i));
+      }
       extensionWriter.writeUntil(256, output);
       getUnknownFields().writeTo(output);
     }
@@ -1077,6 +1315,18 @@ public final class CoreNLPProtos {
       for (int i = 0; i < quote_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, quote_.get(i));
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(7, getDocDateBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(8, calendar_);
+      }
+      for (int i = 0; i < mentions_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, mentions_.get(i));
       }
       size += extensionsSerializedSize();
       size += getUnknownFields().getSerializedSize();
@@ -1197,6 +1447,7 @@ public final class CoreNLPProtos {
           getCorefChainFieldBuilder();
           getSentencelessTokenFieldBuilder();
           getQuoteFieldBuilder();
+          getMentionsFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1221,17 +1472,27 @@ public final class CoreNLPProtos {
         }
         docID_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
+        docDate_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        calendar_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
         if (sentencelessTokenBuilder_ == null) {
           sentencelessToken_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000040);
         } else {
           sentencelessTokenBuilder_.clear();
         }
         if (quoteBuilder_ == null) {
           quote_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000080);
         } else {
           quoteBuilder_.clear();
+        }
+        if (mentionsBuilder_ == null) {
+          mentions_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000100);
+        } else {
+          mentionsBuilder_.clear();
         }
         return this;
       }
@@ -1287,23 +1548,40 @@ public final class CoreNLPProtos {
           to_bitField0_ |= 0x00000002;
         }
         result.docID_ = docID_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.docDate_ = docDate_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.calendar_ = calendar_;
         if (sentencelessTokenBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          if (((bitField0_ & 0x00000040) == 0x00000040)) {
             sentencelessToken_ = java.util.Collections.unmodifiableList(sentencelessToken_);
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000040);
           }
           result.sentencelessToken_ = sentencelessToken_;
         } else {
           result.sentencelessToken_ = sentencelessTokenBuilder_.build();
         }
         if (quoteBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+          if (((bitField0_ & 0x00000080) == 0x00000080)) {
             quote_ = java.util.Collections.unmodifiableList(quote_);
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000080);
           }
           result.quote_ = quote_;
         } else {
           result.quote_ = quoteBuilder_.build();
+        }
+        if (mentionsBuilder_ == null) {
+          if (((bitField0_ & 0x00000100) == 0x00000100)) {
+            mentions_ = java.util.Collections.unmodifiableList(mentions_);
+            bitField0_ = (bitField0_ & ~0x00000100);
+          }
+          result.mentions_ = mentions_;
+        } else {
+          result.mentions_ = mentionsBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -1383,11 +1661,19 @@ public final class CoreNLPProtos {
           docID_ = other.docID_;
           onChanged();
         }
+        if (other.hasDocDate()) {
+          bitField0_ |= 0x00000010;
+          docDate_ = other.docDate_;
+          onChanged();
+        }
+        if (other.hasCalendar()) {
+          setCalendar(other.getCalendar());
+        }
         if (sentencelessTokenBuilder_ == null) {
           if (!other.sentencelessToken_.isEmpty()) {
             if (sentencelessToken_.isEmpty()) {
               sentencelessToken_ = other.sentencelessToken_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000040);
             } else {
               ensureSentencelessTokenIsMutable();
               sentencelessToken_.addAll(other.sentencelessToken_);
@@ -1400,7 +1686,7 @@ public final class CoreNLPProtos {
               sentencelessTokenBuilder_.dispose();
               sentencelessTokenBuilder_ = null;
               sentencelessToken_ = other.sentencelessToken_;
-              bitField0_ = (bitField0_ & ~0x00000010);
+              bitField0_ = (bitField0_ & ~0x00000040);
               sentencelessTokenBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getSentencelessTokenFieldBuilder() : null;
@@ -1413,7 +1699,7 @@ public final class CoreNLPProtos {
           if (!other.quote_.isEmpty()) {
             if (quote_.isEmpty()) {
               quote_ = other.quote_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000080);
             } else {
               ensureQuoteIsMutable();
               quote_.addAll(other.quote_);
@@ -1426,12 +1712,38 @@ public final class CoreNLPProtos {
               quoteBuilder_.dispose();
               quoteBuilder_ = null;
               quote_ = other.quote_;
-              bitField0_ = (bitField0_ & ~0x00000020);
+              bitField0_ = (bitField0_ & ~0x00000080);
               quoteBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getQuoteFieldBuilder() : null;
             } else {
               quoteBuilder_.addAllMessages(other.quote_);
+            }
+          }
+        }
+        if (mentionsBuilder_ == null) {
+          if (!other.mentions_.isEmpty()) {
+            if (mentions_.isEmpty()) {
+              mentions_ = other.mentions_;
+              bitField0_ = (bitField0_ & ~0x00000100);
+            } else {
+              ensureMentionsIsMutable();
+              mentions_.addAll(other.mentions_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.mentions_.isEmpty()) {
+            if (mentionsBuilder_.isEmpty()) {
+              mentionsBuilder_.dispose();
+              mentionsBuilder_ = null;
+              mentions_ = other.mentions_;
+              bitField0_ = (bitField0_ & ~0x00000100);
+              mentionsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getMentionsFieldBuilder() : null;
+            } else {
+              mentionsBuilder_.addAllMessages(other.mentions_);
             }
           }
         }
@@ -1459,6 +1771,12 @@ public final class CoreNLPProtos {
         }
         for (int i = 0; i < getSentencelessTokenCount(); i++) {
           if (!getSentencelessToken(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getMentionsCount(); i++) {
+          if (!getMentions(i).isInitialized()) {
             
             return false;
           }
@@ -2121,12 +2439,120 @@ public final class CoreNLPProtos {
         return this;
       }
 
+      private java.lang.Object docDate_ = "";
+      /**
+       * <code>optional string docDate = 7;</code>
+       */
+      public boolean hasDocDate() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string docDate = 7;</code>
+       */
+      public java.lang.String getDocDate() {
+        java.lang.Object ref = docDate_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            docDate_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string docDate = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDocDateBytes() {
+        java.lang.Object ref = docDate_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          docDate_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string docDate = 7;</code>
+       */
+      public Builder setDocDate(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        docDate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string docDate = 7;</code>
+       */
+      public Builder clearDocDate() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        docDate_ = getDefaultInstance().getDocDate();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string docDate = 7;</code>
+       */
+      public Builder setDocDateBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        docDate_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long calendar_ ;
+      /**
+       * <code>optional uint64 calendar = 8;</code>
+       */
+      public boolean hasCalendar() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional uint64 calendar = 8;</code>
+       */
+      public long getCalendar() {
+        return calendar_;
+      }
+      /**
+       * <code>optional uint64 calendar = 8;</code>
+       */
+      public Builder setCalendar(long value) {
+        bitField0_ |= 0x00000020;
+        calendar_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint64 calendar = 8;</code>
+       */
+      public Builder clearCalendar() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        calendar_ = 0L;
+        onChanged();
+        return this;
+      }
+
       private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Token> sentencelessToken_ =
         java.util.Collections.emptyList();
       private void ensureSentencelessTokenIsMutable() {
-        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
           sentencelessToken_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Token>(sentencelessToken_);
-          bitField0_ |= 0x00000010;
+          bitField0_ |= 0x00000040;
          }
       }
 
@@ -2342,7 +2768,7 @@ public final class CoreNLPProtos {
       public Builder clearSentencelessToken() {
         if (sentencelessTokenBuilder_ == null) {
           sentencelessToken_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000040);
           onChanged();
         } else {
           sentencelessTokenBuilder_.clear();
@@ -2461,7 +2887,7 @@ public final class CoreNLPProtos {
           sentencelessTokenBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               edu.stanford.nlp.pipeline.CoreNLPProtos.Token, edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder>(
                   sentencelessToken_,
-                  ((bitField0_ & 0x00000010) == 0x00000010),
+                  ((bitField0_ & 0x00000040) == 0x00000040),
                   getParentForChildren(),
                   isClean());
           sentencelessToken_ = null;
@@ -2472,9 +2898,9 @@ public final class CoreNLPProtos {
       private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Quote> quote_ =
         java.util.Collections.emptyList();
       private void ensureQuoteIsMutable() {
-        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
           quote_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Quote>(quote_);
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000080;
          }
       }
 
@@ -2624,7 +3050,7 @@ public final class CoreNLPProtos {
       public Builder clearQuote() {
         if (quoteBuilder_ == null) {
           quote_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000080);
           onChanged();
         } else {
           quoteBuilder_.clear();
@@ -2701,12 +3127,342 @@ public final class CoreNLPProtos {
           quoteBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               edu.stanford.nlp.pipeline.CoreNLPProtos.Quote, edu.stanford.nlp.pipeline.CoreNLPProtos.Quote.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.QuoteOrBuilder>(
                   quote_,
-                  ((bitField0_ & 0x00000020) == 0x00000020),
+                  ((bitField0_ & 0x00000080) == 0x00000080),
                   getParentForChildren(),
                   isClean());
           quote_ = null;
         }
         return quoteBuilder_;
+      }
+
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention> mentions_ =
+        java.util.Collections.emptyList();
+      private void ensureMentionsIsMutable() {
+        if (!((bitField0_ & 0x00000100) == 0x00000100)) {
+          mentions_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention>(mentions_);
+          bitField0_ |= 0x00000100;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder> mentionsBuilder_;
+
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention> getMentionsList() {
+        if (mentionsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(mentions_);
+        } else {
+          return mentionsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public int getMentionsCount() {
+        if (mentionsBuilder_ == null) {
+          return mentions_.size();
+        } else {
+          return mentionsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention getMentions(int index) {
+        if (mentionsBuilder_ == null) {
+          return mentions_.get(index);
+        } else {
+          return mentionsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder setMentions(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention value) {
+        if (mentionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMentionsIsMutable();
+          mentions_.set(index, value);
+          onChanged();
+        } else {
+          mentionsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder setMentions(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder builderForValue) {
+        if (mentionsBuilder_ == null) {
+          ensureMentionsIsMutable();
+          mentions_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          mentionsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder addMentions(edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention value) {
+        if (mentionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMentionsIsMutable();
+          mentions_.add(value);
+          onChanged();
+        } else {
+          mentionsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder addMentions(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention value) {
+        if (mentionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMentionsIsMutable();
+          mentions_.add(index, value);
+          onChanged();
+        } else {
+          mentionsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder addMentions(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder builderForValue) {
+        if (mentionsBuilder_ == null) {
+          ensureMentionsIsMutable();
+          mentions_.add(builderForValue.build());
+          onChanged();
+        } else {
+          mentionsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder addMentions(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder builderForValue) {
+        if (mentionsBuilder_ == null) {
+          ensureMentionsIsMutable();
+          mentions_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          mentionsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder addAllMentions(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention> values) {
+        if (mentionsBuilder_ == null) {
+          ensureMentionsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, mentions_);
+          onChanged();
+        } else {
+          mentionsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder clearMentions() {
+        if (mentionsBuilder_ == null) {
+          mentions_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000100);
+          onChanged();
+        } else {
+          mentionsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public Builder removeMentions(int index) {
+        if (mentionsBuilder_ == null) {
+          ensureMentionsIsMutable();
+          mentions_.remove(index);
+          onChanged();
+        } else {
+          mentionsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder getMentionsBuilder(
+          int index) {
+        return getMentionsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder getMentionsOrBuilder(
+          int index) {
+        if (mentionsBuilder_ == null) {
+          return mentions_.get(index);  } else {
+          return mentionsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder> 
+           getMentionsOrBuilderList() {
+        if (mentionsBuilder_ != null) {
+          return mentionsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(mentions_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder addMentionsBuilder() {
+        return getMentionsFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder addMentionsBuilder(
+          int index) {
+        return getMentionsFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.NERMention mentions = 9;</code>
+       *
+       * <pre>
+       **
+       * This field is for entity mentions across the document.
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder> 
+           getMentionsBuilderList() {
+        return getMentionsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder> 
+          getMentionsFieldBuilder() {
+        if (mentionsBuilder_ == null) {
+          mentionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder>(
+                  mentions_,
+                  ((bitField0_ & 0x00000100) == 0x00000100),
+                  getParentForChildren(),
+                  isClean());
+          mentions_ = null;
+        }
+        return mentionsBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.Document)
@@ -2924,24 +3680,24 @@ public final class CoreNLPProtos {
     edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder getAlternativeDependenciesOrBuilder();
 
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
      * </pre>
      */
-    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple> 
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> 
         getOpenieTripleList();
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
      * </pre>
      */
-    edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple getOpenieTriple(int index);
+    edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple getOpenieTriple(int index);
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
@@ -2949,22 +3705,160 @@ public final class CoreNLPProtos {
      */
     int getOpenieTripleCount();
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
      * </pre>
      */
-    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder> 
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> 
         getOpenieTripleOrBuilderList();
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
      * </pre>
      */
-    edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder getOpenieTripleOrBuilder(
+    edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder getOpenieTripleOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> 
+        getKbpTripleList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple getKbpTriple(int index);
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    int getKbpTripleCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> 
+        getKbpTripleOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder getKbpTripleOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment> 
+        getEntailedSentenceList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment getEntailedSentence(int index);
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    int getEntailedSentenceCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder> 
+        getEntailedSentenceOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder getEntailedSentenceOrBuilder(
+        int index);
+
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+     */
+    boolean hasEnhancedDependencies();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph getEnhancedDependencies();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder getEnhancedDependenciesOrBuilder();
+
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+     */
+    boolean hasEnhancedPlusPlusDependencies();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph getEnhancedPlusPlusDependencies();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder getEnhancedPlusPlusDependenciesOrBuilder();
+
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Token> 
+        getCharacterList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.Token getCharacter(int index);
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    int getCharacterCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder> 
+        getCharacterOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder getCharacterOrBuilder(
         int index);
 
     /**
@@ -2978,14 +3872,26 @@ public final class CoreNLPProtos {
 
     /**
      * <code>optional string text = 12;</code>
+     *
+     * <pre>
+     * Only needed if we're only saving the sentence.
+     * </pre>
      */
     boolean hasText();
     /**
      * <code>optional string text = 12;</code>
+     *
+     * <pre>
+     * Only needed if we're only saving the sentence.
+     * </pre>
      */
     java.lang.String getText();
     /**
      * <code>optional string text = 12;</code>
+     *
+     * <pre>
+     * Only needed if we're only saving the sentence.
+     * </pre>
      */
     com.google.protobuf.ByteString
         getTextBytes();
@@ -3087,6 +3993,65 @@ public final class CoreNLPProtos {
      */
     edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder getMentionsOrBuilder(
         int index);
+
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Mention> 
+        getMentionsForCorefList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.Mention getMentionsForCoref(int index);
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    int getMentionsForCorefCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder> 
+        getMentionsForCorefOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder getMentionsForCorefOrBuilder(
+        int index);
+
+    /**
+     * <code>optional bool hasCorefMentionsAnnotation = 57;</code>
+     */
+    boolean hasHasCorefMentionsAnnotation();
+    /**
+     * <code>optional bool hasCorefMentionsAnnotation = 57;</code>
+     */
+    boolean getHasCorefMentionsAnnotation();
+
+    /**
+     * <code>optional string sentenceID = 58;</code>
+     *
+     * <pre>
+     * Useful when storing sentences (e.g. ForEach)
+     * </pre>
+     */
+    boolean hasSentenceID();
+    /**
+     * <code>optional string sentenceID = 58;</code>
+     *
+     * <pre>
+     * Useful when storing sentences (e.g. ForEach)
+     * </pre>
+     */
+    java.lang.String getSentenceID();
+    /**
+     * <code>optional string sentenceID = 58;</code>
+     *
+     * <pre>
+     * Useful when storing sentences (e.g. ForEach)
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getSentenceIDBytes();
   }
   /**
    * Protobuf type {@code edu.stanford.nlp.pipeline.Sentence}
@@ -3231,13 +4196,13 @@ public final class CoreNLPProtos {
               break;
             }
             case 88: {
-              bitField0_ |= 0x00002000;
+              bitField0_ |= 0x00008000;
               paragraph_ = input.readUInt32();
               break;
             }
             case 98: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00004000;
+              bitField0_ |= 0x00010000;
               text_ = bs;
               break;
             }
@@ -3256,10 +4221,60 @@ public final class CoreNLPProtos {
             }
             case 114: {
               if (!((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
-                openieTriple_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple>();
+                openieTriple_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple>();
                 mutable_bitField0_ |= 0x00008000;
               }
-              openieTriple_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.PARSER, extensionRegistry));
+              openieTriple_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.PARSER, extensionRegistry));
+              break;
+            }
+            case 122: {
+              if (!((mutable_bitField0_ & 0x00020000) == 0x00020000)) {
+                entailedSentence_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment>();
+                mutable_bitField0_ |= 0x00020000;
+              }
+              entailedSentence_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.PARSER, extensionRegistry));
+              break;
+            }
+            case 130: {
+              if (!((mutable_bitField0_ & 0x00010000) == 0x00010000)) {
+                kbpTriple_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple>();
+                mutable_bitField0_ |= 0x00010000;
+              }
+              kbpTriple_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.PARSER, extensionRegistry));
+              break;
+            }
+            case 138: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder subBuilder = null;
+              if (((bitField0_ & 0x00002000) == 0x00002000)) {
+                subBuilder = enhancedDependencies_.toBuilder();
+              }
+              enhancedDependencies_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(enhancedDependencies_);
+                enhancedDependencies_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00002000;
+              break;
+            }
+            case 146: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder subBuilder = null;
+              if (((bitField0_ & 0x00004000) == 0x00004000)) {
+                subBuilder = enhancedPlusPlusDependencies_.toBuilder();
+              }
+              enhancedPlusPlusDependencies_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(enhancedPlusPlusDependencies_);
+                enhancedPlusPlusDependencies_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00004000;
+              break;
+            }
+            case 154: {
+              if (!((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+                character_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Token>();
+                mutable_bitField0_ |= 0x00100000;
+              }
+              character_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Token.PARSER, extensionRegistry));
               break;
             }
             case 250: {
@@ -3303,37 +4318,56 @@ public final class CoreNLPProtos {
               break;
             }
             case 408: {
-              bitField0_ |= 0x00008000;
+              bitField0_ |= 0x00020000;
               hasRelationAnnotations_ = input.readBool();
               break;
             }
             case 418: {
-              if (!((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
+              if (!((mutable_bitField0_ & 0x01000000) == 0x01000000)) {
                 entity_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Entity>();
-                mutable_bitField0_ |= 0x00080000;
+                mutable_bitField0_ |= 0x01000000;
               }
               entity_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Entity.PARSER, extensionRegistry));
               break;
             }
             case 426: {
-              if (!((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+              if (!((mutable_bitField0_ & 0x02000000) == 0x02000000)) {
                 relation_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Relation>();
-                mutable_bitField0_ |= 0x00100000;
+                mutable_bitField0_ |= 0x02000000;
               }
               relation_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Relation.PARSER, extensionRegistry));
               break;
             }
             case 432: {
-              bitField0_ |= 0x00010000;
+              bitField0_ |= 0x00040000;
               hasNumerizedTokensAnnotation_ = input.readBool();
               break;
             }
             case 442: {
-              if (!((mutable_bitField0_ & 0x00400000) == 0x00400000)) {
+              if (!((mutable_bitField0_ & 0x08000000) == 0x08000000)) {
                 mentions_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention>();
-                mutable_bitField0_ |= 0x00400000;
+                mutable_bitField0_ |= 0x08000000;
               }
               mentions_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.PARSER, extensionRegistry));
+              break;
+            }
+            case 450: {
+              if (!((mutable_bitField0_ & 0x10000000) == 0x10000000)) {
+                mentionsForCoref_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Mention>();
+                mutable_bitField0_ |= 0x10000000;
+              }
+              mentionsForCoref_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.PARSER, extensionRegistry));
+              break;
+            }
+            case 456: {
+              bitField0_ |= 0x00080000;
+              hasCorefMentionsAnnotation_ = input.readBool();
+              break;
+            }
+            case 466: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00100000;
+              sentenceID_ = bs;
               break;
             }
           }
@@ -3350,17 +4384,29 @@ public final class CoreNLPProtos {
         if (((mutable_bitField0_ & 0x00008000) == 0x00008000)) {
           openieTriple_ = java.util.Collections.unmodifiableList(openieTriple_);
         }
+        if (((mutable_bitField0_ & 0x00020000) == 0x00020000)) {
+          entailedSentence_ = java.util.Collections.unmodifiableList(entailedSentence_);
+        }
+        if (((mutable_bitField0_ & 0x00010000) == 0x00010000)) {
+          kbpTriple_ = java.util.Collections.unmodifiableList(kbpTriple_);
+        }
+        if (((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+          character_ = java.util.Collections.unmodifiableList(character_);
+        }
         if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
           kBestParseTrees_ = java.util.Collections.unmodifiableList(kBestParseTrees_);
         }
-        if (((mutable_bitField0_ & 0x00080000) == 0x00080000)) {
+        if (((mutable_bitField0_ & 0x01000000) == 0x01000000)) {
           entity_ = java.util.Collections.unmodifiableList(entity_);
         }
-        if (((mutable_bitField0_ & 0x00100000) == 0x00100000)) {
+        if (((mutable_bitField0_ & 0x02000000) == 0x02000000)) {
           relation_ = java.util.Collections.unmodifiableList(relation_);
         }
-        if (((mutable_bitField0_ & 0x00400000) == 0x00400000)) {
+        if (((mutable_bitField0_ & 0x08000000) == 0x08000000)) {
           mentions_ = java.util.Collections.unmodifiableList(mentions_);
+        }
+        if (((mutable_bitField0_ & 0x10000000) == 0x10000000)) {
+          mentionsForCoref_ = java.util.Collections.unmodifiableList(mentionsForCoref_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -3729,30 +4775,30 @@ public final class CoreNLPProtos {
     }
 
     public static final int OPENIETRIPLE_FIELD_NUMBER = 14;
-    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple> openieTriple_;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> openieTriple_;
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
      * </pre>
      */
-    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple> getOpenieTripleList() {
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> getOpenieTripleList() {
       return openieTriple_;
     }
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
      * </pre>
      */
-    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder> 
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> 
         getOpenieTripleOrBuilderList() {
       return openieTriple_;
     }
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
@@ -3762,25 +4808,212 @@ public final class CoreNLPProtos {
       return openieTriple_.size();
     }
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
      * </pre>
      */
-    public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple getOpenieTriple(int index) {
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple getOpenieTriple(int index) {
       return openieTriple_.get(index);
     }
     /**
-     * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
      *
      * <pre>
      * The OpenIE triples in the sentence
      * </pre>
      */
-    public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder getOpenieTripleOrBuilder(
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder getOpenieTripleOrBuilder(
         int index) {
       return openieTriple_.get(index);
+    }
+
+    public static final int KBPTRIPLE_FIELD_NUMBER = 16;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> kbpTriple_;
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> getKbpTripleList() {
+      return kbpTriple_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> 
+        getKbpTripleOrBuilderList() {
+      return kbpTriple_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    public int getKbpTripleCount() {
+      return kbpTriple_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple getKbpTriple(int index) {
+      return kbpTriple_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+     *
+     * <pre>
+     * The KBP triples in this sentence
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder getKbpTripleOrBuilder(
+        int index) {
+      return kbpTriple_.get(index);
+    }
+
+    public static final int ENTAILEDSENTENCE_FIELD_NUMBER = 15;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment> entailedSentence_;
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment> getEntailedSentenceList() {
+      return entailedSentence_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder> 
+        getEntailedSentenceOrBuilderList() {
+      return entailedSentence_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    public int getEntailedSentenceCount() {
+      return entailedSentence_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment getEntailedSentence(int index) {
+      return entailedSentence_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+     *
+     * <pre>
+     * The entailed sentences, by natural logic
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder getEntailedSentenceOrBuilder(
+        int index) {
+      return entailedSentence_.get(index);
+    }
+
+    public static final int ENHANCEDDEPENDENCIES_FIELD_NUMBER = 17;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph enhancedDependencies_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+     */
+    public boolean hasEnhancedDependencies() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph getEnhancedDependencies() {
+      return enhancedDependencies_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder getEnhancedDependenciesOrBuilder() {
+      return enhancedDependencies_;
+    }
+
+    public static final int ENHANCEDPLUSPLUSDEPENDENCIES_FIELD_NUMBER = 18;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph enhancedPlusPlusDependencies_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+     */
+    public boolean hasEnhancedPlusPlusDependencies() {
+      return ((bitField0_ & 0x00004000) == 0x00004000);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph getEnhancedPlusPlusDependencies() {
+      return enhancedPlusPlusDependencies_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder getEnhancedPlusPlusDependenciesOrBuilder() {
+      return enhancedPlusPlusDependencies_;
+    }
+
+    public static final int CHARACTER_FIELD_NUMBER = 19;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Token> character_;
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Token> getCharacterList() {
+      return character_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder> 
+        getCharacterOrBuilderList() {
+      return character_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    public int getCharacterCount() {
+      return character_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.Token getCharacter(int index) {
+      return character_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder getCharacterOrBuilder(
+        int index) {
+      return character_.get(index);
     }
 
     public static final int PARAGRAPH_FIELD_NUMBER = 11;
@@ -3789,7 +5022,7 @@ public final class CoreNLPProtos {
      * <code>optional uint32 paragraph = 11;</code>
      */
     public boolean hasParagraph() {
-      return ((bitField0_ & 0x00002000) == 0x00002000);
+      return ((bitField0_ & 0x00008000) == 0x00008000);
     }
     /**
      * <code>optional uint32 paragraph = 11;</code>
@@ -3802,12 +5035,20 @@ public final class CoreNLPProtos {
     private java.lang.Object text_;
     /**
      * <code>optional string text = 12;</code>
+     *
+     * <pre>
+     * Only needed if we're only saving the sentence.
+     * </pre>
      */
     public boolean hasText() {
-      return ((bitField0_ & 0x00004000) == 0x00004000);
+      return ((bitField0_ & 0x00010000) == 0x00010000);
     }
     /**
      * <code>optional string text = 12;</code>
+     *
+     * <pre>
+     * Only needed if we're only saving the sentence.
+     * </pre>
      */
     public java.lang.String getText() {
       java.lang.Object ref = text_;
@@ -3825,6 +5066,10 @@ public final class CoreNLPProtos {
     }
     /**
      * <code>optional string text = 12;</code>
+     *
+     * <pre>
+     * Only needed if we're only saving the sentence.
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getTextBytes() {
@@ -3850,7 +5095,7 @@ public final class CoreNLPProtos {
      * </pre>
      */
     public boolean hasHasRelationAnnotations() {
-      return ((bitField0_ & 0x00008000) == 0x00008000);
+      return ((bitField0_ & 0x00020000) == 0x00020000);
     }
     /**
      * <code>optional bool hasRelationAnnotations = 51;</code>
@@ -3939,7 +5184,7 @@ public final class CoreNLPProtos {
      * <code>optional bool hasNumerizedTokensAnnotation = 54;</code>
      */
     public boolean hasHasNumerizedTokensAnnotation() {
-      return ((bitField0_ & 0x00010000) == 0x00010000);
+      return ((bitField0_ & 0x00040000) == 0x00040000);
     }
     /**
      * <code>optional bool hasNumerizedTokensAnnotation = 54;</code>
@@ -3983,6 +5228,110 @@ public final class CoreNLPProtos {
       return mentions_.get(index);
     }
 
+    public static final int MENTIONSFORCOREF_FIELD_NUMBER = 56;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Mention> mentionsForCoref_;
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Mention> getMentionsForCorefList() {
+      return mentionsForCoref_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder> 
+        getMentionsForCorefOrBuilderList() {
+      return mentionsForCoref_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    public int getMentionsForCorefCount() {
+      return mentionsForCoref_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.Mention getMentionsForCoref(int index) {
+      return mentionsForCoref_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder getMentionsForCorefOrBuilder(
+        int index) {
+      return mentionsForCoref_.get(index);
+    }
+
+    public static final int HASCOREFMENTIONSANNOTATION_FIELD_NUMBER = 57;
+    private boolean hasCorefMentionsAnnotation_;
+    /**
+     * <code>optional bool hasCorefMentionsAnnotation = 57;</code>
+     */
+    public boolean hasHasCorefMentionsAnnotation() {
+      return ((bitField0_ & 0x00080000) == 0x00080000);
+    }
+    /**
+     * <code>optional bool hasCorefMentionsAnnotation = 57;</code>
+     */
+    public boolean getHasCorefMentionsAnnotation() {
+      return hasCorefMentionsAnnotation_;
+    }
+
+    public static final int SENTENCEID_FIELD_NUMBER = 58;
+    private java.lang.Object sentenceID_;
+    /**
+     * <code>optional string sentenceID = 58;</code>
+     *
+     * <pre>
+     * Useful when storing sentences (e.g. ForEach)
+     * </pre>
+     */
+    public boolean hasSentenceID() {
+      return ((bitField0_ & 0x00100000) == 0x00100000);
+    }
+    /**
+     * <code>optional string sentenceID = 58;</code>
+     *
+     * <pre>
+     * Useful when storing sentences (e.g. ForEach)
+     * </pre>
+     */
+    public java.lang.String getSentenceID() {
+      java.lang.Object ref = sentenceID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          sentenceID_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string sentenceID = 58;</code>
+     *
+     * <pre>
+     * Useful when storing sentences (e.g. ForEach)
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getSentenceIDBytes() {
+      java.lang.Object ref = sentenceID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sentenceID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       token_ = java.util.Collections.emptyList();
       tokenOffsetBegin_ = 0;
@@ -4000,6 +5349,11 @@ public final class CoreNLPProtos {
       collapsedCCProcessedDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
       alternativeDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
       openieTriple_ = java.util.Collections.emptyList();
+      kbpTriple_ = java.util.Collections.emptyList();
+      entailedSentence_ = java.util.Collections.emptyList();
+      enhancedDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+      enhancedPlusPlusDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+      character_ = java.util.Collections.emptyList();
       paragraph_ = 0;
       text_ = "";
       hasRelationAnnotations_ = false;
@@ -4007,6 +5361,9 @@ public final class CoreNLPProtos {
       relation_ = java.util.Collections.emptyList();
       hasNumerizedTokensAnnotation_ = false;
       mentions_ = java.util.Collections.emptyList();
+      mentionsForCoref_ = java.util.Collections.emptyList();
+      hasCorefMentionsAnnotation_ = false;
+      sentenceID_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -4054,6 +5411,30 @@ public final class CoreNLPProtos {
       }
       for (int i = 0; i < getOpenieTripleCount(); i++) {
         if (!getOpenieTriple(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getKbpTripleCount(); i++) {
+        if (!getKbpTriple(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasEnhancedDependencies()) {
+        if (!getEnhancedDependencies().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasEnhancedPlusPlusDependencies()) {
+        if (!getEnhancedPlusPlusDependencies().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      for (int i = 0; i < getCharacterCount(); i++) {
+        if (!getCharacter(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -4108,10 +5489,10 @@ public final class CoreNLPProtos {
       if (((bitField0_ & 0x00000800) == 0x00000800)) {
         output.writeMessage(10, collapsedCCProcessedDependencies_);
       }
-      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
         output.writeUInt32(11, paragraph_);
       }
-      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
         output.writeBytes(12, getTextBytes());
       }
       if (((bitField0_ & 0x00001000) == 0x00001000)) {
@@ -4119,6 +5500,21 @@ public final class CoreNLPProtos {
       }
       for (int i = 0; i < openieTriple_.size(); i++) {
         output.writeMessage(14, openieTriple_.get(i));
+      }
+      for (int i = 0; i < entailedSentence_.size(); i++) {
+        output.writeMessage(15, entailedSentence_.get(i));
+      }
+      for (int i = 0; i < kbpTriple_.size(); i++) {
+        output.writeMessage(16, kbpTriple_.get(i));
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeMessage(17, enhancedDependencies_);
+      }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        output.writeMessage(18, enhancedPlusPlusDependencies_);
+      }
+      for (int i = 0; i < character_.size(); i++) {
+        output.writeMessage(19, character_.get(i));
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeMessage(31, binarizedParseTree_);
@@ -4132,7 +5528,7 @@ public final class CoreNLPProtos {
       for (int i = 0; i < kBestParseTrees_.size(); i++) {
         output.writeMessage(34, kBestParseTrees_.get(i));
       }
-      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
         output.writeBool(51, hasRelationAnnotations_);
       }
       for (int i = 0; i < entity_.size(); i++) {
@@ -4141,11 +5537,20 @@ public final class CoreNLPProtos {
       for (int i = 0; i < relation_.size(); i++) {
         output.writeMessage(53, relation_.get(i));
       }
-      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
         output.writeBool(54, hasNumerizedTokensAnnotation_);
       }
       for (int i = 0; i < mentions_.size(); i++) {
         output.writeMessage(55, mentions_.get(i));
+      }
+      for (int i = 0; i < mentionsForCoref_.size(); i++) {
+        output.writeMessage(56, mentionsForCoref_.get(i));
+      }
+      if (((bitField0_ & 0x00080000) == 0x00080000)) {
+        output.writeBool(57, hasCorefMentionsAnnotation_);
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        output.writeBytes(58, getSentenceIDBytes());
       }
       extensionWriter.writeUntil(256, output);
       getUnknownFields().writeTo(output);
@@ -4197,11 +5602,11 @@ public final class CoreNLPProtos {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(10, collapsedCCProcessedDependencies_);
       }
-      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt32Size(11, paragraph_);
       }
-      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(12, getTextBytes());
       }
@@ -4212,6 +5617,26 @@ public final class CoreNLPProtos {
       for (int i = 0; i < openieTriple_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(14, openieTriple_.get(i));
+      }
+      for (int i = 0; i < entailedSentence_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(15, entailedSentence_.get(i));
+      }
+      for (int i = 0; i < kbpTriple_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(16, kbpTriple_.get(i));
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(17, enhancedDependencies_);
+      }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(18, enhancedPlusPlusDependencies_);
+      }
+      for (int i = 0; i < character_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(19, character_.get(i));
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
@@ -4229,7 +5654,7 @@ public final class CoreNLPProtos {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(34, kBestParseTrees_.get(i));
       }
-      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(51, hasRelationAnnotations_);
       }
@@ -4241,13 +5666,25 @@ public final class CoreNLPProtos {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(53, relation_.get(i));
       }
-      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(54, hasNumerizedTokensAnnotation_);
       }
       for (int i = 0; i < mentions_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(55, mentions_.get(i));
+      }
+      for (int i = 0; i < mentionsForCoref_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(56, mentionsForCoref_.get(i));
+      }
+      if (((bitField0_ & 0x00080000) == 0x00080000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(57, hasCorefMentionsAnnotation_);
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(58, getSentenceIDBytes());
       }
       size += extensionsSerializedSize();
       size += getUnknownFields().getSerializedSize();
@@ -4374,9 +5811,15 @@ public final class CoreNLPProtos {
           getCollapsedCCProcessedDependenciesFieldBuilder();
           getAlternativeDependenciesFieldBuilder();
           getOpenieTripleFieldBuilder();
+          getKbpTripleFieldBuilder();
+          getEntailedSentenceFieldBuilder();
+          getEnhancedDependenciesFieldBuilder();
+          getEnhancedPlusPlusDependenciesFieldBuilder();
+          getCharacterFieldBuilder();
           getEntityFieldBuilder();
           getRelationFieldBuilder();
           getMentionsFieldBuilder();
+          getMentionsForCorefFieldBuilder();
         }
       }
       private static Builder create() {
@@ -4457,32 +5900,72 @@ public final class CoreNLPProtos {
         } else {
           openieTripleBuilder_.clear();
         }
-        paragraph_ = 0;
-        bitField0_ = (bitField0_ & ~0x00010000);
-        text_ = "";
-        bitField0_ = (bitField0_ & ~0x00020000);
-        hasRelationAnnotations_ = false;
+        if (kbpTripleBuilder_ == null) {
+          kbpTriple_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00010000);
+        } else {
+          kbpTripleBuilder_.clear();
+        }
+        if (entailedSentenceBuilder_ == null) {
+          entailedSentence_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00020000);
+        } else {
+          entailedSentenceBuilder_.clear();
+        }
+        if (enhancedDependenciesBuilder_ == null) {
+          enhancedDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+        } else {
+          enhancedDependenciesBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x00040000);
+        if (enhancedPlusPlusDependenciesBuilder_ == null) {
+          enhancedPlusPlusDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+        } else {
+          enhancedPlusPlusDependenciesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00080000);
+        if (characterBuilder_ == null) {
+          character_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00100000);
+        } else {
+          characterBuilder_.clear();
+        }
+        paragraph_ = 0;
+        bitField0_ = (bitField0_ & ~0x00200000);
+        text_ = "";
+        bitField0_ = (bitField0_ & ~0x00400000);
+        hasRelationAnnotations_ = false;
+        bitField0_ = (bitField0_ & ~0x00800000);
         if (entityBuilder_ == null) {
           entity_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00080000);
+          bitField0_ = (bitField0_ & ~0x01000000);
         } else {
           entityBuilder_.clear();
         }
         if (relationBuilder_ == null) {
           relation_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x02000000);
         } else {
           relationBuilder_.clear();
         }
         hasNumerizedTokensAnnotation_ = false;
-        bitField0_ = (bitField0_ & ~0x00200000);
+        bitField0_ = (bitField0_ & ~0x04000000);
         if (mentionsBuilder_ == null) {
           mentions_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00400000);
+          bitField0_ = (bitField0_ & ~0x08000000);
         } else {
           mentionsBuilder_.clear();
         }
+        if (mentionsForCorefBuilder_ == null) {
+          mentionsForCoref_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x10000000);
+        } else {
+          mentionsForCorefBuilder_.clear();
+        }
+        hasCorefMentionsAnnotation_ = false;
+        bitField0_ = (bitField0_ & ~0x20000000);
+        sentenceID_ = "";
+        bitField0_ = (bitField0_ & ~0x40000000);
         return this;
       }
 
@@ -4618,49 +6101,109 @@ public final class CoreNLPProtos {
         } else {
           result.openieTriple_ = openieTripleBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+        if (kbpTripleBuilder_ == null) {
+          if (((bitField0_ & 0x00010000) == 0x00010000)) {
+            kbpTriple_ = java.util.Collections.unmodifiableList(kbpTriple_);
+            bitField0_ = (bitField0_ & ~0x00010000);
+          }
+          result.kbpTriple_ = kbpTriple_;
+        } else {
+          result.kbpTriple_ = kbpTripleBuilder_.build();
+        }
+        if (entailedSentenceBuilder_ == null) {
+          if (((bitField0_ & 0x00020000) == 0x00020000)) {
+            entailedSentence_ = java.util.Collections.unmodifiableList(entailedSentence_);
+            bitField0_ = (bitField0_ & ~0x00020000);
+          }
+          result.entailedSentence_ = entailedSentence_;
+        } else {
+          result.entailedSentence_ = entailedSentenceBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
           to_bitField0_ |= 0x00002000;
         }
-        result.paragraph_ = paragraph_;
-        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+        if (enhancedDependenciesBuilder_ == null) {
+          result.enhancedDependencies_ = enhancedDependencies_;
+        } else {
+          result.enhancedDependencies_ = enhancedDependenciesBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
           to_bitField0_ |= 0x00004000;
         }
-        result.text_ = text_;
-        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+        if (enhancedPlusPlusDependenciesBuilder_ == null) {
+          result.enhancedPlusPlusDependencies_ = enhancedPlusPlusDependencies_;
+        } else {
+          result.enhancedPlusPlusDependencies_ = enhancedPlusPlusDependenciesBuilder_.build();
+        }
+        if (characterBuilder_ == null) {
+          if (((bitField0_ & 0x00100000) == 0x00100000)) {
+            character_ = java.util.Collections.unmodifiableList(character_);
+            bitField0_ = (bitField0_ & ~0x00100000);
+          }
+          result.character_ = character_;
+        } else {
+          result.character_ = characterBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
           to_bitField0_ |= 0x00008000;
+        }
+        result.paragraph_ = paragraph_;
+        if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
+          to_bitField0_ |= 0x00010000;
+        }
+        result.text_ = text_;
+        if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
+          to_bitField0_ |= 0x00020000;
         }
         result.hasRelationAnnotations_ = hasRelationAnnotations_;
         if (entityBuilder_ == null) {
-          if (((bitField0_ & 0x00080000) == 0x00080000)) {
+          if (((bitField0_ & 0x01000000) == 0x01000000)) {
             entity_ = java.util.Collections.unmodifiableList(entity_);
-            bitField0_ = (bitField0_ & ~0x00080000);
+            bitField0_ = (bitField0_ & ~0x01000000);
           }
           result.entity_ = entity_;
         } else {
           result.entity_ = entityBuilder_.build();
         }
         if (relationBuilder_ == null) {
-          if (((bitField0_ & 0x00100000) == 0x00100000)) {
+          if (((bitField0_ & 0x02000000) == 0x02000000)) {
             relation_ = java.util.Collections.unmodifiableList(relation_);
-            bitField0_ = (bitField0_ & ~0x00100000);
+            bitField0_ = (bitField0_ & ~0x02000000);
           }
           result.relation_ = relation_;
         } else {
           result.relation_ = relationBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
-          to_bitField0_ |= 0x00010000;
+        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+          to_bitField0_ |= 0x00040000;
         }
         result.hasNumerizedTokensAnnotation_ = hasNumerizedTokensAnnotation_;
         if (mentionsBuilder_ == null) {
-          if (((bitField0_ & 0x00400000) == 0x00400000)) {
+          if (((bitField0_ & 0x08000000) == 0x08000000)) {
             mentions_ = java.util.Collections.unmodifiableList(mentions_);
-            bitField0_ = (bitField0_ & ~0x00400000);
+            bitField0_ = (bitField0_ & ~0x08000000);
           }
           result.mentions_ = mentions_;
         } else {
           result.mentions_ = mentionsBuilder_.build();
         }
+        if (mentionsForCorefBuilder_ == null) {
+          if (((bitField0_ & 0x10000000) == 0x10000000)) {
+            mentionsForCoref_ = java.util.Collections.unmodifiableList(mentionsForCoref_);
+            bitField0_ = (bitField0_ & ~0x10000000);
+          }
+          result.mentionsForCoref_ = mentionsForCoref_;
+        } else {
+          result.mentionsForCoref_ = mentionsForCorefBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x20000000) == 0x20000000)) {
+          to_bitField0_ |= 0x00080000;
+        }
+        result.hasCorefMentionsAnnotation_ = hasCorefMentionsAnnotation_;
+        if (((from_bitField0_ & 0x40000000) == 0x40000000)) {
+          to_bitField0_ |= 0x00100000;
+        }
+        result.sentenceID_ = sentenceID_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -4796,11 +6339,95 @@ public final class CoreNLPProtos {
             }
           }
         }
+        if (kbpTripleBuilder_ == null) {
+          if (!other.kbpTriple_.isEmpty()) {
+            if (kbpTriple_.isEmpty()) {
+              kbpTriple_ = other.kbpTriple_;
+              bitField0_ = (bitField0_ & ~0x00010000);
+            } else {
+              ensureKbpTripleIsMutable();
+              kbpTriple_.addAll(other.kbpTriple_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.kbpTriple_.isEmpty()) {
+            if (kbpTripleBuilder_.isEmpty()) {
+              kbpTripleBuilder_.dispose();
+              kbpTripleBuilder_ = null;
+              kbpTriple_ = other.kbpTriple_;
+              bitField0_ = (bitField0_ & ~0x00010000);
+              kbpTripleBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getKbpTripleFieldBuilder() : null;
+            } else {
+              kbpTripleBuilder_.addAllMessages(other.kbpTriple_);
+            }
+          }
+        }
+        if (entailedSentenceBuilder_ == null) {
+          if (!other.entailedSentence_.isEmpty()) {
+            if (entailedSentence_.isEmpty()) {
+              entailedSentence_ = other.entailedSentence_;
+              bitField0_ = (bitField0_ & ~0x00020000);
+            } else {
+              ensureEntailedSentenceIsMutable();
+              entailedSentence_.addAll(other.entailedSentence_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.entailedSentence_.isEmpty()) {
+            if (entailedSentenceBuilder_.isEmpty()) {
+              entailedSentenceBuilder_.dispose();
+              entailedSentenceBuilder_ = null;
+              entailedSentence_ = other.entailedSentence_;
+              bitField0_ = (bitField0_ & ~0x00020000);
+              entailedSentenceBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getEntailedSentenceFieldBuilder() : null;
+            } else {
+              entailedSentenceBuilder_.addAllMessages(other.entailedSentence_);
+            }
+          }
+        }
+        if (other.hasEnhancedDependencies()) {
+          mergeEnhancedDependencies(other.getEnhancedDependencies());
+        }
+        if (other.hasEnhancedPlusPlusDependencies()) {
+          mergeEnhancedPlusPlusDependencies(other.getEnhancedPlusPlusDependencies());
+        }
+        if (characterBuilder_ == null) {
+          if (!other.character_.isEmpty()) {
+            if (character_.isEmpty()) {
+              character_ = other.character_;
+              bitField0_ = (bitField0_ & ~0x00100000);
+            } else {
+              ensureCharacterIsMutable();
+              character_.addAll(other.character_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.character_.isEmpty()) {
+            if (characterBuilder_.isEmpty()) {
+              characterBuilder_.dispose();
+              characterBuilder_ = null;
+              character_ = other.character_;
+              bitField0_ = (bitField0_ & ~0x00100000);
+              characterBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getCharacterFieldBuilder() : null;
+            } else {
+              characterBuilder_.addAllMessages(other.character_);
+            }
+          }
+        }
         if (other.hasParagraph()) {
           setParagraph(other.getParagraph());
         }
         if (other.hasText()) {
-          bitField0_ |= 0x00020000;
+          bitField0_ |= 0x00400000;
           text_ = other.text_;
           onChanged();
         }
@@ -4811,7 +6438,7 @@ public final class CoreNLPProtos {
           if (!other.entity_.isEmpty()) {
             if (entity_.isEmpty()) {
               entity_ = other.entity_;
-              bitField0_ = (bitField0_ & ~0x00080000);
+              bitField0_ = (bitField0_ & ~0x01000000);
             } else {
               ensureEntityIsMutable();
               entity_.addAll(other.entity_);
@@ -4824,7 +6451,7 @@ public final class CoreNLPProtos {
               entityBuilder_.dispose();
               entityBuilder_ = null;
               entity_ = other.entity_;
-              bitField0_ = (bitField0_ & ~0x00080000);
+              bitField0_ = (bitField0_ & ~0x01000000);
               entityBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getEntityFieldBuilder() : null;
@@ -4837,7 +6464,7 @@ public final class CoreNLPProtos {
           if (!other.relation_.isEmpty()) {
             if (relation_.isEmpty()) {
               relation_ = other.relation_;
-              bitField0_ = (bitField0_ & ~0x00100000);
+              bitField0_ = (bitField0_ & ~0x02000000);
             } else {
               ensureRelationIsMutable();
               relation_.addAll(other.relation_);
@@ -4850,7 +6477,7 @@ public final class CoreNLPProtos {
               relationBuilder_.dispose();
               relationBuilder_ = null;
               relation_ = other.relation_;
-              bitField0_ = (bitField0_ & ~0x00100000);
+              bitField0_ = (bitField0_ & ~0x02000000);
               relationBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getRelationFieldBuilder() : null;
@@ -4866,7 +6493,7 @@ public final class CoreNLPProtos {
           if (!other.mentions_.isEmpty()) {
             if (mentions_.isEmpty()) {
               mentions_ = other.mentions_;
-              bitField0_ = (bitField0_ & ~0x00400000);
+              bitField0_ = (bitField0_ & ~0x08000000);
             } else {
               ensureMentionsIsMutable();
               mentions_.addAll(other.mentions_);
@@ -4879,7 +6506,7 @@ public final class CoreNLPProtos {
               mentionsBuilder_.dispose();
               mentionsBuilder_ = null;
               mentions_ = other.mentions_;
-              bitField0_ = (bitField0_ & ~0x00400000);
+              bitField0_ = (bitField0_ & ~0x08000000);
               mentionsBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
                    getMentionsFieldBuilder() : null;
@@ -4887,6 +6514,40 @@ public final class CoreNLPProtos {
               mentionsBuilder_.addAllMessages(other.mentions_);
             }
           }
+        }
+        if (mentionsForCorefBuilder_ == null) {
+          if (!other.mentionsForCoref_.isEmpty()) {
+            if (mentionsForCoref_.isEmpty()) {
+              mentionsForCoref_ = other.mentionsForCoref_;
+              bitField0_ = (bitField0_ & ~0x10000000);
+            } else {
+              ensureMentionsForCorefIsMutable();
+              mentionsForCoref_.addAll(other.mentionsForCoref_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.mentionsForCoref_.isEmpty()) {
+            if (mentionsForCorefBuilder_.isEmpty()) {
+              mentionsForCorefBuilder_.dispose();
+              mentionsForCorefBuilder_ = null;
+              mentionsForCoref_ = other.mentionsForCoref_;
+              bitField0_ = (bitField0_ & ~0x10000000);
+              mentionsForCorefBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getMentionsForCorefFieldBuilder() : null;
+            } else {
+              mentionsForCorefBuilder_.addAllMessages(other.mentionsForCoref_);
+            }
+          }
+        }
+        if (other.hasHasCorefMentionsAnnotation()) {
+          setHasCorefMentionsAnnotation(other.getHasCorefMentionsAnnotation());
+        }
+        if (other.hasSentenceID()) {
+          bitField0_ |= 0x40000000;
+          sentenceID_ = other.sentenceID_;
+          onChanged();
         }
         this.mergeExtensionFields(other);
         this.mergeUnknownFields(other.getUnknownFields());
@@ -4934,6 +6595,30 @@ public final class CoreNLPProtos {
         }
         for (int i = 0; i < getOpenieTripleCount(); i++) {
           if (!getOpenieTriple(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getKbpTripleCount(); i++) {
+          if (!getKbpTriple(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasEnhancedDependencies()) {
+          if (!getEnhancedDependencies().isInitialized()) {
+            
+            return false;
+          }
+        }
+        if (hasEnhancedPlusPlusDependencies()) {
+          if (!getEnhancedPlusPlusDependencies().isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getCharacterCount(); i++) {
+          if (!getCharacter(i).isInitialized()) {
             
             return false;
           }
@@ -6498,26 +8183,26 @@ public final class CoreNLPProtos {
         return alternativeDependenciesBuilder_;
       }
 
-      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple> openieTriple_ =
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> openieTriple_ =
         java.util.Collections.emptyList();
       private void ensureOpenieTripleIsMutable() {
         if (!((bitField0_ & 0x00008000) == 0x00008000)) {
-          openieTriple_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple>(openieTriple_);
+          openieTriple_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple>(openieTriple_);
           bitField0_ |= 0x00008000;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder> openieTripleBuilder_;
+          edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> openieTripleBuilder_;
 
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple> getOpenieTripleList() {
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> getOpenieTripleList() {
         if (openieTripleBuilder_ == null) {
           return java.util.Collections.unmodifiableList(openieTriple_);
         } else {
@@ -6525,7 +8210,7 @@ public final class CoreNLPProtos {
         }
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
@@ -6539,13 +8224,13 @@ public final class CoreNLPProtos {
         }
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple getOpenieTriple(int index) {
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple getOpenieTriple(int index) {
         if (openieTripleBuilder_ == null) {
           return openieTriple_.get(index);
         } else {
@@ -6553,14 +8238,14 @@ public final class CoreNLPProtos {
         }
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
       public Builder setOpenieTriple(
-          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple value) {
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple value) {
         if (openieTripleBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6574,14 +8259,14 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
       public Builder setOpenieTriple(
-          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder builderForValue) {
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder builderForValue) {
         if (openieTripleBuilder_ == null) {
           ensureOpenieTripleIsMutable();
           openieTriple_.set(index, builderForValue.build());
@@ -6592,13 +8277,13 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public Builder addOpenieTriple(edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple value) {
+      public Builder addOpenieTriple(edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple value) {
         if (openieTripleBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6612,14 +8297,14 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
       public Builder addOpenieTriple(
-          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple value) {
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple value) {
         if (openieTripleBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -6633,14 +8318,14 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
       public Builder addOpenieTriple(
-          edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder builderForValue) {
+          edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder builderForValue) {
         if (openieTripleBuilder_ == null) {
           ensureOpenieTripleIsMutable();
           openieTriple_.add(builderForValue.build());
@@ -6651,14 +8336,14 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
       public Builder addOpenieTriple(
-          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder builderForValue) {
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder builderForValue) {
         if (openieTripleBuilder_ == null) {
           ensureOpenieTripleIsMutable();
           openieTriple_.add(index, builderForValue.build());
@@ -6669,14 +8354,14 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
       public Builder addAllOpenieTriple(
-          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple> values) {
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> values) {
         if (openieTripleBuilder_ == null) {
           ensureOpenieTripleIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -6688,7 +8373,7 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
@@ -6705,7 +8390,7 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
@@ -6722,24 +8407,24 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder getOpenieTripleBuilder(
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder getOpenieTripleBuilder(
           int index) {
         return getOpenieTripleFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder getOpenieTripleOrBuilder(
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder getOpenieTripleOrBuilder(
           int index) {
         if (openieTripleBuilder_ == null) {
           return openieTriple_.get(index);  } else {
@@ -6747,13 +8432,13 @@ public final class CoreNLPProtos {
         }
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder> 
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> 
            getOpenieTripleOrBuilderList() {
         if (openieTripleBuilder_ != null) {
           return openieTripleBuilder_.getMessageOrBuilderList();
@@ -6762,45 +8447,45 @@ public final class CoreNLPProtos {
         }
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder addOpenieTripleBuilder() {
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder addOpenieTripleBuilder() {
         return getOpenieTripleFieldBuilder().addBuilder(
-            edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.getDefaultInstance());
+            edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.getDefaultInstance());
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder addOpenieTripleBuilder(
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder addOpenieTripleBuilder(
           int index) {
         return getOpenieTripleFieldBuilder().addBuilder(
-            index, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.getDefaultInstance());
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.getDefaultInstance());
       }
       /**
-       * <code>repeated .edu.stanford.nlp.pipeline.OpenIETriple openieTriple = 14;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple openieTriple = 14;</code>
        *
        * <pre>
        * The OpenIE triples in the sentence
        * </pre>
        */
-      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder> 
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder> 
            getOpenieTripleBuilderList() {
         return getOpenieTripleFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
-          edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder> 
+          edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> 
           getOpenieTripleFieldBuilder() {
         if (openieTripleBuilder_ == null) {
           openieTripleBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder>(
+              edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder>(
                   openieTriple_,
                   ((bitField0_ & 0x00008000) == 0x00008000),
                   getParentForChildren(),
@@ -6810,12 +8495,1108 @@ public final class CoreNLPProtos {
         return openieTripleBuilder_;
       }
 
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> kbpTriple_ =
+        java.util.Collections.emptyList();
+      private void ensureKbpTripleIsMutable() {
+        if (!((bitField0_ & 0x00010000) == 0x00010000)) {
+          kbpTriple_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple>(kbpTriple_);
+          bitField0_ |= 0x00010000;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> kbpTripleBuilder_;
+
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> getKbpTripleList() {
+        if (kbpTripleBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(kbpTriple_);
+        } else {
+          return kbpTripleBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public int getKbpTripleCount() {
+        if (kbpTripleBuilder_ == null) {
+          return kbpTriple_.size();
+        } else {
+          return kbpTripleBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple getKbpTriple(int index) {
+        if (kbpTripleBuilder_ == null) {
+          return kbpTriple_.get(index);
+        } else {
+          return kbpTripleBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder setKbpTriple(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple value) {
+        if (kbpTripleBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKbpTripleIsMutable();
+          kbpTriple_.set(index, value);
+          onChanged();
+        } else {
+          kbpTripleBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder setKbpTriple(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder builderForValue) {
+        if (kbpTripleBuilder_ == null) {
+          ensureKbpTripleIsMutable();
+          kbpTriple_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          kbpTripleBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder addKbpTriple(edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple value) {
+        if (kbpTripleBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKbpTripleIsMutable();
+          kbpTriple_.add(value);
+          onChanged();
+        } else {
+          kbpTripleBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder addKbpTriple(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple value) {
+        if (kbpTripleBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureKbpTripleIsMutable();
+          kbpTriple_.add(index, value);
+          onChanged();
+        } else {
+          kbpTripleBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder addKbpTriple(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder builderForValue) {
+        if (kbpTripleBuilder_ == null) {
+          ensureKbpTripleIsMutable();
+          kbpTriple_.add(builderForValue.build());
+          onChanged();
+        } else {
+          kbpTripleBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder addKbpTriple(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder builderForValue) {
+        if (kbpTripleBuilder_ == null) {
+          ensureKbpTripleIsMutable();
+          kbpTriple_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          kbpTripleBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder addAllKbpTriple(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple> values) {
+        if (kbpTripleBuilder_ == null) {
+          ensureKbpTripleIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, kbpTriple_);
+          onChanged();
+        } else {
+          kbpTripleBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder clearKbpTriple() {
+        if (kbpTripleBuilder_ == null) {
+          kbpTriple_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00010000);
+          onChanged();
+        } else {
+          kbpTripleBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public Builder removeKbpTriple(int index) {
+        if (kbpTripleBuilder_ == null) {
+          ensureKbpTripleIsMutable();
+          kbpTriple_.remove(index);
+          onChanged();
+        } else {
+          kbpTripleBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder getKbpTripleBuilder(
+          int index) {
+        return getKbpTripleFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder getKbpTripleOrBuilder(
+          int index) {
+        if (kbpTripleBuilder_ == null) {
+          return kbpTriple_.get(index);  } else {
+          return kbpTripleBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> 
+           getKbpTripleOrBuilderList() {
+        if (kbpTripleBuilder_ != null) {
+          return kbpTripleBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(kbpTriple_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder addKbpTripleBuilder() {
+        return getKbpTripleFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder addKbpTripleBuilder(
+          int index) {
+        return getKbpTripleFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.RelationTriple kbpTriple = 16;</code>
+       *
+       * <pre>
+       * The KBP triples in this sentence
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder> 
+           getKbpTripleBuilderList() {
+        return getKbpTripleFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder> 
+          getKbpTripleFieldBuilder() {
+        if (kbpTripleBuilder_ == null) {
+          kbpTripleBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder>(
+                  kbpTriple_,
+                  ((bitField0_ & 0x00010000) == 0x00010000),
+                  getParentForChildren(),
+                  isClean());
+          kbpTriple_ = null;
+        }
+        return kbpTripleBuilder_;
+      }
+
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment> entailedSentence_ =
+        java.util.Collections.emptyList();
+      private void ensureEntailedSentenceIsMutable() {
+        if (!((bitField0_ & 0x00020000) == 0x00020000)) {
+          entailedSentence_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment>(entailedSentence_);
+          bitField0_ |= 0x00020000;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder> entailedSentenceBuilder_;
+
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment> getEntailedSentenceList() {
+        if (entailedSentenceBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(entailedSentence_);
+        } else {
+          return entailedSentenceBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public int getEntailedSentenceCount() {
+        if (entailedSentenceBuilder_ == null) {
+          return entailedSentence_.size();
+        } else {
+          return entailedSentenceBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment getEntailedSentence(int index) {
+        if (entailedSentenceBuilder_ == null) {
+          return entailedSentence_.get(index);
+        } else {
+          return entailedSentenceBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder setEntailedSentence(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment value) {
+        if (entailedSentenceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntailedSentenceIsMutable();
+          entailedSentence_.set(index, value);
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder setEntailedSentence(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder builderForValue) {
+        if (entailedSentenceBuilder_ == null) {
+          ensureEntailedSentenceIsMutable();
+          entailedSentence_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder addEntailedSentence(edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment value) {
+        if (entailedSentenceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntailedSentenceIsMutable();
+          entailedSentence_.add(value);
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder addEntailedSentence(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment value) {
+        if (entailedSentenceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureEntailedSentenceIsMutable();
+          entailedSentence_.add(index, value);
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder addEntailedSentence(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder builderForValue) {
+        if (entailedSentenceBuilder_ == null) {
+          ensureEntailedSentenceIsMutable();
+          entailedSentence_.add(builderForValue.build());
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder addEntailedSentence(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder builderForValue) {
+        if (entailedSentenceBuilder_ == null) {
+          ensureEntailedSentenceIsMutable();
+          entailedSentence_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder addAllEntailedSentence(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment> values) {
+        if (entailedSentenceBuilder_ == null) {
+          ensureEntailedSentenceIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, entailedSentence_);
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder clearEntailedSentence() {
+        if (entailedSentenceBuilder_ == null) {
+          entailedSentence_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00020000);
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public Builder removeEntailedSentence(int index) {
+        if (entailedSentenceBuilder_ == null) {
+          ensureEntailedSentenceIsMutable();
+          entailedSentence_.remove(index);
+          onChanged();
+        } else {
+          entailedSentenceBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder getEntailedSentenceBuilder(
+          int index) {
+        return getEntailedSentenceFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder getEntailedSentenceOrBuilder(
+          int index) {
+        if (entailedSentenceBuilder_ == null) {
+          return entailedSentence_.get(index);  } else {
+          return entailedSentenceBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder> 
+           getEntailedSentenceOrBuilderList() {
+        if (entailedSentenceBuilder_ != null) {
+          return entailedSentenceBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(entailedSentence_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder addEntailedSentenceBuilder() {
+        return getEntailedSentenceFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder addEntailedSentenceBuilder(
+          int index) {
+        return getEntailedSentenceFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.SentenceFragment entailedSentence = 15;</code>
+       *
+       * <pre>
+       * The entailed sentences, by natural logic
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder> 
+           getEntailedSentenceBuilderList() {
+        return getEntailedSentenceFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder> 
+          getEntailedSentenceFieldBuilder() {
+        if (entailedSentenceBuilder_ == null) {
+          entailedSentenceBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder>(
+                  entailedSentence_,
+                  ((bitField0_ & 0x00020000) == 0x00020000),
+                  getParentForChildren(),
+                  isClean());
+          entailedSentence_ = null;
+        }
+        return entailedSentenceBuilder_;
+      }
+
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph enhancedDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder> enhancedDependenciesBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      public boolean hasEnhancedDependencies() {
+        return ((bitField0_ & 0x00040000) == 0x00040000);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph getEnhancedDependencies() {
+        if (enhancedDependenciesBuilder_ == null) {
+          return enhancedDependencies_;
+        } else {
+          return enhancedDependenciesBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      public Builder setEnhancedDependencies(edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph value) {
+        if (enhancedDependenciesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          enhancedDependencies_ = value;
+          onChanged();
+        } else {
+          enhancedDependenciesBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00040000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      public Builder setEnhancedDependencies(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder builderForValue) {
+        if (enhancedDependenciesBuilder_ == null) {
+          enhancedDependencies_ = builderForValue.build();
+          onChanged();
+        } else {
+          enhancedDependenciesBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00040000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      public Builder mergeEnhancedDependencies(edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph value) {
+        if (enhancedDependenciesBuilder_ == null) {
+          if (((bitField0_ & 0x00040000) == 0x00040000) &&
+              enhancedDependencies_ != edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance()) {
+            enhancedDependencies_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.newBuilder(enhancedDependencies_).mergeFrom(value).buildPartial();
+          } else {
+            enhancedDependencies_ = value;
+          }
+          onChanged();
+        } else {
+          enhancedDependenciesBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00040000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      public Builder clearEnhancedDependencies() {
+        if (enhancedDependenciesBuilder_ == null) {
+          enhancedDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+          onChanged();
+        } else {
+          enhancedDependenciesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00040000);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder getEnhancedDependenciesBuilder() {
+        bitField0_ |= 0x00040000;
+        onChanged();
+        return getEnhancedDependenciesFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder getEnhancedDependenciesOrBuilder() {
+        if (enhancedDependenciesBuilder_ != null) {
+          return enhancedDependenciesBuilder_.getMessageOrBuilder();
+        } else {
+          return enhancedDependencies_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedDependencies = 17;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder> 
+          getEnhancedDependenciesFieldBuilder() {
+        if (enhancedDependenciesBuilder_ == null) {
+          enhancedDependenciesBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder>(
+                  getEnhancedDependencies(),
+                  getParentForChildren(),
+                  isClean());
+          enhancedDependencies_ = null;
+        }
+        return enhancedDependenciesBuilder_;
+      }
+
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph enhancedPlusPlusDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder> enhancedPlusPlusDependenciesBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      public boolean hasEnhancedPlusPlusDependencies() {
+        return ((bitField0_ & 0x00080000) == 0x00080000);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph getEnhancedPlusPlusDependencies() {
+        if (enhancedPlusPlusDependenciesBuilder_ == null) {
+          return enhancedPlusPlusDependencies_;
+        } else {
+          return enhancedPlusPlusDependenciesBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      public Builder setEnhancedPlusPlusDependencies(edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph value) {
+        if (enhancedPlusPlusDependenciesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          enhancedPlusPlusDependencies_ = value;
+          onChanged();
+        } else {
+          enhancedPlusPlusDependenciesBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00080000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      public Builder setEnhancedPlusPlusDependencies(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder builderForValue) {
+        if (enhancedPlusPlusDependenciesBuilder_ == null) {
+          enhancedPlusPlusDependencies_ = builderForValue.build();
+          onChanged();
+        } else {
+          enhancedPlusPlusDependenciesBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00080000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      public Builder mergeEnhancedPlusPlusDependencies(edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph value) {
+        if (enhancedPlusPlusDependenciesBuilder_ == null) {
+          if (((bitField0_ & 0x00080000) == 0x00080000) &&
+              enhancedPlusPlusDependencies_ != edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance()) {
+            enhancedPlusPlusDependencies_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.newBuilder(enhancedPlusPlusDependencies_).mergeFrom(value).buildPartial();
+          } else {
+            enhancedPlusPlusDependencies_ = value;
+          }
+          onChanged();
+        } else {
+          enhancedPlusPlusDependenciesBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00080000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      public Builder clearEnhancedPlusPlusDependencies() {
+        if (enhancedPlusPlusDependenciesBuilder_ == null) {
+          enhancedPlusPlusDependencies_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+          onChanged();
+        } else {
+          enhancedPlusPlusDependenciesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00080000);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder getEnhancedPlusPlusDependenciesBuilder() {
+        bitField0_ |= 0x00080000;
+        onChanged();
+        return getEnhancedPlusPlusDependenciesFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder getEnhancedPlusPlusDependenciesOrBuilder() {
+        if (enhancedPlusPlusDependenciesBuilder_ != null) {
+          return enhancedPlusPlusDependenciesBuilder_.getMessageOrBuilder();
+        } else {
+          return enhancedPlusPlusDependencies_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph enhancedPlusPlusDependencies = 18;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder> 
+          getEnhancedPlusPlusDependenciesFieldBuilder() {
+        if (enhancedPlusPlusDependenciesBuilder_ == null) {
+          enhancedPlusPlusDependenciesBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder>(
+                  getEnhancedPlusPlusDependencies(),
+                  getParentForChildren(),
+                  isClean());
+          enhancedPlusPlusDependencies_ = null;
+        }
+        return enhancedPlusPlusDependenciesBuilder_;
+      }
+
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Token> character_ =
+        java.util.Collections.emptyList();
+      private void ensureCharacterIsMutable() {
+        if (!((bitField0_ & 0x00100000) == 0x00100000)) {
+          character_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Token>(character_);
+          bitField0_ |= 0x00100000;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Token, edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder> characterBuilder_;
+
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Token> getCharacterList() {
+        if (characterBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(character_);
+        } else {
+          return characterBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public int getCharacterCount() {
+        if (characterBuilder_ == null) {
+          return character_.size();
+        } else {
+          return characterBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Token getCharacter(int index) {
+        if (characterBuilder_ == null) {
+          return character_.get(index);
+        } else {
+          return characterBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder setCharacter(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.Token value) {
+        if (characterBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCharacterIsMutable();
+          character_.set(index, value);
+          onChanged();
+        } else {
+          characterBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder setCharacter(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder builderForValue) {
+        if (characterBuilder_ == null) {
+          ensureCharacterIsMutable();
+          character_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          characterBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder addCharacter(edu.stanford.nlp.pipeline.CoreNLPProtos.Token value) {
+        if (characterBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCharacterIsMutable();
+          character_.add(value);
+          onChanged();
+        } else {
+          characterBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder addCharacter(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.Token value) {
+        if (characterBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureCharacterIsMutable();
+          character_.add(index, value);
+          onChanged();
+        } else {
+          characterBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder addCharacter(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder builderForValue) {
+        if (characterBuilder_ == null) {
+          ensureCharacterIsMutable();
+          character_.add(builderForValue.build());
+          onChanged();
+        } else {
+          characterBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder addCharacter(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder builderForValue) {
+        if (characterBuilder_ == null) {
+          ensureCharacterIsMutable();
+          character_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          characterBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder addAllCharacter(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.Token> values) {
+        if (characterBuilder_ == null) {
+          ensureCharacterIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, character_);
+          onChanged();
+        } else {
+          characterBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder clearCharacter() {
+        if (characterBuilder_ == null) {
+          character_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00100000);
+          onChanged();
+        } else {
+          characterBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public Builder removeCharacter(int index) {
+        if (characterBuilder_ == null) {
+          ensureCharacterIsMutable();
+          character_.remove(index);
+          onChanged();
+        } else {
+          characterBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder getCharacterBuilder(
+          int index) {
+        return getCharacterFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder getCharacterOrBuilder(
+          int index) {
+        if (characterBuilder_ == null) {
+          return character_.get(index);  } else {
+          return characterBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder> 
+           getCharacterOrBuilderList() {
+        if (characterBuilder_ != null) {
+          return characterBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(character_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder addCharacterBuilder() {
+        return getCharacterFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.Token.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder addCharacterBuilder(
+          int index) {
+        return getCharacterFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.Token.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Token character = 19;</code>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder> 
+           getCharacterBuilderList() {
+        return getCharacterFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Token, edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder> 
+          getCharacterFieldBuilder() {
+        if (characterBuilder_ == null) {
+          characterBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.Token, edu.stanford.nlp.pipeline.CoreNLPProtos.Token.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenOrBuilder>(
+                  character_,
+                  ((bitField0_ & 0x00100000) == 0x00100000),
+                  getParentForChildren(),
+                  isClean());
+          character_ = null;
+        }
+        return characterBuilder_;
+      }
+
       private int paragraph_ ;
       /**
        * <code>optional uint32 paragraph = 11;</code>
        */
       public boolean hasParagraph() {
-        return ((bitField0_ & 0x00010000) == 0x00010000);
+        return ((bitField0_ & 0x00200000) == 0x00200000);
       }
       /**
        * <code>optional uint32 paragraph = 11;</code>
@@ -6827,7 +9608,7 @@ public final class CoreNLPProtos {
        * <code>optional uint32 paragraph = 11;</code>
        */
       public Builder setParagraph(int value) {
-        bitField0_ |= 0x00010000;
+        bitField0_ |= 0x00200000;
         paragraph_ = value;
         onChanged();
         return this;
@@ -6836,7 +9617,7 @@ public final class CoreNLPProtos {
        * <code>optional uint32 paragraph = 11;</code>
        */
       public Builder clearParagraph() {
-        bitField0_ = (bitField0_ & ~0x00010000);
+        bitField0_ = (bitField0_ & ~0x00200000);
         paragraph_ = 0;
         onChanged();
         return this;
@@ -6845,12 +9626,20 @@ public final class CoreNLPProtos {
       private java.lang.Object text_ = "";
       /**
        * <code>optional string text = 12;</code>
+       *
+       * <pre>
+       * Only needed if we're only saving the sentence.
+       * </pre>
        */
       public boolean hasText() {
-        return ((bitField0_ & 0x00020000) == 0x00020000);
+        return ((bitField0_ & 0x00400000) == 0x00400000);
       }
       /**
        * <code>optional string text = 12;</code>
+       *
+       * <pre>
+       * Only needed if we're only saving the sentence.
+       * </pre>
        */
       public java.lang.String getText() {
         java.lang.Object ref = text_;
@@ -6868,6 +9657,10 @@ public final class CoreNLPProtos {
       }
       /**
        * <code>optional string text = 12;</code>
+       *
+       * <pre>
+       * Only needed if we're only saving the sentence.
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getTextBytes() {
@@ -6884,35 +9677,47 @@ public final class CoreNLPProtos {
       }
       /**
        * <code>optional string text = 12;</code>
+       *
+       * <pre>
+       * Only needed if we're only saving the sentence.
+       * </pre>
        */
       public Builder setText(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00020000;
+  bitField0_ |= 0x00400000;
         text_ = value;
         onChanged();
         return this;
       }
       /**
        * <code>optional string text = 12;</code>
+       *
+       * <pre>
+       * Only needed if we're only saving the sentence.
+       * </pre>
        */
       public Builder clearText() {
-        bitField0_ = (bitField0_ & ~0x00020000);
+        bitField0_ = (bitField0_ & ~0x00400000);
         text_ = getDefaultInstance().getText();
         onChanged();
         return this;
       }
       /**
        * <code>optional string text = 12;</code>
+       *
+       * <pre>
+       * Only needed if we're only saving the sentence.
+       * </pre>
        */
       public Builder setTextBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00020000;
+  bitField0_ |= 0x00400000;
         text_ = value;
         onChanged();
         return this;
@@ -6927,7 +9732,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public boolean hasHasRelationAnnotations() {
-        return ((bitField0_ & 0x00040000) == 0x00040000);
+        return ((bitField0_ & 0x00800000) == 0x00800000);
       }
       /**
        * <code>optional bool hasRelationAnnotations = 51;</code>
@@ -6947,7 +9752,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public Builder setHasRelationAnnotations(boolean value) {
-        bitField0_ |= 0x00040000;
+        bitField0_ |= 0x00800000;
         hasRelationAnnotations_ = value;
         onChanged();
         return this;
@@ -6960,7 +9765,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public Builder clearHasRelationAnnotations() {
-        bitField0_ = (bitField0_ & ~0x00040000);
+        bitField0_ = (bitField0_ & ~0x00800000);
         hasRelationAnnotations_ = false;
         onChanged();
         return this;
@@ -6969,9 +9774,9 @@ public final class CoreNLPProtos {
       private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Entity> entity_ =
         java.util.Collections.emptyList();
       private void ensureEntityIsMutable() {
-        if (!((bitField0_ & 0x00080000) == 0x00080000)) {
+        if (!((bitField0_ & 0x01000000) == 0x01000000)) {
           entity_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Entity>(entity_);
-          bitField0_ |= 0x00080000;
+          bitField0_ |= 0x01000000;
          }
       }
 
@@ -7121,7 +9926,7 @@ public final class CoreNLPProtos {
       public Builder clearEntity() {
         if (entityBuilder_ == null) {
           entity_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00080000);
+          bitField0_ = (bitField0_ & ~0x01000000);
           onChanged();
         } else {
           entityBuilder_.clear();
@@ -7198,7 +10003,7 @@ public final class CoreNLPProtos {
           entityBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               edu.stanford.nlp.pipeline.CoreNLPProtos.Entity, edu.stanford.nlp.pipeline.CoreNLPProtos.Entity.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.EntityOrBuilder>(
                   entity_,
-                  ((bitField0_ & 0x00080000) == 0x00080000),
+                  ((bitField0_ & 0x01000000) == 0x01000000),
                   getParentForChildren(),
                   isClean());
           entity_ = null;
@@ -7209,9 +10014,9 @@ public final class CoreNLPProtos {
       private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Relation> relation_ =
         java.util.Collections.emptyList();
       private void ensureRelationIsMutable() {
-        if (!((bitField0_ & 0x00100000) == 0x00100000)) {
+        if (!((bitField0_ & 0x02000000) == 0x02000000)) {
           relation_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Relation>(relation_);
-          bitField0_ |= 0x00100000;
+          bitField0_ |= 0x02000000;
          }
       }
 
@@ -7361,7 +10166,7 @@ public final class CoreNLPProtos {
       public Builder clearRelation() {
         if (relationBuilder_ == null) {
           relation_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00100000);
+          bitField0_ = (bitField0_ & ~0x02000000);
           onChanged();
         } else {
           relationBuilder_.clear();
@@ -7438,7 +10243,7 @@ public final class CoreNLPProtos {
           relationBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               edu.stanford.nlp.pipeline.CoreNLPProtos.Relation, edu.stanford.nlp.pipeline.CoreNLPProtos.Relation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationOrBuilder>(
                   relation_,
-                  ((bitField0_ & 0x00100000) == 0x00100000),
+                  ((bitField0_ & 0x02000000) == 0x02000000),
                   getParentForChildren(),
                   isClean());
           relation_ = null;
@@ -7451,7 +10256,7 @@ public final class CoreNLPProtos {
        * <code>optional bool hasNumerizedTokensAnnotation = 54;</code>
        */
       public boolean hasHasNumerizedTokensAnnotation() {
-        return ((bitField0_ & 0x00200000) == 0x00200000);
+        return ((bitField0_ & 0x04000000) == 0x04000000);
       }
       /**
        * <code>optional bool hasNumerizedTokensAnnotation = 54;</code>
@@ -7463,7 +10268,7 @@ public final class CoreNLPProtos {
        * <code>optional bool hasNumerizedTokensAnnotation = 54;</code>
        */
       public Builder setHasNumerizedTokensAnnotation(boolean value) {
-        bitField0_ |= 0x00200000;
+        bitField0_ |= 0x04000000;
         hasNumerizedTokensAnnotation_ = value;
         onChanged();
         return this;
@@ -7472,7 +10277,7 @@ public final class CoreNLPProtos {
        * <code>optional bool hasNumerizedTokensAnnotation = 54;</code>
        */
       public Builder clearHasNumerizedTokensAnnotation() {
-        bitField0_ = (bitField0_ & ~0x00200000);
+        bitField0_ = (bitField0_ & ~0x04000000);
         hasNumerizedTokensAnnotation_ = false;
         onChanged();
         return this;
@@ -7481,9 +10286,9 @@ public final class CoreNLPProtos {
       private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention> mentions_ =
         java.util.Collections.emptyList();
       private void ensureMentionsIsMutable() {
-        if (!((bitField0_ & 0x00400000) == 0x00400000)) {
+        if (!((bitField0_ & 0x08000000) == 0x08000000)) {
           mentions_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention>(mentions_);
-          bitField0_ |= 0x00400000;
+          bitField0_ |= 0x08000000;
          }
       }
 
@@ -7633,7 +10438,7 @@ public final class CoreNLPProtos {
       public Builder clearMentions() {
         if (mentionsBuilder_ == null) {
           mentions_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00400000);
+          bitField0_ = (bitField0_ & ~0x08000000);
           onChanged();
         } else {
           mentionsBuilder_.clear();
@@ -7710,12 +10515,384 @@ public final class CoreNLPProtos {
           mentionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMention.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.NERMentionOrBuilder>(
                   mentions_,
-                  ((bitField0_ & 0x00400000) == 0x00400000),
+                  ((bitField0_ & 0x08000000) == 0x08000000),
                   getParentForChildren(),
                   isClean());
           mentions_ = null;
         }
         return mentionsBuilder_;
+      }
+
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Mention> mentionsForCoref_ =
+        java.util.Collections.emptyList();
+      private void ensureMentionsForCorefIsMutable() {
+        if (!((bitField0_ & 0x10000000) == 0x10000000)) {
+          mentionsForCoref_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.Mention>(mentionsForCoref_);
+          bitField0_ |= 0x10000000;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Mention, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder> mentionsForCorefBuilder_;
+
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Mention> getMentionsForCorefList() {
+        if (mentionsForCorefBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(mentionsForCoref_);
+        } else {
+          return mentionsForCorefBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public int getMentionsForCorefCount() {
+        if (mentionsForCorefBuilder_ == null) {
+          return mentionsForCoref_.size();
+        } else {
+          return mentionsForCorefBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Mention getMentionsForCoref(int index) {
+        if (mentionsForCorefBuilder_ == null) {
+          return mentionsForCoref_.get(index);
+        } else {
+          return mentionsForCorefBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder setMentionsForCoref(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention value) {
+        if (mentionsForCorefBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMentionsForCorefIsMutable();
+          mentionsForCoref_.set(index, value);
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder setMentionsForCoref(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder builderForValue) {
+        if (mentionsForCorefBuilder_ == null) {
+          ensureMentionsForCorefIsMutable();
+          mentionsForCoref_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder addMentionsForCoref(edu.stanford.nlp.pipeline.CoreNLPProtos.Mention value) {
+        if (mentionsForCorefBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMentionsForCorefIsMutable();
+          mentionsForCoref_.add(value);
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder addMentionsForCoref(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention value) {
+        if (mentionsForCorefBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureMentionsForCorefIsMutable();
+          mentionsForCoref_.add(index, value);
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder addMentionsForCoref(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder builderForValue) {
+        if (mentionsForCorefBuilder_ == null) {
+          ensureMentionsForCorefIsMutable();
+          mentionsForCoref_.add(builderForValue.build());
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder addMentionsForCoref(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder builderForValue) {
+        if (mentionsForCorefBuilder_ == null) {
+          ensureMentionsForCorefIsMutable();
+          mentionsForCoref_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder addAllMentionsForCoref(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.Mention> values) {
+        if (mentionsForCorefBuilder_ == null) {
+          ensureMentionsForCorefIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, mentionsForCoref_);
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder clearMentionsForCoref() {
+        if (mentionsForCorefBuilder_ == null) {
+          mentionsForCoref_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x10000000);
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public Builder removeMentionsForCoref(int index) {
+        if (mentionsForCorefBuilder_ == null) {
+          ensureMentionsForCorefIsMutable();
+          mentionsForCoref_.remove(index);
+          onChanged();
+        } else {
+          mentionsForCorefBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder getMentionsForCorefBuilder(
+          int index) {
+        return getMentionsForCorefFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder getMentionsForCorefOrBuilder(
+          int index) {
+        if (mentionsForCorefBuilder_ == null) {
+          return mentionsForCoref_.get(index);  } else {
+          return mentionsForCorefBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder> 
+           getMentionsForCorefOrBuilderList() {
+        if (mentionsForCorefBuilder_ != null) {
+          return mentionsForCorefBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(mentionsForCoref_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder addMentionsForCorefBuilder() {
+        return getMentionsForCorefFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder addMentionsForCorefBuilder(
+          int index) {
+        return getMentionsForCorefFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.Mention mentionsForCoref = 56;</code>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder> 
+           getMentionsForCorefBuilderList() {
+        return getMentionsForCorefFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Mention, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder> 
+          getMentionsForCorefFieldBuilder() {
+        if (mentionsForCorefBuilder_ == null) {
+          mentionsForCorefBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.Mention, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder>(
+                  mentionsForCoref_,
+                  ((bitField0_ & 0x10000000) == 0x10000000),
+                  getParentForChildren(),
+                  isClean());
+          mentionsForCoref_ = null;
+        }
+        return mentionsForCorefBuilder_;
+      }
+
+      private boolean hasCorefMentionsAnnotation_ ;
+      /**
+       * <code>optional bool hasCorefMentionsAnnotation = 57;</code>
+       */
+      public boolean hasHasCorefMentionsAnnotation() {
+        return ((bitField0_ & 0x20000000) == 0x20000000);
+      }
+      /**
+       * <code>optional bool hasCorefMentionsAnnotation = 57;</code>
+       */
+      public boolean getHasCorefMentionsAnnotation() {
+        return hasCorefMentionsAnnotation_;
+      }
+      /**
+       * <code>optional bool hasCorefMentionsAnnotation = 57;</code>
+       */
+      public Builder setHasCorefMentionsAnnotation(boolean value) {
+        bitField0_ |= 0x20000000;
+        hasCorefMentionsAnnotation_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool hasCorefMentionsAnnotation = 57;</code>
+       */
+      public Builder clearHasCorefMentionsAnnotation() {
+        bitField0_ = (bitField0_ & ~0x20000000);
+        hasCorefMentionsAnnotation_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object sentenceID_ = "";
+      /**
+       * <code>optional string sentenceID = 58;</code>
+       *
+       * <pre>
+       * Useful when storing sentences (e.g. ForEach)
+       * </pre>
+       */
+      public boolean hasSentenceID() {
+        return ((bitField0_ & 0x40000000) == 0x40000000);
+      }
+      /**
+       * <code>optional string sentenceID = 58;</code>
+       *
+       * <pre>
+       * Useful when storing sentences (e.g. ForEach)
+       * </pre>
+       */
+      public java.lang.String getSentenceID() {
+        java.lang.Object ref = sentenceID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sentenceID_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string sentenceID = 58;</code>
+       *
+       * <pre>
+       * Useful when storing sentences (e.g. ForEach)
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getSentenceIDBytes() {
+        java.lang.Object ref = sentenceID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sentenceID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string sentenceID = 58;</code>
+       *
+       * <pre>
+       * Useful when storing sentences (e.g. ForEach)
+       * </pre>
+       */
+      public Builder setSentenceID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x40000000;
+        sentenceID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string sentenceID = 58;</code>
+       *
+       * <pre>
+       * Useful when storing sentences (e.g. ForEach)
+       * </pre>
+       */
+      public Builder clearSentenceID() {
+        bitField0_ = (bitField0_ & ~0x40000000);
+        sentenceID_ = getDefaultInstance().getSentenceID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string sentenceID = 58;</code>
+       *
+       * <pre>
+       * Useful when storing sentences (e.g. ForEach)
+       * </pre>
+       */
+      public Builder setSentenceIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x40000000;
+        sentenceID_ = value;
+        onChanged();
+        return this;
       }
 
       // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.Sentence)
@@ -8395,6 +11572,99 @@ public final class CoreNLPProtos {
     int getQuotationIndex();
 
     /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+     */
+    boolean hasConllUFeatures();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString getConllUFeatures();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringStringOrBuilder getConllUFeaturesOrBuilder();
+
+    /**
+     * <code>optional string coarseTag = 33;</code>
+     *
+     * <pre>
+     *  The coarse POS tag (used to store the UPOS tag)
+     * </pre>
+     */
+    boolean hasCoarseTag();
+    /**
+     * <code>optional string coarseTag = 33;</code>
+     *
+     * <pre>
+     *  The coarse POS tag (used to store the UPOS tag)
+     * </pre>
+     */
+    java.lang.String getCoarseTag();
+    /**
+     * <code>optional string coarseTag = 33;</code>
+     *
+     * <pre>
+     *  The coarse POS tag (used to store the UPOS tag)
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getCoarseTagBytes();
+
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+     */
+    boolean hasConllUTokenSpan();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.Span getConllUTokenSpan();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getConllUTokenSpanOrBuilder();
+
+    /**
+     * <code>optional string conllUMisc = 35;</code>
+     */
+    boolean hasConllUMisc();
+    /**
+     * <code>optional string conllUMisc = 35;</code>
+     */
+    java.lang.String getConllUMisc();
+    /**
+     * <code>optional string conllUMisc = 35;</code>
+     */
+    com.google.protobuf.ByteString
+        getConllUMiscBytes();
+
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+     */
+    boolean hasConllUSecondaryDeps();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString getConllUSecondaryDeps();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntStringOrBuilder getConllUSecondaryDepsOrBuilder();
+
+    /**
+     * <code>optional string wikipediaEntity = 37;</code>
+     */
+    boolean hasWikipediaEntity();
+    /**
+     * <code>optional string wikipediaEntity = 37;</code>
+     */
+    java.lang.String getWikipediaEntity();
+    /**
+     * <code>optional string wikipediaEntity = 37;</code>
+     */
+    com.google.protobuf.ByteString
+        getWikipediaEntityBytes();
+
+    /**
      * <code>optional string gender = 51;</code>
      *
      * <pre>
@@ -8471,6 +11741,46 @@ public final class CoreNLPProtos {
      */
     com.google.protobuf.ByteString
         getTrueCaseTextBytes();
+
+    /**
+     * <code>optional string chineseChar = 54;</code>
+     *
+     * <pre>
+     *  Chinese character info
+     * </pre>
+     */
+    boolean hasChineseChar();
+    /**
+     * <code>optional string chineseChar = 54;</code>
+     *
+     * <pre>
+     *  Chinese character info
+     * </pre>
+     */
+    java.lang.String getChineseChar();
+    /**
+     * <code>optional string chineseChar = 54;</code>
+     *
+     * <pre>
+     *  Chinese character info
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getChineseCharBytes();
+
+    /**
+     * <code>optional string chineseSeg = 55;</code>
+     */
+    boolean hasChineseSeg();
+    /**
+     * <code>optional string chineseSeg = 55;</code>
+     */
+    java.lang.String getChineseSeg();
+    /**
+     * <code>optional string chineseSeg = 55;</code>
+     */
+    com.google.protobuf.ByteString
+        getChineseSegBytes();
   }
   /**
    * Protobuf type {@code edu.stanford.nlp.pipeline.Token}
@@ -8512,6 +11822,7 @@ public final class CoreNLPProtos {
         throws com.google.protobuf.InvalidProtocolBufferException {
       initFields();
       int mutable_bitField0_ = 0;
+      int mutable_bitField1_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -8723,22 +12034,91 @@ public final class CoreNLPProtos {
               quotationIndex_ = input.readInt32();
               break;
             }
+            case 258: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.Builder subBuilder = null;
+              if (((bitField0_ & 0x10000000) == 0x10000000)) {
+                subBuilder = conllUFeatures_.toBuilder();
+              }
+              conllUFeatures_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(conllUFeatures_);
+                conllUFeatures_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x10000000;
+              break;
+            }
+            case 266: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x20000000;
+              coarseTag_ = bs;
+              break;
+            }
+            case 274: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder subBuilder = null;
+              if (((bitField0_ & 0x40000000) == 0x40000000)) {
+                subBuilder = conllUTokenSpan_.toBuilder();
+              }
+              conllUTokenSpan_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Span.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(conllUTokenSpan_);
+                conllUTokenSpan_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x40000000;
+              break;
+            }
+            case 282: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x80000000;
+              conllUMisc_ = bs;
+              break;
+            }
+            case 290: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.Builder subBuilder = null;
+              if (((bitField1_ & 0x00000001) == 0x00000001)) {
+                subBuilder = conllUSecondaryDeps_.toBuilder();
+              }
+              conllUSecondaryDeps_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(conllUSecondaryDeps_);
+                conllUSecondaryDeps_ = subBuilder.buildPartial();
+              }
+              bitField1_ |= 0x00000001;
+              break;
+            }
+            case 298: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField1_ |= 0x00000002;
+              wikipediaEntity_ = bs;
+              break;
+            }
             case 410: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x10000000;
+              bitField1_ |= 0x00000004;
               gender_ = bs;
               break;
             }
             case 418: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x20000000;
+              bitField1_ |= 0x00000008;
               trueCase_ = bs;
               break;
             }
             case 426: {
               com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x40000000;
+              bitField1_ |= 0x00000010;
               trueCaseText_ = bs;
+              break;
+            }
+            case 434: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField1_ |= 0x00000020;
+              chineseChar_ = bs;
+              break;
+            }
+            case 442: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField1_ |= 0x00000040;
+              chineseSeg_ = bs;
               break;
             }
           }
@@ -8784,6 +12164,7 @@ public final class CoreNLPProtos {
     }
 
     private int bitField0_;
+    private int bitField1_;
     public static final int WORD_FIELD_NUMBER = 1;
     private java.lang.Object word_;
     /**
@@ -9916,6 +13297,207 @@ public final class CoreNLPProtos {
       return quotationIndex_;
     }
 
+    public static final int CONLLUFEATURES_FIELD_NUMBER = 32;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString conllUFeatures_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+     */
+    public boolean hasConllUFeatures() {
+      return ((bitField0_ & 0x10000000) == 0x10000000);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString getConllUFeatures() {
+      return conllUFeatures_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringStringOrBuilder getConllUFeaturesOrBuilder() {
+      return conllUFeatures_;
+    }
+
+    public static final int COARSETAG_FIELD_NUMBER = 33;
+    private java.lang.Object coarseTag_;
+    /**
+     * <code>optional string coarseTag = 33;</code>
+     *
+     * <pre>
+     *  The coarse POS tag (used to store the UPOS tag)
+     * </pre>
+     */
+    public boolean hasCoarseTag() {
+      return ((bitField0_ & 0x20000000) == 0x20000000);
+    }
+    /**
+     * <code>optional string coarseTag = 33;</code>
+     *
+     * <pre>
+     *  The coarse POS tag (used to store the UPOS tag)
+     * </pre>
+     */
+    public java.lang.String getCoarseTag() {
+      java.lang.Object ref = coarseTag_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          coarseTag_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string coarseTag = 33;</code>
+     *
+     * <pre>
+     *  The coarse POS tag (used to store the UPOS tag)
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getCoarseTagBytes() {
+      java.lang.Object ref = coarseTag_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        coarseTag_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CONLLUTOKENSPAN_FIELD_NUMBER = 34;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.Span conllUTokenSpan_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+     */
+    public boolean hasConllUTokenSpan() {
+      return ((bitField0_ & 0x40000000) == 0x40000000);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.Span getConllUTokenSpan() {
+      return conllUTokenSpan_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getConllUTokenSpanOrBuilder() {
+      return conllUTokenSpan_;
+    }
+
+    public static final int CONLLUMISC_FIELD_NUMBER = 35;
+    private java.lang.Object conllUMisc_;
+    /**
+     * <code>optional string conllUMisc = 35;</code>
+     */
+    public boolean hasConllUMisc() {
+      return ((bitField0_ & 0x80000000) == 0x80000000);
+    }
+    /**
+     * <code>optional string conllUMisc = 35;</code>
+     */
+    public java.lang.String getConllUMisc() {
+      java.lang.Object ref = conllUMisc_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          conllUMisc_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string conllUMisc = 35;</code>
+     */
+    public com.google.protobuf.ByteString
+        getConllUMiscBytes() {
+      java.lang.Object ref = conllUMisc_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        conllUMisc_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CONLLUSECONDARYDEPS_FIELD_NUMBER = 36;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString conllUSecondaryDeps_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+     */
+    public boolean hasConllUSecondaryDeps() {
+      return ((bitField1_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString getConllUSecondaryDeps() {
+      return conllUSecondaryDeps_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntStringOrBuilder getConllUSecondaryDepsOrBuilder() {
+      return conllUSecondaryDeps_;
+    }
+
+    public static final int WIKIPEDIAENTITY_FIELD_NUMBER = 37;
+    private java.lang.Object wikipediaEntity_;
+    /**
+     * <code>optional string wikipediaEntity = 37;</code>
+     */
+    public boolean hasWikipediaEntity() {
+      return ((bitField1_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string wikipediaEntity = 37;</code>
+     */
+    public java.lang.String getWikipediaEntity() {
+      java.lang.Object ref = wikipediaEntity_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          wikipediaEntity_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string wikipediaEntity = 37;</code>
+     */
+    public com.google.protobuf.ByteString
+        getWikipediaEntityBytes() {
+      java.lang.Object ref = wikipediaEntity_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        wikipediaEntity_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     public static final int GENDER_FIELD_NUMBER = 51;
     private java.lang.Object gender_;
     /**
@@ -9926,7 +13508,7 @@ public final class CoreNLPProtos {
      * </pre>
      */
     public boolean hasGender() {
-      return ((bitField0_ & 0x10000000) == 0x10000000);
+      return ((bitField1_ & 0x00000004) == 0x00000004);
     }
     /**
      * <code>optional string gender = 51;</code>
@@ -9980,7 +13562,7 @@ public final class CoreNLPProtos {
      * </pre>
      */
     public boolean hasTrueCase() {
-      return ((bitField0_ & 0x20000000) == 0x20000000);
+      return ((bitField1_ & 0x00000008) == 0x00000008);
     }
     /**
      * <code>optional string trueCase = 52;</code>
@@ -10034,7 +13616,7 @@ public final class CoreNLPProtos {
      * </pre>
      */
     public boolean hasTrueCaseText() {
-      return ((bitField0_ & 0x40000000) == 0x40000000);
+      return ((bitField1_ & 0x00000010) == 0x00000010);
     }
     /**
      * <code>optional string trueCaseText = 53;</code>
@@ -10078,6 +13660,102 @@ public final class CoreNLPProtos {
       }
     }
 
+    public static final int CHINESECHAR_FIELD_NUMBER = 54;
+    private java.lang.Object chineseChar_;
+    /**
+     * <code>optional string chineseChar = 54;</code>
+     *
+     * <pre>
+     *  Chinese character info
+     * </pre>
+     */
+    public boolean hasChineseChar() {
+      return ((bitField1_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string chineseChar = 54;</code>
+     *
+     * <pre>
+     *  Chinese character info
+     * </pre>
+     */
+    public java.lang.String getChineseChar() {
+      java.lang.Object ref = chineseChar_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          chineseChar_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string chineseChar = 54;</code>
+     *
+     * <pre>
+     *  Chinese character info
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getChineseCharBytes() {
+      java.lang.Object ref = chineseChar_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        chineseChar_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CHINESESEG_FIELD_NUMBER = 55;
+    private java.lang.Object chineseSeg_;
+    /**
+     * <code>optional string chineseSeg = 55;</code>
+     */
+    public boolean hasChineseSeg() {
+      return ((bitField1_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional string chineseSeg = 55;</code>
+     */
+    public java.lang.String getChineseSeg() {
+      java.lang.Object ref = chineseSeg_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          chineseSeg_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string chineseSeg = 55;</code>
+     */
+    public com.google.protobuf.ByteString
+        getChineseSegBytes() {
+      java.lang.Object ref = chineseSeg_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        chineseSeg_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       word_ = "";
       pos_ = "";
@@ -10108,9 +13786,17 @@ public final class CoreNLPProtos {
       span_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
       sentiment_ = "";
       quotationIndex_ = 0;
+      conllUFeatures_ = edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.getDefaultInstance();
+      coarseTag_ = "";
+      conllUTokenSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+      conllUMisc_ = "";
+      conllUSecondaryDeps_ = edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.getDefaultInstance();
+      wikipediaEntity_ = "";
       gender_ = "";
       trueCase_ = "";
       trueCaseText_ = "";
+      chineseChar_ = "";
+      chineseSeg_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -10136,6 +13822,12 @@ public final class CoreNLPProtos {
       }
       if (hasSpan()) {
         if (!getSpan().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      if (hasConllUTokenSpan()) {
+        if (!getConllUTokenSpan().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -10242,13 +13934,37 @@ public final class CoreNLPProtos {
         output.writeInt32(31, quotationIndex_);
       }
       if (((bitField0_ & 0x10000000) == 0x10000000)) {
-        output.writeBytes(51, getGenderBytes());
+        output.writeMessage(32, conllUFeatures_);
       }
       if (((bitField0_ & 0x20000000) == 0x20000000)) {
-        output.writeBytes(52, getTrueCaseBytes());
+        output.writeBytes(33, getCoarseTagBytes());
       }
       if (((bitField0_ & 0x40000000) == 0x40000000)) {
+        output.writeMessage(34, conllUTokenSpan_);
+      }
+      if (((bitField0_ & 0x80000000) == 0x80000000)) {
+        output.writeBytes(35, getConllUMiscBytes());
+      }
+      if (((bitField1_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(36, conllUSecondaryDeps_);
+      }
+      if (((bitField1_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(37, getWikipediaEntityBytes());
+      }
+      if (((bitField1_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(51, getGenderBytes());
+      }
+      if (((bitField1_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(52, getTrueCaseBytes());
+      }
+      if (((bitField1_ & 0x00000010) == 0x00000010)) {
         output.writeBytes(53, getTrueCaseTextBytes());
+      }
+      if (((bitField1_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(54, getChineseCharBytes());
+      }
+      if (((bitField1_ & 0x00000040) == 0x00000040)) {
+        output.writeBytes(55, getChineseSegBytes());
       }
       extensionWriter.writeUntil(256, output);
       getUnknownFields().writeTo(output);
@@ -10383,15 +14099,47 @@ public final class CoreNLPProtos {
       }
       if (((bitField0_ & 0x10000000) == 0x10000000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(51, getGenderBytes());
+          .computeMessageSize(32, conllUFeatures_);
       }
       if (((bitField0_ & 0x20000000) == 0x20000000)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(52, getTrueCaseBytes());
+          .computeBytesSize(33, getCoarseTagBytes());
       }
       if (((bitField0_ & 0x40000000) == 0x40000000)) {
         size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(34, conllUTokenSpan_);
+      }
+      if (((bitField0_ & 0x80000000) == 0x80000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(35, getConllUMiscBytes());
+      }
+      if (((bitField1_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(36, conllUSecondaryDeps_);
+      }
+      if (((bitField1_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(37, getWikipediaEntityBytes());
+      }
+      if (((bitField1_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(51, getGenderBytes());
+      }
+      if (((bitField1_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(52, getTrueCaseBytes());
+      }
+      if (((bitField1_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(53, getTrueCaseTextBytes());
+      }
+      if (((bitField1_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(54, getChineseCharBytes());
+      }
+      if (((bitField1_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(55, getChineseSegBytes());
       }
       size += extensionsSerializedSize();
       size += getUnknownFields().getSerializedSize();
@@ -10512,6 +14260,9 @@ public final class CoreNLPProtos {
           getOperatorFieldBuilder();
           getPolarityFieldBuilder();
           getSpanFieldBuilder();
+          getConllUFeaturesFieldBuilder();
+          getConllUTokenSpanFieldBuilder();
+          getConllUSecondaryDepsFieldBuilder();
         }
       }
       private static Builder create() {
@@ -10594,12 +14345,40 @@ public final class CoreNLPProtos {
         bitField0_ = (bitField0_ & ~0x08000000);
         quotationIndex_ = 0;
         bitField0_ = (bitField0_ & ~0x10000000);
-        gender_ = "";
+        if (conllUFeaturesBuilder_ == null) {
+          conllUFeatures_ = edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.getDefaultInstance();
+        } else {
+          conllUFeaturesBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x20000000);
-        trueCase_ = "";
+        coarseTag_ = "";
         bitField0_ = (bitField0_ & ~0x40000000);
-        trueCaseText_ = "";
+        if (conllUTokenSpanBuilder_ == null) {
+          conllUTokenSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+        } else {
+          conllUTokenSpanBuilder_.clear();
+        }
         bitField0_ = (bitField0_ & ~0x80000000);
+        conllUMisc_ = "";
+        bitField1_ = (bitField1_ & ~0x00000001);
+        if (conllUSecondaryDepsBuilder_ == null) {
+          conllUSecondaryDeps_ = edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.getDefaultInstance();
+        } else {
+          conllUSecondaryDepsBuilder_.clear();
+        }
+        bitField1_ = (bitField1_ & ~0x00000002);
+        wikipediaEntity_ = "";
+        bitField1_ = (bitField1_ & ~0x00000004);
+        gender_ = "";
+        bitField1_ = (bitField1_ & ~0x00000008);
+        trueCase_ = "";
+        bitField1_ = (bitField1_ & ~0x00000010);
+        trueCaseText_ = "";
+        bitField1_ = (bitField1_ & ~0x00000020);
+        chineseChar_ = "";
+        bitField1_ = (bitField1_ & ~0x00000040);
+        chineseSeg_ = "";
+        bitField1_ = (bitField1_ & ~0x00000080);
         return this;
       }
 
@@ -10627,7 +14406,9 @@ public final class CoreNLPProtos {
       public edu.stanford.nlp.pipeline.CoreNLPProtos.Token buildPartial() {
         edu.stanford.nlp.pipeline.CoreNLPProtos.Token result = new edu.stanford.nlp.pipeline.CoreNLPProtos.Token(this);
         int from_bitField0_ = bitField0_;
+        int from_bitField1_ = bitField1_;
         int to_bitField0_ = 0;
+        int to_bitField1_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
@@ -10764,16 +14545,61 @@ public final class CoreNLPProtos {
         if (((from_bitField0_ & 0x20000000) == 0x20000000)) {
           to_bitField0_ |= 0x10000000;
         }
-        result.gender_ = gender_;
+        if (conllUFeaturesBuilder_ == null) {
+          result.conllUFeatures_ = conllUFeatures_;
+        } else {
+          result.conllUFeatures_ = conllUFeaturesBuilder_.build();
+        }
         if (((from_bitField0_ & 0x40000000) == 0x40000000)) {
           to_bitField0_ |= 0x20000000;
         }
-        result.trueCase_ = trueCase_;
+        result.coarseTag_ = coarseTag_;
         if (((from_bitField0_ & 0x80000000) == 0x80000000)) {
           to_bitField0_ |= 0x40000000;
         }
+        if (conllUTokenSpanBuilder_ == null) {
+          result.conllUTokenSpan_ = conllUTokenSpan_;
+        } else {
+          result.conllUTokenSpan_ = conllUTokenSpanBuilder_.build();
+        }
+        if (((from_bitField1_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x80000000;
+        }
+        result.conllUMisc_ = conllUMisc_;
+        if (((from_bitField1_ & 0x00000002) == 0x00000002)) {
+          to_bitField1_ |= 0x00000001;
+        }
+        if (conllUSecondaryDepsBuilder_ == null) {
+          result.conllUSecondaryDeps_ = conllUSecondaryDeps_;
+        } else {
+          result.conllUSecondaryDeps_ = conllUSecondaryDepsBuilder_.build();
+        }
+        if (((from_bitField1_ & 0x00000004) == 0x00000004)) {
+          to_bitField1_ |= 0x00000002;
+        }
+        result.wikipediaEntity_ = wikipediaEntity_;
+        if (((from_bitField1_ & 0x00000008) == 0x00000008)) {
+          to_bitField1_ |= 0x00000004;
+        }
+        result.gender_ = gender_;
+        if (((from_bitField1_ & 0x00000010) == 0x00000010)) {
+          to_bitField1_ |= 0x00000008;
+        }
+        result.trueCase_ = trueCase_;
+        if (((from_bitField1_ & 0x00000020) == 0x00000020)) {
+          to_bitField1_ |= 0x00000010;
+        }
         result.trueCaseText_ = trueCaseText_;
+        if (((from_bitField1_ & 0x00000040) == 0x00000040)) {
+          to_bitField1_ |= 0x00000020;
+        }
+        result.chineseChar_ = chineseChar_;
+        if (((from_bitField1_ & 0x00000080) == 0x00000080)) {
+          to_bitField1_ |= 0x00000040;
+        }
+        result.chineseSeg_ = chineseSeg_;
         result.bitField0_ = to_bitField0_;
+        result.bitField1_ = to_bitField1_;
         onBuilt();
         return result;
       }
@@ -10909,19 +14735,53 @@ public final class CoreNLPProtos {
         if (other.hasQuotationIndex()) {
           setQuotationIndex(other.getQuotationIndex());
         }
+        if (other.hasConllUFeatures()) {
+          mergeConllUFeatures(other.getConllUFeatures());
+        }
+        if (other.hasCoarseTag()) {
+          bitField0_ |= 0x40000000;
+          coarseTag_ = other.coarseTag_;
+          onChanged();
+        }
+        if (other.hasConllUTokenSpan()) {
+          mergeConllUTokenSpan(other.getConllUTokenSpan());
+        }
+        if (other.hasConllUMisc()) {
+          bitField1_ |= 0x00000001;
+          conllUMisc_ = other.conllUMisc_;
+          onChanged();
+        }
+        if (other.hasConllUSecondaryDeps()) {
+          mergeConllUSecondaryDeps(other.getConllUSecondaryDeps());
+        }
+        if (other.hasWikipediaEntity()) {
+          bitField1_ |= 0x00000004;
+          wikipediaEntity_ = other.wikipediaEntity_;
+          onChanged();
+        }
         if (other.hasGender()) {
-          bitField0_ |= 0x20000000;
+          bitField1_ |= 0x00000008;
           gender_ = other.gender_;
           onChanged();
         }
         if (other.hasTrueCase()) {
-          bitField0_ |= 0x40000000;
+          bitField1_ |= 0x00000010;
           trueCase_ = other.trueCase_;
           onChanged();
         }
         if (other.hasTrueCaseText()) {
-          bitField0_ |= 0x80000000;
+          bitField1_ |= 0x00000020;
           trueCaseText_ = other.trueCaseText_;
+          onChanged();
+        }
+        if (other.hasChineseChar()) {
+          bitField1_ |= 0x00000040;
+          chineseChar_ = other.chineseChar_;
+          onChanged();
+        }
+        if (other.hasChineseSeg()) {
+          bitField1_ |= 0x00000080;
+          chineseSeg_ = other.chineseSeg_;
           onChanged();
         }
         this.mergeExtensionFields(other);
@@ -10952,6 +14812,12 @@ public final class CoreNLPProtos {
             return false;
           }
         }
+        if (hasConllUTokenSpan()) {
+          if (!getConllUTokenSpan().isInitialized()) {
+            
+            return false;
+          }
+        }
         if (!extensionsAreInitialized()) {
           
           return false;
@@ -10977,6 +14843,7 @@ public final class CoreNLPProtos {
         return this;
       }
       private int bitField0_;
+      private int bitField1_;
 
       private java.lang.Object word_ = "";
       /**
@@ -13543,6 +17410,606 @@ public final class CoreNLPProtos {
         return this;
       }
 
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString conllUFeatures_ = edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString, edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringStringOrBuilder> conllUFeaturesBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      public boolean hasConllUFeatures() {
+        return ((bitField0_ & 0x20000000) == 0x20000000);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString getConllUFeatures() {
+        if (conllUFeaturesBuilder_ == null) {
+          return conllUFeatures_;
+        } else {
+          return conllUFeaturesBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      public Builder setConllUFeatures(edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString value) {
+        if (conllUFeaturesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          conllUFeatures_ = value;
+          onChanged();
+        } else {
+          conllUFeaturesBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      public Builder setConllUFeatures(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.Builder builderForValue) {
+        if (conllUFeaturesBuilder_ == null) {
+          conllUFeatures_ = builderForValue.build();
+          onChanged();
+        } else {
+          conllUFeaturesBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      public Builder mergeConllUFeatures(edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString value) {
+        if (conllUFeaturesBuilder_ == null) {
+          if (((bitField0_ & 0x20000000) == 0x20000000) &&
+              conllUFeatures_ != edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.getDefaultInstance()) {
+            conllUFeatures_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.newBuilder(conllUFeatures_).mergeFrom(value).buildPartial();
+          } else {
+            conllUFeatures_ = value;
+          }
+          onChanged();
+        } else {
+          conllUFeaturesBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      public Builder clearConllUFeatures() {
+        if (conllUFeaturesBuilder_ == null) {
+          conllUFeatures_ = edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.getDefaultInstance();
+          onChanged();
+        } else {
+          conllUFeaturesBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x20000000);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.Builder getConllUFeaturesBuilder() {
+        bitField0_ |= 0x20000000;
+        onChanged();
+        return getConllUFeaturesFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringStringOrBuilder getConllUFeaturesOrBuilder() {
+        if (conllUFeaturesBuilder_ != null) {
+          return conllUFeaturesBuilder_.getMessageOrBuilder();
+        } else {
+          return conllUFeatures_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapStringString conllUFeatures = 32;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString, edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringStringOrBuilder> 
+          getConllUFeaturesFieldBuilder() {
+        if (conllUFeaturesBuilder_ == null) {
+          conllUFeaturesBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString, edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringStringOrBuilder>(
+                  getConllUFeatures(),
+                  getParentForChildren(),
+                  isClean());
+          conllUFeatures_ = null;
+        }
+        return conllUFeaturesBuilder_;
+      }
+
+      private java.lang.Object coarseTag_ = "";
+      /**
+       * <code>optional string coarseTag = 33;</code>
+       *
+       * <pre>
+       *  The coarse POS tag (used to store the UPOS tag)
+       * </pre>
+       */
+      public boolean hasCoarseTag() {
+        return ((bitField0_ & 0x40000000) == 0x40000000);
+      }
+      /**
+       * <code>optional string coarseTag = 33;</code>
+       *
+       * <pre>
+       *  The coarse POS tag (used to store the UPOS tag)
+       * </pre>
+       */
+      public java.lang.String getCoarseTag() {
+        java.lang.Object ref = coarseTag_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            coarseTag_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string coarseTag = 33;</code>
+       *
+       * <pre>
+       *  The coarse POS tag (used to store the UPOS tag)
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getCoarseTagBytes() {
+        java.lang.Object ref = coarseTag_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          coarseTag_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string coarseTag = 33;</code>
+       *
+       * <pre>
+       *  The coarse POS tag (used to store the UPOS tag)
+       * </pre>
+       */
+      public Builder setCoarseTag(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x40000000;
+        coarseTag_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string coarseTag = 33;</code>
+       *
+       * <pre>
+       *  The coarse POS tag (used to store the UPOS tag)
+       * </pre>
+       */
+      public Builder clearCoarseTag() {
+        bitField0_ = (bitField0_ & ~0x40000000);
+        coarseTag_ = getDefaultInstance().getCoarseTag();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string coarseTag = 33;</code>
+       *
+       * <pre>
+       *  The coarse POS tag (used to store the UPOS tag)
+       * </pre>
+       */
+      public Builder setCoarseTagBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x40000000;
+        coarseTag_ = value;
+        onChanged();
+        return this;
+      }
+
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.Span conllUTokenSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder> conllUTokenSpanBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      public boolean hasConllUTokenSpan() {
+        return ((bitField0_ & 0x80000000) == 0x80000000);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Span getConllUTokenSpan() {
+        if (conllUTokenSpanBuilder_ == null) {
+          return conllUTokenSpan_;
+        } else {
+          return conllUTokenSpanBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      public Builder setConllUTokenSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.Span value) {
+        if (conllUTokenSpanBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          conllUTokenSpan_ = value;
+          onChanged();
+        } else {
+          conllUTokenSpanBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x80000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      public Builder setConllUTokenSpan(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder builderForValue) {
+        if (conllUTokenSpanBuilder_ == null) {
+          conllUTokenSpan_ = builderForValue.build();
+          onChanged();
+        } else {
+          conllUTokenSpanBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x80000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      public Builder mergeConllUTokenSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.Span value) {
+        if (conllUTokenSpanBuilder_ == null) {
+          if (((bitField0_ & 0x80000000) == 0x80000000) &&
+              conllUTokenSpan_ != edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance()) {
+            conllUTokenSpan_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.Span.newBuilder(conllUTokenSpan_).mergeFrom(value).buildPartial();
+          } else {
+            conllUTokenSpan_ = value;
+          }
+          onChanged();
+        } else {
+          conllUTokenSpanBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x80000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      public Builder clearConllUTokenSpan() {
+        if (conllUTokenSpanBuilder_ == null) {
+          conllUTokenSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+          onChanged();
+        } else {
+          conllUTokenSpanBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x80000000);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder getConllUTokenSpanBuilder() {
+        bitField0_ |= 0x80000000;
+        onChanged();
+        return getConllUTokenSpanFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getConllUTokenSpanOrBuilder() {
+        if (conllUTokenSpanBuilder_ != null) {
+          return conllUTokenSpanBuilder_.getMessageOrBuilder();
+        } else {
+          return conllUTokenSpan_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.Span conllUTokenSpan = 34;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder> 
+          getConllUTokenSpanFieldBuilder() {
+        if (conllUTokenSpanBuilder_ == null) {
+          conllUTokenSpanBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder>(
+                  getConllUTokenSpan(),
+                  getParentForChildren(),
+                  isClean());
+          conllUTokenSpan_ = null;
+        }
+        return conllUTokenSpanBuilder_;
+      }
+
+      private java.lang.Object conllUMisc_ = "";
+      /**
+       * <code>optional string conllUMisc = 35;</code>
+       */
+      public boolean hasConllUMisc() {
+        return ((bitField1_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string conllUMisc = 35;</code>
+       */
+      public java.lang.String getConllUMisc() {
+        java.lang.Object ref = conllUMisc_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            conllUMisc_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string conllUMisc = 35;</code>
+       */
+      public com.google.protobuf.ByteString
+          getConllUMiscBytes() {
+        java.lang.Object ref = conllUMisc_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          conllUMisc_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string conllUMisc = 35;</code>
+       */
+      public Builder setConllUMisc(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField1_ |= 0x00000001;
+        conllUMisc_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string conllUMisc = 35;</code>
+       */
+      public Builder clearConllUMisc() {
+        bitField1_ = (bitField1_ & ~0x00000001);
+        conllUMisc_ = getDefaultInstance().getConllUMisc();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string conllUMisc = 35;</code>
+       */
+      public Builder setConllUMiscBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField1_ |= 0x00000001;
+        conllUMisc_ = value;
+        onChanged();
+        return this;
+      }
+
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString conllUSecondaryDeps_ = edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString, edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntStringOrBuilder> conllUSecondaryDepsBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      public boolean hasConllUSecondaryDeps() {
+        return ((bitField1_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString getConllUSecondaryDeps() {
+        if (conllUSecondaryDepsBuilder_ == null) {
+          return conllUSecondaryDeps_;
+        } else {
+          return conllUSecondaryDepsBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      public Builder setConllUSecondaryDeps(edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString value) {
+        if (conllUSecondaryDepsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          conllUSecondaryDeps_ = value;
+          onChanged();
+        } else {
+          conllUSecondaryDepsBuilder_.setMessage(value);
+        }
+        bitField1_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      public Builder setConllUSecondaryDeps(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.Builder builderForValue) {
+        if (conllUSecondaryDepsBuilder_ == null) {
+          conllUSecondaryDeps_ = builderForValue.build();
+          onChanged();
+        } else {
+          conllUSecondaryDepsBuilder_.setMessage(builderForValue.build());
+        }
+        bitField1_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      public Builder mergeConllUSecondaryDeps(edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString value) {
+        if (conllUSecondaryDepsBuilder_ == null) {
+          if (((bitField1_ & 0x00000002) == 0x00000002) &&
+              conllUSecondaryDeps_ != edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.getDefaultInstance()) {
+            conllUSecondaryDeps_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.newBuilder(conllUSecondaryDeps_).mergeFrom(value).buildPartial();
+          } else {
+            conllUSecondaryDeps_ = value;
+          }
+          onChanged();
+        } else {
+          conllUSecondaryDepsBuilder_.mergeFrom(value);
+        }
+        bitField1_ |= 0x00000002;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      public Builder clearConllUSecondaryDeps() {
+        if (conllUSecondaryDepsBuilder_ == null) {
+          conllUSecondaryDeps_ = edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.getDefaultInstance();
+          onChanged();
+        } else {
+          conllUSecondaryDepsBuilder_.clear();
+        }
+        bitField1_ = (bitField1_ & ~0x00000002);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.Builder getConllUSecondaryDepsBuilder() {
+        bitField1_ |= 0x00000002;
+        onChanged();
+        return getConllUSecondaryDepsFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntStringOrBuilder getConllUSecondaryDepsOrBuilder() {
+        if (conllUSecondaryDepsBuilder_ != null) {
+          return conllUSecondaryDepsBuilder_.getMessageOrBuilder();
+        } else {
+          return conllUSecondaryDeps_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.MapIntString conllUSecondaryDeps = 36;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString, edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntStringOrBuilder> 
+          getConllUSecondaryDepsFieldBuilder() {
+        if (conllUSecondaryDepsBuilder_ == null) {
+          conllUSecondaryDepsBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString, edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntStringOrBuilder>(
+                  getConllUSecondaryDeps(),
+                  getParentForChildren(),
+                  isClean());
+          conllUSecondaryDeps_ = null;
+        }
+        return conllUSecondaryDepsBuilder_;
+      }
+
+      private java.lang.Object wikipediaEntity_ = "";
+      /**
+       * <code>optional string wikipediaEntity = 37;</code>
+       */
+      public boolean hasWikipediaEntity() {
+        return ((bitField1_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string wikipediaEntity = 37;</code>
+       */
+      public java.lang.String getWikipediaEntity() {
+        java.lang.Object ref = wikipediaEntity_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            wikipediaEntity_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string wikipediaEntity = 37;</code>
+       */
+      public com.google.protobuf.ByteString
+          getWikipediaEntityBytes() {
+        java.lang.Object ref = wikipediaEntity_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          wikipediaEntity_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string wikipediaEntity = 37;</code>
+       */
+      public Builder setWikipediaEntity(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField1_ |= 0x00000004;
+        wikipediaEntity_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string wikipediaEntity = 37;</code>
+       */
+      public Builder clearWikipediaEntity() {
+        bitField1_ = (bitField1_ & ~0x00000004);
+        wikipediaEntity_ = getDefaultInstance().getWikipediaEntity();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string wikipediaEntity = 37;</code>
+       */
+      public Builder setWikipediaEntityBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField1_ |= 0x00000004;
+        wikipediaEntity_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object gender_ = "";
       /**
        * <code>optional string gender = 51;</code>
@@ -13552,7 +18019,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public boolean hasGender() {
-        return ((bitField0_ & 0x20000000) == 0x20000000);
+        return ((bitField1_ & 0x00000008) == 0x00000008);
       }
       /**
        * <code>optional string gender = 51;</code>
@@ -13607,7 +18074,7 @@ public final class CoreNLPProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField1_ |= 0x00000008;
         gender_ = value;
         onChanged();
         return this;
@@ -13620,7 +18087,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public Builder clearGender() {
-        bitField0_ = (bitField0_ & ~0x20000000);
+        bitField1_ = (bitField1_ & ~0x00000008);
         gender_ = getDefaultInstance().getGender();
         onChanged();
         return this;
@@ -13637,7 +18104,7 @@ public final class CoreNLPProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField1_ |= 0x00000008;
         gender_ = value;
         onChanged();
         return this;
@@ -13652,7 +18119,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public boolean hasTrueCase() {
-        return ((bitField0_ & 0x40000000) == 0x40000000);
+        return ((bitField1_ & 0x00000010) == 0x00000010);
       }
       /**
        * <code>optional string trueCase = 52;</code>
@@ -13707,7 +18174,7 @@ public final class CoreNLPProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x40000000;
+  bitField1_ |= 0x00000010;
         trueCase_ = value;
         onChanged();
         return this;
@@ -13720,7 +18187,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public Builder clearTrueCase() {
-        bitField0_ = (bitField0_ & ~0x40000000);
+        bitField1_ = (bitField1_ & ~0x00000010);
         trueCase_ = getDefaultInstance().getTrueCase();
         onChanged();
         return this;
@@ -13737,7 +18204,7 @@ public final class CoreNLPProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x40000000;
+  bitField1_ |= 0x00000010;
         trueCase_ = value;
         onChanged();
         return this;
@@ -13752,7 +18219,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public boolean hasTrueCaseText() {
-        return ((bitField0_ & 0x80000000) == 0x80000000);
+        return ((bitField1_ & 0x00000020) == 0x00000020);
       }
       /**
        * <code>optional string trueCaseText = 53;</code>
@@ -13807,7 +18274,7 @@ public final class CoreNLPProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x80000000;
+  bitField1_ |= 0x00000020;
         trueCaseText_ = value;
         onChanged();
         return this;
@@ -13820,7 +18287,7 @@ public final class CoreNLPProtos {
        * </pre>
        */
       public Builder clearTrueCaseText() {
-        bitField0_ = (bitField0_ & ~0x80000000);
+        bitField1_ = (bitField1_ & ~0x00000020);
         trueCaseText_ = getDefaultInstance().getTrueCaseText();
         onChanged();
         return this;
@@ -13837,8 +18304,184 @@ public final class CoreNLPProtos {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x80000000;
+  bitField1_ |= 0x00000020;
         trueCaseText_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object chineseChar_ = "";
+      /**
+       * <code>optional string chineseChar = 54;</code>
+       *
+       * <pre>
+       *  Chinese character info
+       * </pre>
+       */
+      public boolean hasChineseChar() {
+        return ((bitField1_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional string chineseChar = 54;</code>
+       *
+       * <pre>
+       *  Chinese character info
+       * </pre>
+       */
+      public java.lang.String getChineseChar() {
+        java.lang.Object ref = chineseChar_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            chineseChar_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string chineseChar = 54;</code>
+       *
+       * <pre>
+       *  Chinese character info
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getChineseCharBytes() {
+        java.lang.Object ref = chineseChar_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          chineseChar_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string chineseChar = 54;</code>
+       *
+       * <pre>
+       *  Chinese character info
+       * </pre>
+       */
+      public Builder setChineseChar(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField1_ |= 0x00000040;
+        chineseChar_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string chineseChar = 54;</code>
+       *
+       * <pre>
+       *  Chinese character info
+       * </pre>
+       */
+      public Builder clearChineseChar() {
+        bitField1_ = (bitField1_ & ~0x00000040);
+        chineseChar_ = getDefaultInstance().getChineseChar();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string chineseChar = 54;</code>
+       *
+       * <pre>
+       *  Chinese character info
+       * </pre>
+       */
+      public Builder setChineseCharBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField1_ |= 0x00000040;
+        chineseChar_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object chineseSeg_ = "";
+      /**
+       * <code>optional string chineseSeg = 55;</code>
+       */
+      public boolean hasChineseSeg() {
+        return ((bitField1_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string chineseSeg = 55;</code>
+       */
+      public java.lang.String getChineseSeg() {
+        java.lang.Object ref = chineseSeg_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            chineseSeg_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string chineseSeg = 55;</code>
+       */
+      public com.google.protobuf.ByteString
+          getChineseSegBytes() {
+        java.lang.Object ref = chineseSeg_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          chineseSeg_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string chineseSeg = 55;</code>
+       */
+      public Builder setChineseSeg(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField1_ |= 0x00000080;
+        chineseSeg_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string chineseSeg = 55;</code>
+       */
+      public Builder clearChineseSeg() {
+        bitField1_ = (bitField1_ & ~0x00000080);
+        chineseSeg_ = getDefaultInstance().getChineseSeg();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string chineseSeg = 55;</code>
+       */
+      public Builder setChineseSegBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField1_ |= 0x00000080;
+        chineseSeg_ = value;
         onChanged();
         return this;
       }
@@ -21285,6 +25928,6944 @@ public final class CoreNLPProtos {
     // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.CorefChain)
   }
 
+  public interface MentionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.Mention)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional int32 mentionID = 1;</code>
+     */
+    boolean hasMentionID();
+    /**
+     * <code>optional int32 mentionID = 1;</code>
+     */
+    int getMentionID();
+
+    /**
+     * <code>optional string mentionType = 2;</code>
+     */
+    boolean hasMentionType();
+    /**
+     * <code>optional string mentionType = 2;</code>
+     */
+    java.lang.String getMentionType();
+    /**
+     * <code>optional string mentionType = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getMentionTypeBytes();
+
+    /**
+     * <code>optional string number = 3;</code>
+     */
+    boolean hasNumber();
+    /**
+     * <code>optional string number = 3;</code>
+     */
+    java.lang.String getNumber();
+    /**
+     * <code>optional string number = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getNumberBytes();
+
+    /**
+     * <code>optional string gender = 4;</code>
+     */
+    boolean hasGender();
+    /**
+     * <code>optional string gender = 4;</code>
+     */
+    java.lang.String getGender();
+    /**
+     * <code>optional string gender = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getGenderBytes();
+
+    /**
+     * <code>optional string animacy = 5;</code>
+     */
+    boolean hasAnimacy();
+    /**
+     * <code>optional string animacy = 5;</code>
+     */
+    java.lang.String getAnimacy();
+    /**
+     * <code>optional string animacy = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getAnimacyBytes();
+
+    /**
+     * <code>optional string person = 6;</code>
+     */
+    boolean hasPerson();
+    /**
+     * <code>optional string person = 6;</code>
+     */
+    java.lang.String getPerson();
+    /**
+     * <code>optional string person = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getPersonBytes();
+
+    /**
+     * <code>optional uint32 startIndex = 7;</code>
+     */
+    boolean hasStartIndex();
+    /**
+     * <code>optional uint32 startIndex = 7;</code>
+     */
+    int getStartIndex();
+
+    /**
+     * <code>optional uint32 endIndex = 9;</code>
+     */
+    boolean hasEndIndex();
+    /**
+     * <code>optional uint32 endIndex = 9;</code>
+     */
+    int getEndIndex();
+
+    /**
+     * <code>optional uint32 headIndex = 10;</code>
+     */
+    boolean hasHeadIndex();
+    /**
+     * <code>optional uint32 headIndex = 10;</code>
+     */
+    int getHeadIndex();
+
+    /**
+     * <code>optional string headString = 11;</code>
+     */
+    boolean hasHeadString();
+    /**
+     * <code>optional string headString = 11;</code>
+     */
+    java.lang.String getHeadString();
+    /**
+     * <code>optional string headString = 11;</code>
+     */
+    com.google.protobuf.ByteString
+        getHeadStringBytes();
+
+    /**
+     * <code>optional string nerString = 12;</code>
+     */
+    boolean hasNerString();
+    /**
+     * <code>optional string nerString = 12;</code>
+     */
+    java.lang.String getNerString();
+    /**
+     * <code>optional string nerString = 12;</code>
+     */
+    com.google.protobuf.ByteString
+        getNerStringBytes();
+
+    /**
+     * <code>optional uint32 originalRef = 13;</code>
+     */
+    boolean hasOriginalRef();
+    /**
+     * <code>optional uint32 originalRef = 13;</code>
+     */
+    int getOriginalRef();
+
+    /**
+     * <code>optional int32 goldCorefClusterID = 14;</code>
+     */
+    boolean hasGoldCorefClusterID();
+    /**
+     * <code>optional int32 goldCorefClusterID = 14;</code>
+     */
+    int getGoldCorefClusterID();
+
+    /**
+     * <code>optional int32 corefClusterID = 15;</code>
+     */
+    boolean hasCorefClusterID();
+    /**
+     * <code>optional int32 corefClusterID = 15;</code>
+     */
+    int getCorefClusterID();
+
+    /**
+     * <code>optional uint32 mentionNum = 16;</code>
+     */
+    boolean hasMentionNum();
+    /**
+     * <code>optional uint32 mentionNum = 16;</code>
+     */
+    int getMentionNum();
+
+    /**
+     * <code>optional uint32 sentNum = 17;</code>
+     */
+    boolean hasSentNum();
+    /**
+     * <code>optional uint32 sentNum = 17;</code>
+     */
+    int getSentNum();
+
+    /**
+     * <code>optional uint32 utter = 18;</code>
+     */
+    boolean hasUtter();
+    /**
+     * <code>optional uint32 utter = 18;</code>
+     */
+    int getUtter();
+
+    /**
+     * <code>optional uint32 paragraph = 19;</code>
+     */
+    boolean hasParagraph();
+    /**
+     * <code>optional uint32 paragraph = 19;</code>
+     */
+    int getParagraph();
+
+    /**
+     * <code>optional bool isSubject = 20;</code>
+     */
+    boolean hasIsSubject();
+    /**
+     * <code>optional bool isSubject = 20;</code>
+     */
+    boolean getIsSubject();
+
+    /**
+     * <code>optional bool isDirectObject = 21;</code>
+     */
+    boolean hasIsDirectObject();
+    /**
+     * <code>optional bool isDirectObject = 21;</code>
+     */
+    boolean getIsDirectObject();
+
+    /**
+     * <code>optional bool isIndirectObject = 22;</code>
+     */
+    boolean hasIsIndirectObject();
+    /**
+     * <code>optional bool isIndirectObject = 22;</code>
+     */
+    boolean getIsIndirectObject();
+
+    /**
+     * <code>optional bool isPrepositionObject = 23;</code>
+     */
+    boolean hasIsPrepositionObject();
+    /**
+     * <code>optional bool isPrepositionObject = 23;</code>
+     */
+    boolean getIsPrepositionObject();
+
+    /**
+     * <code>optional bool hasTwin = 24;</code>
+     */
+    boolean hasHasTwin();
+    /**
+     * <code>optional bool hasTwin = 24;</code>
+     */
+    boolean getHasTwin();
+
+    /**
+     * <code>optional bool generic = 25;</code>
+     */
+    boolean hasGeneric();
+    /**
+     * <code>optional bool generic = 25;</code>
+     */
+    boolean getGeneric();
+
+    /**
+     * <code>optional bool isSingleton = 26;</code>
+     */
+    boolean hasIsSingleton();
+    /**
+     * <code>optional bool isSingleton = 26;</code>
+     */
+    boolean getIsSingleton();
+
+    /**
+     * <code>optional bool hasBasicDependency = 27;</code>
+     */
+    boolean hasHasBasicDependency();
+    /**
+     * <code>optional bool hasBasicDependency = 27;</code>
+     */
+    boolean getHasBasicDependency();
+
+    /**
+     * <code>optional bool hasEnhancedDepenedncy = 28;</code>
+     */
+    boolean hasHasEnhancedDepenedncy();
+    /**
+     * <code>optional bool hasEnhancedDepenedncy = 28;</code>
+     */
+    boolean getHasEnhancedDepenedncy();
+
+    /**
+     * <code>optional bool hasContextParseTree = 29;</code>
+     */
+    boolean hasHasContextParseTree();
+    /**
+     * <code>optional bool hasContextParseTree = 29;</code>
+     */
+    boolean getHasContextParseTree();
+
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+     */
+    boolean hasHeadIndexedWord();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getHeadIndexedWord();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getHeadIndexedWordOrBuilder();
+
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+     */
+    boolean hasDependingVerb();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getDependingVerb();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getDependingVerbOrBuilder();
+
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+     */
+    boolean hasHeadWord();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getHeadWord();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getHeadWordOrBuilder();
+
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+     */
+    boolean hasSpeakerInfo();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo getSpeakerInfo();
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfoOrBuilder getSpeakerInfoOrBuilder();
+
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> 
+        getSentenceWordsList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getSentenceWords(int index);
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    int getSentenceWordsCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+        getSentenceWordsOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getSentenceWordsOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> 
+        getOriginalSpanList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getOriginalSpan(int index);
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    int getOriginalSpanCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+        getOriginalSpanOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getOriginalSpanOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated string dependents = 52;</code>
+     */
+    com.google.protobuf.ProtocolStringList
+        getDependentsList();
+    /**
+     * <code>repeated string dependents = 52;</code>
+     */
+    int getDependentsCount();
+    /**
+     * <code>repeated string dependents = 52;</code>
+     */
+    java.lang.String getDependents(int index);
+    /**
+     * <code>repeated string dependents = 52;</code>
+     */
+    com.google.protobuf.ByteString
+        getDependentsBytes(int index);
+
+    /**
+     * <code>repeated string preprocessedTerms = 53;</code>
+     */
+    com.google.protobuf.ProtocolStringList
+        getPreprocessedTermsList();
+    /**
+     * <code>repeated string preprocessedTerms = 53;</code>
+     */
+    int getPreprocessedTermsCount();
+    /**
+     * <code>repeated string preprocessedTerms = 53;</code>
+     */
+    java.lang.String getPreprocessedTerms(int index);
+    /**
+     * <code>repeated string preprocessedTerms = 53;</code>
+     */
+    com.google.protobuf.ByteString
+        getPreprocessedTermsBytes(int index);
+
+    /**
+     * <code>repeated int32 appositions = 54;</code>
+     */
+    java.util.List<java.lang.Integer> getAppositionsList();
+    /**
+     * <code>repeated int32 appositions = 54;</code>
+     */
+    int getAppositionsCount();
+    /**
+     * <code>repeated int32 appositions = 54;</code>
+     */
+    int getAppositions(int index);
+
+    /**
+     * <code>repeated int32 predicateNominatives = 55;</code>
+     */
+    java.util.List<java.lang.Integer> getPredicateNominativesList();
+    /**
+     * <code>repeated int32 predicateNominatives = 55;</code>
+     */
+    int getPredicateNominativesCount();
+    /**
+     * <code>repeated int32 predicateNominatives = 55;</code>
+     */
+    int getPredicateNominatives(int index);
+
+    /**
+     * <code>repeated int32 relativePronouns = 56;</code>
+     */
+    java.util.List<java.lang.Integer> getRelativePronounsList();
+    /**
+     * <code>repeated int32 relativePronouns = 56;</code>
+     */
+    int getRelativePronounsCount();
+    /**
+     * <code>repeated int32 relativePronouns = 56;</code>
+     */
+    int getRelativePronouns(int index);
+
+    /**
+     * <code>repeated int32 listMembers = 57;</code>
+     */
+    java.util.List<java.lang.Integer> getListMembersList();
+    /**
+     * <code>repeated int32 listMembers = 57;</code>
+     */
+    int getListMembersCount();
+    /**
+     * <code>repeated int32 listMembers = 57;</code>
+     */
+    int getListMembers(int index);
+
+    /**
+     * <code>repeated int32 belongToLists = 58;</code>
+     */
+    java.util.List<java.lang.Integer> getBelongToListsList();
+    /**
+     * <code>repeated int32 belongToLists = 58;</code>
+     */
+    int getBelongToListsCount();
+    /**
+     * <code>repeated int32 belongToLists = 58;</code>
+     */
+    int getBelongToLists(int index);
+  }
+  /**
+   * Protobuf type {@code edu.stanford.nlp.pipeline.Mention}
+   */
+  public static final class Mention extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.Mention)
+      MentionOrBuilder {
+    // Use Mention.newBuilder() to construct.
+    private Mention(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Mention(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Mention defaultInstance;
+    public static Mention getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Mention getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Mention(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      int mutable_bitField1_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              mentionID_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              mentionType_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              number_ = bs;
+              break;
+            }
+            case 34: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000008;
+              gender_ = bs;
+              break;
+            }
+            case 42: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000010;
+              animacy_ = bs;
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              person_ = bs;
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              startIndex_ = input.readUInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000080;
+              endIndex_ = input.readUInt32();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000100;
+              headIndex_ = input.readUInt32();
+              break;
+            }
+            case 90: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000200;
+              headString_ = bs;
+              break;
+            }
+            case 98: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000400;
+              nerString_ = bs;
+              break;
+            }
+            case 104: {
+              bitField0_ |= 0x00000800;
+              originalRef_ = input.readUInt32();
+              break;
+            }
+            case 112: {
+              bitField0_ |= 0x00001000;
+              goldCorefClusterID_ = input.readInt32();
+              break;
+            }
+            case 120: {
+              bitField0_ |= 0x00002000;
+              corefClusterID_ = input.readInt32();
+              break;
+            }
+            case 128: {
+              bitField0_ |= 0x00004000;
+              mentionNum_ = input.readUInt32();
+              break;
+            }
+            case 136: {
+              bitField0_ |= 0x00008000;
+              sentNum_ = input.readUInt32();
+              break;
+            }
+            case 144: {
+              bitField0_ |= 0x00010000;
+              utter_ = input.readUInt32();
+              break;
+            }
+            case 152: {
+              bitField0_ |= 0x00020000;
+              paragraph_ = input.readUInt32();
+              break;
+            }
+            case 160: {
+              bitField0_ |= 0x00040000;
+              isSubject_ = input.readBool();
+              break;
+            }
+            case 168: {
+              bitField0_ |= 0x00080000;
+              isDirectObject_ = input.readBool();
+              break;
+            }
+            case 176: {
+              bitField0_ |= 0x00100000;
+              isIndirectObject_ = input.readBool();
+              break;
+            }
+            case 184: {
+              bitField0_ |= 0x00200000;
+              isPrepositionObject_ = input.readBool();
+              break;
+            }
+            case 192: {
+              bitField0_ |= 0x00400000;
+              hasTwin_ = input.readBool();
+              break;
+            }
+            case 200: {
+              bitField0_ |= 0x00800000;
+              generic_ = input.readBool();
+              break;
+            }
+            case 208: {
+              bitField0_ |= 0x01000000;
+              isSingleton_ = input.readBool();
+              break;
+            }
+            case 216: {
+              bitField0_ |= 0x02000000;
+              hasBasicDependency_ = input.readBool();
+              break;
+            }
+            case 224: {
+              bitField0_ |= 0x04000000;
+              hasEnhancedDepenedncy_ = input.readBool();
+              break;
+            }
+            case 232: {
+              bitField0_ |= 0x08000000;
+              hasContextParseTree_ = input.readBool();
+              break;
+            }
+            case 242: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder subBuilder = null;
+              if (((bitField0_ & 0x10000000) == 0x10000000)) {
+                subBuilder = headIndexedWord_.toBuilder();
+              }
+              headIndexedWord_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(headIndexedWord_);
+                headIndexedWord_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x10000000;
+              break;
+            }
+            case 250: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder subBuilder = null;
+              if (((bitField0_ & 0x20000000) == 0x20000000)) {
+                subBuilder = dependingVerb_.toBuilder();
+              }
+              dependingVerb_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(dependingVerb_);
+                dependingVerb_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x20000000;
+              break;
+            }
+            case 258: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder subBuilder = null;
+              if (((bitField0_ & 0x40000000) == 0x40000000)) {
+                subBuilder = headWord_.toBuilder();
+              }
+              headWord_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(headWord_);
+                headWord_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x40000000;
+              break;
+            }
+            case 266: {
+              edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x80000000) == 0x80000000)) {
+                subBuilder = speakerInfo_.toBuilder();
+              }
+              speakerInfo_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(speakerInfo_);
+                speakerInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x80000000;
+              break;
+            }
+            case 402: {
+              if (!((mutable_bitField1_ & 0x00000001) == 0x00000001)) {
+                sentenceWords_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord>();
+                mutable_bitField1_ |= 0x00000001;
+              }
+              sentenceWords_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.PARSER, extensionRegistry));
+              break;
+            }
+            case 410: {
+              if (!((mutable_bitField1_ & 0x00000002) == 0x00000002)) {
+                originalSpan_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord>();
+                mutable_bitField1_ |= 0x00000002;
+              }
+              originalSpan_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.PARSER, extensionRegistry));
+              break;
+            }
+            case 418: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField1_ & 0x00000004) == 0x00000004)) {
+                dependents_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField1_ |= 0x00000004;
+              }
+              dependents_.add(bs);
+              break;
+            }
+            case 426: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField1_ & 0x00000008) == 0x00000008)) {
+                preprocessedTerms_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField1_ |= 0x00000008;
+              }
+              preprocessedTerms_.add(bs);
+              break;
+            }
+            case 432: {
+              if (!((mutable_bitField1_ & 0x00000010) == 0x00000010)) {
+                appositions_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000010;
+              }
+              appositions_.add(input.readInt32());
+              break;
+            }
+            case 434: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000010) == 0x00000010) && input.getBytesUntilLimit() > 0) {
+                appositions_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000010;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                appositions_.add(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 440: {
+              if (!((mutable_bitField1_ & 0x00000020) == 0x00000020)) {
+                predicateNominatives_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000020;
+              }
+              predicateNominatives_.add(input.readInt32());
+              break;
+            }
+            case 442: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000020) == 0x00000020) && input.getBytesUntilLimit() > 0) {
+                predicateNominatives_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000020;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                predicateNominatives_.add(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 448: {
+              if (!((mutable_bitField1_ & 0x00000040) == 0x00000040)) {
+                relativePronouns_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000040;
+              }
+              relativePronouns_.add(input.readInt32());
+              break;
+            }
+            case 450: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000040) == 0x00000040) && input.getBytesUntilLimit() > 0) {
+                relativePronouns_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000040;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                relativePronouns_.add(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 456: {
+              if (!((mutable_bitField1_ & 0x00000080) == 0x00000080)) {
+                listMembers_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000080;
+              }
+              listMembers_.add(input.readInt32());
+              break;
+            }
+            case 458: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000080) == 0x00000080) && input.getBytesUntilLimit() > 0) {
+                listMembers_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000080;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                listMembers_.add(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 464: {
+              if (!((mutable_bitField1_ & 0x00000100) == 0x00000100)) {
+                belongToLists_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000100;
+              }
+              belongToLists_.add(input.readInt32());
+              break;
+            }
+            case 466: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField1_ & 0x00000100) == 0x00000100) && input.getBytesUntilLimit() > 0) {
+                belongToLists_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField1_ |= 0x00000100;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                belongToLists_.add(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField1_ & 0x00000001) == 0x00000001)) {
+          sentenceWords_ = java.util.Collections.unmodifiableList(sentenceWords_);
+        }
+        if (((mutable_bitField1_ & 0x00000002) == 0x00000002)) {
+          originalSpan_ = java.util.Collections.unmodifiableList(originalSpan_);
+        }
+        if (((mutable_bitField1_ & 0x00000004) == 0x00000004)) {
+          dependents_ = dependents_.getUnmodifiableView();
+        }
+        if (((mutable_bitField1_ & 0x00000008) == 0x00000008)) {
+          preprocessedTerms_ = preprocessedTerms_.getUnmodifiableView();
+        }
+        if (((mutable_bitField1_ & 0x00000010) == 0x00000010)) {
+          appositions_ = java.util.Collections.unmodifiableList(appositions_);
+        }
+        if (((mutable_bitField1_ & 0x00000020) == 0x00000020)) {
+          predicateNominatives_ = java.util.Collections.unmodifiableList(predicateNominatives_);
+        }
+        if (((mutable_bitField1_ & 0x00000040) == 0x00000040)) {
+          relativePronouns_ = java.util.Collections.unmodifiableList(relativePronouns_);
+        }
+        if (((mutable_bitField1_ & 0x00000080) == 0x00000080)) {
+          listMembers_ = java.util.Collections.unmodifiableList(listMembers_);
+        }
+        if (((mutable_bitField1_ & 0x00000100) == 0x00000100)) {
+          belongToLists_ = java.util.Collections.unmodifiableList(belongToLists_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_Mention_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_Mention_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.class, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Mention> PARSER =
+        new com.google.protobuf.AbstractParser<Mention>() {
+      public Mention parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Mention(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Mention> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int MENTIONID_FIELD_NUMBER = 1;
+    private int mentionID_;
+    /**
+     * <code>optional int32 mentionID = 1;</code>
+     */
+    public boolean hasMentionID() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional int32 mentionID = 1;</code>
+     */
+    public int getMentionID() {
+      return mentionID_;
+    }
+
+    public static final int MENTIONTYPE_FIELD_NUMBER = 2;
+    private java.lang.Object mentionType_;
+    /**
+     * <code>optional string mentionType = 2;</code>
+     */
+    public boolean hasMentionType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string mentionType = 2;</code>
+     */
+    public java.lang.String getMentionType() {
+      java.lang.Object ref = mentionType_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          mentionType_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string mentionType = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMentionTypeBytes() {
+      java.lang.Object ref = mentionType_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        mentionType_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NUMBER_FIELD_NUMBER = 3;
+    private java.lang.Object number_;
+    /**
+     * <code>optional string number = 3;</code>
+     */
+    public boolean hasNumber() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string number = 3;</code>
+     */
+    public java.lang.String getNumber() {
+      java.lang.Object ref = number_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          number_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string number = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNumberBytes() {
+      java.lang.Object ref = number_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        number_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int GENDER_FIELD_NUMBER = 4;
+    private java.lang.Object gender_;
+    /**
+     * <code>optional string gender = 4;</code>
+     */
+    public boolean hasGender() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string gender = 4;</code>
+     */
+    public java.lang.String getGender() {
+      java.lang.Object ref = gender_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          gender_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string gender = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGenderBytes() {
+      java.lang.Object ref = gender_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        gender_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ANIMACY_FIELD_NUMBER = 5;
+    private java.lang.Object animacy_;
+    /**
+     * <code>optional string animacy = 5;</code>
+     */
+    public boolean hasAnimacy() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string animacy = 5;</code>
+     */
+    public java.lang.String getAnimacy() {
+      java.lang.Object ref = animacy_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          animacy_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string animacy = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getAnimacyBytes() {
+      java.lang.Object ref = animacy_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        animacy_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PERSON_FIELD_NUMBER = 6;
+    private java.lang.Object person_;
+    /**
+     * <code>optional string person = 6;</code>
+     */
+    public boolean hasPerson() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string person = 6;</code>
+     */
+    public java.lang.String getPerson() {
+      java.lang.Object ref = person_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          person_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string person = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPersonBytes() {
+      java.lang.Object ref = person_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        person_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int STARTINDEX_FIELD_NUMBER = 7;
+    private int startIndex_;
+    /**
+     * <code>optional uint32 startIndex = 7;</code>
+     */
+    public boolean hasStartIndex() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional uint32 startIndex = 7;</code>
+     */
+    public int getStartIndex() {
+      return startIndex_;
+    }
+
+    public static final int ENDINDEX_FIELD_NUMBER = 9;
+    private int endIndex_;
+    /**
+     * <code>optional uint32 endIndex = 9;</code>
+     */
+    public boolean hasEndIndex() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional uint32 endIndex = 9;</code>
+     */
+    public int getEndIndex() {
+      return endIndex_;
+    }
+
+    public static final int HEADINDEX_FIELD_NUMBER = 10;
+    private int headIndex_;
+    /**
+     * <code>optional uint32 headIndex = 10;</code>
+     */
+    public boolean hasHeadIndex() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional uint32 headIndex = 10;</code>
+     */
+    public int getHeadIndex() {
+      return headIndex_;
+    }
+
+    public static final int HEADSTRING_FIELD_NUMBER = 11;
+    private java.lang.Object headString_;
+    /**
+     * <code>optional string headString = 11;</code>
+     */
+    public boolean hasHeadString() {
+      return ((bitField0_ & 0x00000200) == 0x00000200);
+    }
+    /**
+     * <code>optional string headString = 11;</code>
+     */
+    public java.lang.String getHeadString() {
+      java.lang.Object ref = headString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          headString_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string headString = 11;</code>
+     */
+    public com.google.protobuf.ByteString
+        getHeadStringBytes() {
+      java.lang.Object ref = headString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        headString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NERSTRING_FIELD_NUMBER = 12;
+    private java.lang.Object nerString_;
+    /**
+     * <code>optional string nerString = 12;</code>
+     */
+    public boolean hasNerString() {
+      return ((bitField0_ & 0x00000400) == 0x00000400);
+    }
+    /**
+     * <code>optional string nerString = 12;</code>
+     */
+    public java.lang.String getNerString() {
+      java.lang.Object ref = nerString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          nerString_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string nerString = 12;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNerStringBytes() {
+      java.lang.Object ref = nerString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nerString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ORIGINALREF_FIELD_NUMBER = 13;
+    private int originalRef_;
+    /**
+     * <code>optional uint32 originalRef = 13;</code>
+     */
+    public boolean hasOriginalRef() {
+      return ((bitField0_ & 0x00000800) == 0x00000800);
+    }
+    /**
+     * <code>optional uint32 originalRef = 13;</code>
+     */
+    public int getOriginalRef() {
+      return originalRef_;
+    }
+
+    public static final int GOLDCOREFCLUSTERID_FIELD_NUMBER = 14;
+    private int goldCorefClusterID_;
+    /**
+     * <code>optional int32 goldCorefClusterID = 14;</code>
+     */
+    public boolean hasGoldCorefClusterID() {
+      return ((bitField0_ & 0x00001000) == 0x00001000);
+    }
+    /**
+     * <code>optional int32 goldCorefClusterID = 14;</code>
+     */
+    public int getGoldCorefClusterID() {
+      return goldCorefClusterID_;
+    }
+
+    public static final int COREFCLUSTERID_FIELD_NUMBER = 15;
+    private int corefClusterID_;
+    /**
+     * <code>optional int32 corefClusterID = 15;</code>
+     */
+    public boolean hasCorefClusterID() {
+      return ((bitField0_ & 0x00002000) == 0x00002000);
+    }
+    /**
+     * <code>optional int32 corefClusterID = 15;</code>
+     */
+    public int getCorefClusterID() {
+      return corefClusterID_;
+    }
+
+    public static final int MENTIONNUM_FIELD_NUMBER = 16;
+    private int mentionNum_;
+    /**
+     * <code>optional uint32 mentionNum = 16;</code>
+     */
+    public boolean hasMentionNum() {
+      return ((bitField0_ & 0x00004000) == 0x00004000);
+    }
+    /**
+     * <code>optional uint32 mentionNum = 16;</code>
+     */
+    public int getMentionNum() {
+      return mentionNum_;
+    }
+
+    public static final int SENTNUM_FIELD_NUMBER = 17;
+    private int sentNum_;
+    /**
+     * <code>optional uint32 sentNum = 17;</code>
+     */
+    public boolean hasSentNum() {
+      return ((bitField0_ & 0x00008000) == 0x00008000);
+    }
+    /**
+     * <code>optional uint32 sentNum = 17;</code>
+     */
+    public int getSentNum() {
+      return sentNum_;
+    }
+
+    public static final int UTTER_FIELD_NUMBER = 18;
+    private int utter_;
+    /**
+     * <code>optional uint32 utter = 18;</code>
+     */
+    public boolean hasUtter() {
+      return ((bitField0_ & 0x00010000) == 0x00010000);
+    }
+    /**
+     * <code>optional uint32 utter = 18;</code>
+     */
+    public int getUtter() {
+      return utter_;
+    }
+
+    public static final int PARAGRAPH_FIELD_NUMBER = 19;
+    private int paragraph_;
+    /**
+     * <code>optional uint32 paragraph = 19;</code>
+     */
+    public boolean hasParagraph() {
+      return ((bitField0_ & 0x00020000) == 0x00020000);
+    }
+    /**
+     * <code>optional uint32 paragraph = 19;</code>
+     */
+    public int getParagraph() {
+      return paragraph_;
+    }
+
+    public static final int ISSUBJECT_FIELD_NUMBER = 20;
+    private boolean isSubject_;
+    /**
+     * <code>optional bool isSubject = 20;</code>
+     */
+    public boolean hasIsSubject() {
+      return ((bitField0_ & 0x00040000) == 0x00040000);
+    }
+    /**
+     * <code>optional bool isSubject = 20;</code>
+     */
+    public boolean getIsSubject() {
+      return isSubject_;
+    }
+
+    public static final int ISDIRECTOBJECT_FIELD_NUMBER = 21;
+    private boolean isDirectObject_;
+    /**
+     * <code>optional bool isDirectObject = 21;</code>
+     */
+    public boolean hasIsDirectObject() {
+      return ((bitField0_ & 0x00080000) == 0x00080000);
+    }
+    /**
+     * <code>optional bool isDirectObject = 21;</code>
+     */
+    public boolean getIsDirectObject() {
+      return isDirectObject_;
+    }
+
+    public static final int ISINDIRECTOBJECT_FIELD_NUMBER = 22;
+    private boolean isIndirectObject_;
+    /**
+     * <code>optional bool isIndirectObject = 22;</code>
+     */
+    public boolean hasIsIndirectObject() {
+      return ((bitField0_ & 0x00100000) == 0x00100000);
+    }
+    /**
+     * <code>optional bool isIndirectObject = 22;</code>
+     */
+    public boolean getIsIndirectObject() {
+      return isIndirectObject_;
+    }
+
+    public static final int ISPREPOSITIONOBJECT_FIELD_NUMBER = 23;
+    private boolean isPrepositionObject_;
+    /**
+     * <code>optional bool isPrepositionObject = 23;</code>
+     */
+    public boolean hasIsPrepositionObject() {
+      return ((bitField0_ & 0x00200000) == 0x00200000);
+    }
+    /**
+     * <code>optional bool isPrepositionObject = 23;</code>
+     */
+    public boolean getIsPrepositionObject() {
+      return isPrepositionObject_;
+    }
+
+    public static final int HASTWIN_FIELD_NUMBER = 24;
+    private boolean hasTwin_;
+    /**
+     * <code>optional bool hasTwin = 24;</code>
+     */
+    public boolean hasHasTwin() {
+      return ((bitField0_ & 0x00400000) == 0x00400000);
+    }
+    /**
+     * <code>optional bool hasTwin = 24;</code>
+     */
+    public boolean getHasTwin() {
+      return hasTwin_;
+    }
+
+    public static final int GENERIC_FIELD_NUMBER = 25;
+    private boolean generic_;
+    /**
+     * <code>optional bool generic = 25;</code>
+     */
+    public boolean hasGeneric() {
+      return ((bitField0_ & 0x00800000) == 0x00800000);
+    }
+    /**
+     * <code>optional bool generic = 25;</code>
+     */
+    public boolean getGeneric() {
+      return generic_;
+    }
+
+    public static final int ISSINGLETON_FIELD_NUMBER = 26;
+    private boolean isSingleton_;
+    /**
+     * <code>optional bool isSingleton = 26;</code>
+     */
+    public boolean hasIsSingleton() {
+      return ((bitField0_ & 0x01000000) == 0x01000000);
+    }
+    /**
+     * <code>optional bool isSingleton = 26;</code>
+     */
+    public boolean getIsSingleton() {
+      return isSingleton_;
+    }
+
+    public static final int HASBASICDEPENDENCY_FIELD_NUMBER = 27;
+    private boolean hasBasicDependency_;
+    /**
+     * <code>optional bool hasBasicDependency = 27;</code>
+     */
+    public boolean hasHasBasicDependency() {
+      return ((bitField0_ & 0x02000000) == 0x02000000);
+    }
+    /**
+     * <code>optional bool hasBasicDependency = 27;</code>
+     */
+    public boolean getHasBasicDependency() {
+      return hasBasicDependency_;
+    }
+
+    public static final int HASENHANCEDDEPENEDNCY_FIELD_NUMBER = 28;
+    private boolean hasEnhancedDepenedncy_;
+    /**
+     * <code>optional bool hasEnhancedDepenedncy = 28;</code>
+     */
+    public boolean hasHasEnhancedDepenedncy() {
+      return ((bitField0_ & 0x04000000) == 0x04000000);
+    }
+    /**
+     * <code>optional bool hasEnhancedDepenedncy = 28;</code>
+     */
+    public boolean getHasEnhancedDepenedncy() {
+      return hasEnhancedDepenedncy_;
+    }
+
+    public static final int HASCONTEXTPARSETREE_FIELD_NUMBER = 29;
+    private boolean hasContextParseTree_;
+    /**
+     * <code>optional bool hasContextParseTree = 29;</code>
+     */
+    public boolean hasHasContextParseTree() {
+      return ((bitField0_ & 0x08000000) == 0x08000000);
+    }
+    /**
+     * <code>optional bool hasContextParseTree = 29;</code>
+     */
+    public boolean getHasContextParseTree() {
+      return hasContextParseTree_;
+    }
+
+    public static final int HEADINDEXEDWORD_FIELD_NUMBER = 30;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord headIndexedWord_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+     */
+    public boolean hasHeadIndexedWord() {
+      return ((bitField0_ & 0x10000000) == 0x10000000);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getHeadIndexedWord() {
+      return headIndexedWord_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getHeadIndexedWordOrBuilder() {
+      return headIndexedWord_;
+    }
+
+    public static final int DEPENDINGVERB_FIELD_NUMBER = 31;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord dependingVerb_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+     */
+    public boolean hasDependingVerb() {
+      return ((bitField0_ & 0x20000000) == 0x20000000);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getDependingVerb() {
+      return dependingVerb_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getDependingVerbOrBuilder() {
+      return dependingVerb_;
+    }
+
+    public static final int HEADWORD_FIELD_NUMBER = 32;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord headWord_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+     */
+    public boolean hasHeadWord() {
+      return ((bitField0_ & 0x40000000) == 0x40000000);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getHeadWord() {
+      return headWord_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getHeadWordOrBuilder() {
+      return headWord_;
+    }
+
+    public static final int SPEAKERINFO_FIELD_NUMBER = 33;
+    private edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo speakerInfo_;
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+     */
+    public boolean hasSpeakerInfo() {
+      return ((bitField0_ & 0x80000000) == 0x80000000);
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo getSpeakerInfo() {
+      return speakerInfo_;
+    }
+    /**
+     * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfoOrBuilder getSpeakerInfoOrBuilder() {
+      return speakerInfo_;
+    }
+
+    public static final int SENTENCEWORDS_FIELD_NUMBER = 50;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> sentenceWords_;
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> getSentenceWordsList() {
+      return sentenceWords_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+        getSentenceWordsOrBuilderList() {
+      return sentenceWords_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    public int getSentenceWordsCount() {
+      return sentenceWords_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getSentenceWords(int index) {
+      return sentenceWords_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getSentenceWordsOrBuilder(
+        int index) {
+      return sentenceWords_.get(index);
+    }
+
+    public static final int ORIGINALSPAN_FIELD_NUMBER = 51;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> originalSpan_;
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> getOriginalSpanList() {
+      return originalSpan_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+        getOriginalSpanOrBuilderList() {
+      return originalSpan_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    public int getOriginalSpanCount() {
+      return originalSpan_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getOriginalSpan(int index) {
+      return originalSpan_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getOriginalSpanOrBuilder(
+        int index) {
+      return originalSpan_.get(index);
+    }
+
+    public static final int DEPENDENTS_FIELD_NUMBER = 52;
+    private com.google.protobuf.LazyStringList dependents_;
+    /**
+     * <code>repeated string dependents = 52;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getDependentsList() {
+      return dependents_;
+    }
+    /**
+     * <code>repeated string dependents = 52;</code>
+     */
+    public int getDependentsCount() {
+      return dependents_.size();
+    }
+    /**
+     * <code>repeated string dependents = 52;</code>
+     */
+    public java.lang.String getDependents(int index) {
+      return dependents_.get(index);
+    }
+    /**
+     * <code>repeated string dependents = 52;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDependentsBytes(int index) {
+      return dependents_.getByteString(index);
+    }
+
+    public static final int PREPROCESSEDTERMS_FIELD_NUMBER = 53;
+    private com.google.protobuf.LazyStringList preprocessedTerms_;
+    /**
+     * <code>repeated string preprocessedTerms = 53;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getPreprocessedTermsList() {
+      return preprocessedTerms_;
+    }
+    /**
+     * <code>repeated string preprocessedTerms = 53;</code>
+     */
+    public int getPreprocessedTermsCount() {
+      return preprocessedTerms_.size();
+    }
+    /**
+     * <code>repeated string preprocessedTerms = 53;</code>
+     */
+    public java.lang.String getPreprocessedTerms(int index) {
+      return preprocessedTerms_.get(index);
+    }
+    /**
+     * <code>repeated string preprocessedTerms = 53;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPreprocessedTermsBytes(int index) {
+      return preprocessedTerms_.getByteString(index);
+    }
+
+    public static final int APPOSITIONS_FIELD_NUMBER = 54;
+    private java.util.List<java.lang.Integer> appositions_;
+    /**
+     * <code>repeated int32 appositions = 54;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getAppositionsList() {
+      return appositions_;
+    }
+    /**
+     * <code>repeated int32 appositions = 54;</code>
+     */
+    public int getAppositionsCount() {
+      return appositions_.size();
+    }
+    /**
+     * <code>repeated int32 appositions = 54;</code>
+     */
+    public int getAppositions(int index) {
+      return appositions_.get(index);
+    }
+
+    public static final int PREDICATENOMINATIVES_FIELD_NUMBER = 55;
+    private java.util.List<java.lang.Integer> predicateNominatives_;
+    /**
+     * <code>repeated int32 predicateNominatives = 55;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getPredicateNominativesList() {
+      return predicateNominatives_;
+    }
+    /**
+     * <code>repeated int32 predicateNominatives = 55;</code>
+     */
+    public int getPredicateNominativesCount() {
+      return predicateNominatives_.size();
+    }
+    /**
+     * <code>repeated int32 predicateNominatives = 55;</code>
+     */
+    public int getPredicateNominatives(int index) {
+      return predicateNominatives_.get(index);
+    }
+
+    public static final int RELATIVEPRONOUNS_FIELD_NUMBER = 56;
+    private java.util.List<java.lang.Integer> relativePronouns_;
+    /**
+     * <code>repeated int32 relativePronouns = 56;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getRelativePronounsList() {
+      return relativePronouns_;
+    }
+    /**
+     * <code>repeated int32 relativePronouns = 56;</code>
+     */
+    public int getRelativePronounsCount() {
+      return relativePronouns_.size();
+    }
+    /**
+     * <code>repeated int32 relativePronouns = 56;</code>
+     */
+    public int getRelativePronouns(int index) {
+      return relativePronouns_.get(index);
+    }
+
+    public static final int LISTMEMBERS_FIELD_NUMBER = 57;
+    private java.util.List<java.lang.Integer> listMembers_;
+    /**
+     * <code>repeated int32 listMembers = 57;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getListMembersList() {
+      return listMembers_;
+    }
+    /**
+     * <code>repeated int32 listMembers = 57;</code>
+     */
+    public int getListMembersCount() {
+      return listMembers_.size();
+    }
+    /**
+     * <code>repeated int32 listMembers = 57;</code>
+     */
+    public int getListMembers(int index) {
+      return listMembers_.get(index);
+    }
+
+    public static final int BELONGTOLISTS_FIELD_NUMBER = 58;
+    private java.util.List<java.lang.Integer> belongToLists_;
+    /**
+     * <code>repeated int32 belongToLists = 58;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getBelongToListsList() {
+      return belongToLists_;
+    }
+    /**
+     * <code>repeated int32 belongToLists = 58;</code>
+     */
+    public int getBelongToListsCount() {
+      return belongToLists_.size();
+    }
+    /**
+     * <code>repeated int32 belongToLists = 58;</code>
+     */
+    public int getBelongToLists(int index) {
+      return belongToLists_.get(index);
+    }
+
+    private void initFields() {
+      mentionID_ = 0;
+      mentionType_ = "";
+      number_ = "";
+      gender_ = "";
+      animacy_ = "";
+      person_ = "";
+      startIndex_ = 0;
+      endIndex_ = 0;
+      headIndex_ = 0;
+      headString_ = "";
+      nerString_ = "";
+      originalRef_ = 0;
+      goldCorefClusterID_ = 0;
+      corefClusterID_ = 0;
+      mentionNum_ = 0;
+      sentNum_ = 0;
+      utter_ = 0;
+      paragraph_ = 0;
+      isSubject_ = false;
+      isDirectObject_ = false;
+      isIndirectObject_ = false;
+      isPrepositionObject_ = false;
+      hasTwin_ = false;
+      generic_ = false;
+      isSingleton_ = false;
+      hasBasicDependency_ = false;
+      hasEnhancedDepenedncy_ = false;
+      hasContextParseTree_ = false;
+      headIndexedWord_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+      dependingVerb_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+      headWord_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+      speakerInfo_ = edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.getDefaultInstance();
+      sentenceWords_ = java.util.Collections.emptyList();
+      originalSpan_ = java.util.Collections.emptyList();
+      dependents_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      preprocessedTerms_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      appositions_ = java.util.Collections.emptyList();
+      predicateNominatives_ = java.util.Collections.emptyList();
+      relativePronouns_ = java.util.Collections.emptyList();
+      listMembers_ = java.util.Collections.emptyList();
+      belongToLists_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, mentionID_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getMentionTypeBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getNumberBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getGenderBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getAnimacyBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getPersonBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeUInt32(7, startIndex_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeUInt32(9, endIndex_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeUInt32(10, headIndex_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        output.writeBytes(11, getHeadStringBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        output.writeBytes(12, getNerStringBytes());
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        output.writeUInt32(13, originalRef_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        output.writeInt32(14, goldCorefClusterID_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        output.writeInt32(15, corefClusterID_);
+      }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        output.writeUInt32(16, mentionNum_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        output.writeUInt32(17, sentNum_);
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        output.writeUInt32(18, utter_);
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        output.writeUInt32(19, paragraph_);
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        output.writeBool(20, isSubject_);
+      }
+      if (((bitField0_ & 0x00080000) == 0x00080000)) {
+        output.writeBool(21, isDirectObject_);
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        output.writeBool(22, isIndirectObject_);
+      }
+      if (((bitField0_ & 0x00200000) == 0x00200000)) {
+        output.writeBool(23, isPrepositionObject_);
+      }
+      if (((bitField0_ & 0x00400000) == 0x00400000)) {
+        output.writeBool(24, hasTwin_);
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        output.writeBool(25, generic_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        output.writeBool(26, isSingleton_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        output.writeBool(27, hasBasicDependency_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        output.writeBool(28, hasEnhancedDepenedncy_);
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        output.writeBool(29, hasContextParseTree_);
+      }
+      if (((bitField0_ & 0x10000000) == 0x10000000)) {
+        output.writeMessage(30, headIndexedWord_);
+      }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        output.writeMessage(31, dependingVerb_);
+      }
+      if (((bitField0_ & 0x40000000) == 0x40000000)) {
+        output.writeMessage(32, headWord_);
+      }
+      if (((bitField0_ & 0x80000000) == 0x80000000)) {
+        output.writeMessage(33, speakerInfo_);
+      }
+      for (int i = 0; i < sentenceWords_.size(); i++) {
+        output.writeMessage(50, sentenceWords_.get(i));
+      }
+      for (int i = 0; i < originalSpan_.size(); i++) {
+        output.writeMessage(51, originalSpan_.get(i));
+      }
+      for (int i = 0; i < dependents_.size(); i++) {
+        output.writeBytes(52, dependents_.getByteString(i));
+      }
+      for (int i = 0; i < preprocessedTerms_.size(); i++) {
+        output.writeBytes(53, preprocessedTerms_.getByteString(i));
+      }
+      for (int i = 0; i < appositions_.size(); i++) {
+        output.writeInt32(54, appositions_.get(i));
+      }
+      for (int i = 0; i < predicateNominatives_.size(); i++) {
+        output.writeInt32(55, predicateNominatives_.get(i));
+      }
+      for (int i = 0; i < relativePronouns_.size(); i++) {
+        output.writeInt32(56, relativePronouns_.get(i));
+      }
+      for (int i = 0; i < listMembers_.size(); i++) {
+        output.writeInt32(57, listMembers_.get(i));
+      }
+      for (int i = 0; i < belongToLists_.size(); i++) {
+        output.writeInt32(58, belongToLists_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, mentionID_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getMentionTypeBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getNumberBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getGenderBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getAnimacyBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getPersonBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(7, startIndex_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, endIndex_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(10, headIndex_);
+      }
+      if (((bitField0_ & 0x00000200) == 0x00000200)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(11, getHeadStringBytes());
+      }
+      if (((bitField0_ & 0x00000400) == 0x00000400)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(12, getNerStringBytes());
+      }
+      if (((bitField0_ & 0x00000800) == 0x00000800)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(13, originalRef_);
+      }
+      if (((bitField0_ & 0x00001000) == 0x00001000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(14, goldCorefClusterID_);
+      }
+      if (((bitField0_ & 0x00002000) == 0x00002000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(15, corefClusterID_);
+      }
+      if (((bitField0_ & 0x00004000) == 0x00004000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(16, mentionNum_);
+      }
+      if (((bitField0_ & 0x00008000) == 0x00008000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(17, sentNum_);
+      }
+      if (((bitField0_ & 0x00010000) == 0x00010000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(18, utter_);
+      }
+      if (((bitField0_ & 0x00020000) == 0x00020000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(19, paragraph_);
+      }
+      if (((bitField0_ & 0x00040000) == 0x00040000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(20, isSubject_);
+      }
+      if (((bitField0_ & 0x00080000) == 0x00080000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(21, isDirectObject_);
+      }
+      if (((bitField0_ & 0x00100000) == 0x00100000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(22, isIndirectObject_);
+      }
+      if (((bitField0_ & 0x00200000) == 0x00200000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(23, isPrepositionObject_);
+      }
+      if (((bitField0_ & 0x00400000) == 0x00400000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(24, hasTwin_);
+      }
+      if (((bitField0_ & 0x00800000) == 0x00800000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(25, generic_);
+      }
+      if (((bitField0_ & 0x01000000) == 0x01000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(26, isSingleton_);
+      }
+      if (((bitField0_ & 0x02000000) == 0x02000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(27, hasBasicDependency_);
+      }
+      if (((bitField0_ & 0x04000000) == 0x04000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(28, hasEnhancedDepenedncy_);
+      }
+      if (((bitField0_ & 0x08000000) == 0x08000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(29, hasContextParseTree_);
+      }
+      if (((bitField0_ & 0x10000000) == 0x10000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(30, headIndexedWord_);
+      }
+      if (((bitField0_ & 0x20000000) == 0x20000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(31, dependingVerb_);
+      }
+      if (((bitField0_ & 0x40000000) == 0x40000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(32, headWord_);
+      }
+      if (((bitField0_ & 0x80000000) == 0x80000000)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(33, speakerInfo_);
+      }
+      for (int i = 0; i < sentenceWords_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(50, sentenceWords_.get(i));
+      }
+      for (int i = 0; i < originalSpan_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(51, originalSpan_.get(i));
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < dependents_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(dependents_.getByteString(i));
+        }
+        size += dataSize;
+        size += 2 * getDependentsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < preprocessedTerms_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(preprocessedTerms_.getByteString(i));
+        }
+        size += dataSize;
+        size += 2 * getPreprocessedTermsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < appositions_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(appositions_.get(i));
+        }
+        size += dataSize;
+        size += 2 * getAppositionsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < predicateNominatives_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(predicateNominatives_.get(i));
+        }
+        size += dataSize;
+        size += 2 * getPredicateNominativesList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < relativePronouns_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(relativePronouns_.get(i));
+        }
+        size += dataSize;
+        size += 2 * getRelativePronounsList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < listMembers_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(listMembers_.get(i));
+        }
+        size += dataSize;
+        size += 2 * getListMembersList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < belongToLists_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(belongToLists_.get(i));
+        }
+        size += dataSize;
+        size += 2 * getBelongToListsList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.Mention prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code edu.stanford.nlp.pipeline.Mention}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.Mention)
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MentionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_Mention_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_Mention_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.class, edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.Builder.class);
+      }
+
+      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getHeadIndexedWordFieldBuilder();
+          getDependingVerbFieldBuilder();
+          getHeadWordFieldBuilder();
+          getSpeakerInfoFieldBuilder();
+          getSentenceWordsFieldBuilder();
+          getOriginalSpanFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        mentionID_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        mentionType_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        number_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        gender_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        animacy_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        person_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
+        startIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        endIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        headIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        headString_ = "";
+        bitField0_ = (bitField0_ & ~0x00000200);
+        nerString_ = "";
+        bitField0_ = (bitField0_ & ~0x00000400);
+        originalRef_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000800);
+        goldCorefClusterID_ = 0;
+        bitField0_ = (bitField0_ & ~0x00001000);
+        corefClusterID_ = 0;
+        bitField0_ = (bitField0_ & ~0x00002000);
+        mentionNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00004000);
+        sentNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00008000);
+        utter_ = 0;
+        bitField0_ = (bitField0_ & ~0x00010000);
+        paragraph_ = 0;
+        bitField0_ = (bitField0_ & ~0x00020000);
+        isSubject_ = false;
+        bitField0_ = (bitField0_ & ~0x00040000);
+        isDirectObject_ = false;
+        bitField0_ = (bitField0_ & ~0x00080000);
+        isIndirectObject_ = false;
+        bitField0_ = (bitField0_ & ~0x00100000);
+        isPrepositionObject_ = false;
+        bitField0_ = (bitField0_ & ~0x00200000);
+        hasTwin_ = false;
+        bitField0_ = (bitField0_ & ~0x00400000);
+        generic_ = false;
+        bitField0_ = (bitField0_ & ~0x00800000);
+        isSingleton_ = false;
+        bitField0_ = (bitField0_ & ~0x01000000);
+        hasBasicDependency_ = false;
+        bitField0_ = (bitField0_ & ~0x02000000);
+        hasEnhancedDepenedncy_ = false;
+        bitField0_ = (bitField0_ & ~0x04000000);
+        hasContextParseTree_ = false;
+        bitField0_ = (bitField0_ & ~0x08000000);
+        if (headIndexedWordBuilder_ == null) {
+          headIndexedWord_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+        } else {
+          headIndexedWordBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x10000000);
+        if (dependingVerbBuilder_ == null) {
+          dependingVerb_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+        } else {
+          dependingVerbBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x20000000);
+        if (headWordBuilder_ == null) {
+          headWord_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+        } else {
+          headWordBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x40000000);
+        if (speakerInfoBuilder_ == null) {
+          speakerInfo_ = edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.getDefaultInstance();
+        } else {
+          speakerInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x80000000);
+        if (sentenceWordsBuilder_ == null) {
+          sentenceWords_ = java.util.Collections.emptyList();
+          bitField1_ = (bitField1_ & ~0x00000001);
+        } else {
+          sentenceWordsBuilder_.clear();
+        }
+        if (originalSpanBuilder_ == null) {
+          originalSpan_ = java.util.Collections.emptyList();
+          bitField1_ = (bitField1_ & ~0x00000002);
+        } else {
+          originalSpanBuilder_.clear();
+        }
+        dependents_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField1_ = (bitField1_ & ~0x00000004);
+        preprocessedTerms_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField1_ = (bitField1_ & ~0x00000008);
+        appositions_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000010);
+        predicateNominatives_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000020);
+        relativePronouns_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000040);
+        listMembers_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000080);
+        belongToLists_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000100);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_Mention_descriptor;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Mention getDefaultInstanceForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.getDefaultInstance();
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Mention build() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.Mention result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.Mention buildPartial() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.Mention result = new edu.stanford.nlp.pipeline.CoreNLPProtos.Mention(this);
+        int from_bitField0_ = bitField0_;
+        int from_bitField1_ = bitField1_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.mentionID_ = mentionID_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.mentionType_ = mentionType_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.number_ = number_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.gender_ = gender_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.animacy_ = animacy_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.person_ = person_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.startIndex_ = startIndex_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.endIndex_ = endIndex_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.headIndex_ = headIndex_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000200;
+        }
+        result.headString_ = headString_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000400;
+        }
+        result.nerString_ = nerString_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000800;
+        }
+        result.originalRef_ = originalRef_;
+        if (((from_bitField0_ & 0x00001000) == 0x00001000)) {
+          to_bitField0_ |= 0x00001000;
+        }
+        result.goldCorefClusterID_ = goldCorefClusterID_;
+        if (((from_bitField0_ & 0x00002000) == 0x00002000)) {
+          to_bitField0_ |= 0x00002000;
+        }
+        result.corefClusterID_ = corefClusterID_;
+        if (((from_bitField0_ & 0x00004000) == 0x00004000)) {
+          to_bitField0_ |= 0x00004000;
+        }
+        result.mentionNum_ = mentionNum_;
+        if (((from_bitField0_ & 0x00008000) == 0x00008000)) {
+          to_bitField0_ |= 0x00008000;
+        }
+        result.sentNum_ = sentNum_;
+        if (((from_bitField0_ & 0x00010000) == 0x00010000)) {
+          to_bitField0_ |= 0x00010000;
+        }
+        result.utter_ = utter_;
+        if (((from_bitField0_ & 0x00020000) == 0x00020000)) {
+          to_bitField0_ |= 0x00020000;
+        }
+        result.paragraph_ = paragraph_;
+        if (((from_bitField0_ & 0x00040000) == 0x00040000)) {
+          to_bitField0_ |= 0x00040000;
+        }
+        result.isSubject_ = isSubject_;
+        if (((from_bitField0_ & 0x00080000) == 0x00080000)) {
+          to_bitField0_ |= 0x00080000;
+        }
+        result.isDirectObject_ = isDirectObject_;
+        if (((from_bitField0_ & 0x00100000) == 0x00100000)) {
+          to_bitField0_ |= 0x00100000;
+        }
+        result.isIndirectObject_ = isIndirectObject_;
+        if (((from_bitField0_ & 0x00200000) == 0x00200000)) {
+          to_bitField0_ |= 0x00200000;
+        }
+        result.isPrepositionObject_ = isPrepositionObject_;
+        if (((from_bitField0_ & 0x00400000) == 0x00400000)) {
+          to_bitField0_ |= 0x00400000;
+        }
+        result.hasTwin_ = hasTwin_;
+        if (((from_bitField0_ & 0x00800000) == 0x00800000)) {
+          to_bitField0_ |= 0x00800000;
+        }
+        result.generic_ = generic_;
+        if (((from_bitField0_ & 0x01000000) == 0x01000000)) {
+          to_bitField0_ |= 0x01000000;
+        }
+        result.isSingleton_ = isSingleton_;
+        if (((from_bitField0_ & 0x02000000) == 0x02000000)) {
+          to_bitField0_ |= 0x02000000;
+        }
+        result.hasBasicDependency_ = hasBasicDependency_;
+        if (((from_bitField0_ & 0x04000000) == 0x04000000)) {
+          to_bitField0_ |= 0x04000000;
+        }
+        result.hasEnhancedDepenedncy_ = hasEnhancedDepenedncy_;
+        if (((from_bitField0_ & 0x08000000) == 0x08000000)) {
+          to_bitField0_ |= 0x08000000;
+        }
+        result.hasContextParseTree_ = hasContextParseTree_;
+        if (((from_bitField0_ & 0x10000000) == 0x10000000)) {
+          to_bitField0_ |= 0x10000000;
+        }
+        if (headIndexedWordBuilder_ == null) {
+          result.headIndexedWord_ = headIndexedWord_;
+        } else {
+          result.headIndexedWord_ = headIndexedWordBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x20000000) == 0x20000000)) {
+          to_bitField0_ |= 0x20000000;
+        }
+        if (dependingVerbBuilder_ == null) {
+          result.dependingVerb_ = dependingVerb_;
+        } else {
+          result.dependingVerb_ = dependingVerbBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x40000000) == 0x40000000)) {
+          to_bitField0_ |= 0x40000000;
+        }
+        if (headWordBuilder_ == null) {
+          result.headWord_ = headWord_;
+        } else {
+          result.headWord_ = headWordBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x80000000) == 0x80000000)) {
+          to_bitField0_ |= 0x80000000;
+        }
+        if (speakerInfoBuilder_ == null) {
+          result.speakerInfo_ = speakerInfo_;
+        } else {
+          result.speakerInfo_ = speakerInfoBuilder_.build();
+        }
+        if (sentenceWordsBuilder_ == null) {
+          if (((bitField1_ & 0x00000001) == 0x00000001)) {
+            sentenceWords_ = java.util.Collections.unmodifiableList(sentenceWords_);
+            bitField1_ = (bitField1_ & ~0x00000001);
+          }
+          result.sentenceWords_ = sentenceWords_;
+        } else {
+          result.sentenceWords_ = sentenceWordsBuilder_.build();
+        }
+        if (originalSpanBuilder_ == null) {
+          if (((bitField1_ & 0x00000002) == 0x00000002)) {
+            originalSpan_ = java.util.Collections.unmodifiableList(originalSpan_);
+            bitField1_ = (bitField1_ & ~0x00000002);
+          }
+          result.originalSpan_ = originalSpan_;
+        } else {
+          result.originalSpan_ = originalSpanBuilder_.build();
+        }
+        if (((bitField1_ & 0x00000004) == 0x00000004)) {
+          dependents_ = dependents_.getUnmodifiableView();
+          bitField1_ = (bitField1_ & ~0x00000004);
+        }
+        result.dependents_ = dependents_;
+        if (((bitField1_ & 0x00000008) == 0x00000008)) {
+          preprocessedTerms_ = preprocessedTerms_.getUnmodifiableView();
+          bitField1_ = (bitField1_ & ~0x00000008);
+        }
+        result.preprocessedTerms_ = preprocessedTerms_;
+        if (((bitField1_ & 0x00000010) == 0x00000010)) {
+          appositions_ = java.util.Collections.unmodifiableList(appositions_);
+          bitField1_ = (bitField1_ & ~0x00000010);
+        }
+        result.appositions_ = appositions_;
+        if (((bitField1_ & 0x00000020) == 0x00000020)) {
+          predicateNominatives_ = java.util.Collections.unmodifiableList(predicateNominatives_);
+          bitField1_ = (bitField1_ & ~0x00000020);
+        }
+        result.predicateNominatives_ = predicateNominatives_;
+        if (((bitField1_ & 0x00000040) == 0x00000040)) {
+          relativePronouns_ = java.util.Collections.unmodifiableList(relativePronouns_);
+          bitField1_ = (bitField1_ & ~0x00000040);
+        }
+        result.relativePronouns_ = relativePronouns_;
+        if (((bitField1_ & 0x00000080) == 0x00000080)) {
+          listMembers_ = java.util.Collections.unmodifiableList(listMembers_);
+          bitField1_ = (bitField1_ & ~0x00000080);
+        }
+        result.listMembers_ = listMembers_;
+        if (((bitField1_ & 0x00000100) == 0x00000100)) {
+          belongToLists_ = java.util.Collections.unmodifiableList(belongToLists_);
+          bitField1_ = (bitField1_ & ~0x00000100);
+        }
+        result.belongToLists_ = belongToLists_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.Mention) {
+          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.Mention)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.Mention other) {
+        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.Mention.getDefaultInstance()) return this;
+        if (other.hasMentionID()) {
+          setMentionID(other.getMentionID());
+        }
+        if (other.hasMentionType()) {
+          bitField0_ |= 0x00000002;
+          mentionType_ = other.mentionType_;
+          onChanged();
+        }
+        if (other.hasNumber()) {
+          bitField0_ |= 0x00000004;
+          number_ = other.number_;
+          onChanged();
+        }
+        if (other.hasGender()) {
+          bitField0_ |= 0x00000008;
+          gender_ = other.gender_;
+          onChanged();
+        }
+        if (other.hasAnimacy()) {
+          bitField0_ |= 0x00000010;
+          animacy_ = other.animacy_;
+          onChanged();
+        }
+        if (other.hasPerson()) {
+          bitField0_ |= 0x00000020;
+          person_ = other.person_;
+          onChanged();
+        }
+        if (other.hasStartIndex()) {
+          setStartIndex(other.getStartIndex());
+        }
+        if (other.hasEndIndex()) {
+          setEndIndex(other.getEndIndex());
+        }
+        if (other.hasHeadIndex()) {
+          setHeadIndex(other.getHeadIndex());
+        }
+        if (other.hasHeadString()) {
+          bitField0_ |= 0x00000200;
+          headString_ = other.headString_;
+          onChanged();
+        }
+        if (other.hasNerString()) {
+          bitField0_ |= 0x00000400;
+          nerString_ = other.nerString_;
+          onChanged();
+        }
+        if (other.hasOriginalRef()) {
+          setOriginalRef(other.getOriginalRef());
+        }
+        if (other.hasGoldCorefClusterID()) {
+          setGoldCorefClusterID(other.getGoldCorefClusterID());
+        }
+        if (other.hasCorefClusterID()) {
+          setCorefClusterID(other.getCorefClusterID());
+        }
+        if (other.hasMentionNum()) {
+          setMentionNum(other.getMentionNum());
+        }
+        if (other.hasSentNum()) {
+          setSentNum(other.getSentNum());
+        }
+        if (other.hasUtter()) {
+          setUtter(other.getUtter());
+        }
+        if (other.hasParagraph()) {
+          setParagraph(other.getParagraph());
+        }
+        if (other.hasIsSubject()) {
+          setIsSubject(other.getIsSubject());
+        }
+        if (other.hasIsDirectObject()) {
+          setIsDirectObject(other.getIsDirectObject());
+        }
+        if (other.hasIsIndirectObject()) {
+          setIsIndirectObject(other.getIsIndirectObject());
+        }
+        if (other.hasIsPrepositionObject()) {
+          setIsPrepositionObject(other.getIsPrepositionObject());
+        }
+        if (other.hasHasTwin()) {
+          setHasTwin(other.getHasTwin());
+        }
+        if (other.hasGeneric()) {
+          setGeneric(other.getGeneric());
+        }
+        if (other.hasIsSingleton()) {
+          setIsSingleton(other.getIsSingleton());
+        }
+        if (other.hasHasBasicDependency()) {
+          setHasBasicDependency(other.getHasBasicDependency());
+        }
+        if (other.hasHasEnhancedDepenedncy()) {
+          setHasEnhancedDepenedncy(other.getHasEnhancedDepenedncy());
+        }
+        if (other.hasHasContextParseTree()) {
+          setHasContextParseTree(other.getHasContextParseTree());
+        }
+        if (other.hasHeadIndexedWord()) {
+          mergeHeadIndexedWord(other.getHeadIndexedWord());
+        }
+        if (other.hasDependingVerb()) {
+          mergeDependingVerb(other.getDependingVerb());
+        }
+        if (other.hasHeadWord()) {
+          mergeHeadWord(other.getHeadWord());
+        }
+        if (other.hasSpeakerInfo()) {
+          mergeSpeakerInfo(other.getSpeakerInfo());
+        }
+        if (sentenceWordsBuilder_ == null) {
+          if (!other.sentenceWords_.isEmpty()) {
+            if (sentenceWords_.isEmpty()) {
+              sentenceWords_ = other.sentenceWords_;
+              bitField1_ = (bitField1_ & ~0x00000001);
+            } else {
+              ensureSentenceWordsIsMutable();
+              sentenceWords_.addAll(other.sentenceWords_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.sentenceWords_.isEmpty()) {
+            if (sentenceWordsBuilder_.isEmpty()) {
+              sentenceWordsBuilder_.dispose();
+              sentenceWordsBuilder_ = null;
+              sentenceWords_ = other.sentenceWords_;
+              bitField1_ = (bitField1_ & ~0x00000001);
+              sentenceWordsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getSentenceWordsFieldBuilder() : null;
+            } else {
+              sentenceWordsBuilder_.addAllMessages(other.sentenceWords_);
+            }
+          }
+        }
+        if (originalSpanBuilder_ == null) {
+          if (!other.originalSpan_.isEmpty()) {
+            if (originalSpan_.isEmpty()) {
+              originalSpan_ = other.originalSpan_;
+              bitField1_ = (bitField1_ & ~0x00000002);
+            } else {
+              ensureOriginalSpanIsMutable();
+              originalSpan_.addAll(other.originalSpan_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.originalSpan_.isEmpty()) {
+            if (originalSpanBuilder_.isEmpty()) {
+              originalSpanBuilder_.dispose();
+              originalSpanBuilder_ = null;
+              originalSpan_ = other.originalSpan_;
+              bitField1_ = (bitField1_ & ~0x00000002);
+              originalSpanBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getOriginalSpanFieldBuilder() : null;
+            } else {
+              originalSpanBuilder_.addAllMessages(other.originalSpan_);
+            }
+          }
+        }
+        if (!other.dependents_.isEmpty()) {
+          if (dependents_.isEmpty()) {
+            dependents_ = other.dependents_;
+            bitField1_ = (bitField1_ & ~0x00000004);
+          } else {
+            ensureDependentsIsMutable();
+            dependents_.addAll(other.dependents_);
+          }
+          onChanged();
+        }
+        if (!other.preprocessedTerms_.isEmpty()) {
+          if (preprocessedTerms_.isEmpty()) {
+            preprocessedTerms_ = other.preprocessedTerms_;
+            bitField1_ = (bitField1_ & ~0x00000008);
+          } else {
+            ensurePreprocessedTermsIsMutable();
+            preprocessedTerms_.addAll(other.preprocessedTerms_);
+          }
+          onChanged();
+        }
+        if (!other.appositions_.isEmpty()) {
+          if (appositions_.isEmpty()) {
+            appositions_ = other.appositions_;
+            bitField1_ = (bitField1_ & ~0x00000010);
+          } else {
+            ensureAppositionsIsMutable();
+            appositions_.addAll(other.appositions_);
+          }
+          onChanged();
+        }
+        if (!other.predicateNominatives_.isEmpty()) {
+          if (predicateNominatives_.isEmpty()) {
+            predicateNominatives_ = other.predicateNominatives_;
+            bitField1_ = (bitField1_ & ~0x00000020);
+          } else {
+            ensurePredicateNominativesIsMutable();
+            predicateNominatives_.addAll(other.predicateNominatives_);
+          }
+          onChanged();
+        }
+        if (!other.relativePronouns_.isEmpty()) {
+          if (relativePronouns_.isEmpty()) {
+            relativePronouns_ = other.relativePronouns_;
+            bitField1_ = (bitField1_ & ~0x00000040);
+          } else {
+            ensureRelativePronounsIsMutable();
+            relativePronouns_.addAll(other.relativePronouns_);
+          }
+          onChanged();
+        }
+        if (!other.listMembers_.isEmpty()) {
+          if (listMembers_.isEmpty()) {
+            listMembers_ = other.listMembers_;
+            bitField1_ = (bitField1_ & ~0x00000080);
+          } else {
+            ensureListMembersIsMutable();
+            listMembers_.addAll(other.listMembers_);
+          }
+          onChanged();
+        }
+        if (!other.belongToLists_.isEmpty()) {
+          if (belongToLists_.isEmpty()) {
+            belongToLists_ = other.belongToLists_;
+            bitField1_ = (bitField1_ & ~0x00000100);
+          } else {
+            ensureBelongToListsIsMutable();
+            belongToLists_.addAll(other.belongToLists_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.Mention parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.Mention) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+      private int bitField1_;
+
+      private int mentionID_ ;
+      /**
+       * <code>optional int32 mentionID = 1;</code>
+       */
+      public boolean hasMentionID() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional int32 mentionID = 1;</code>
+       */
+      public int getMentionID() {
+        return mentionID_;
+      }
+      /**
+       * <code>optional int32 mentionID = 1;</code>
+       */
+      public Builder setMentionID(int value) {
+        bitField0_ |= 0x00000001;
+        mentionID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 mentionID = 1;</code>
+       */
+      public Builder clearMentionID() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        mentionID_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object mentionType_ = "";
+      /**
+       * <code>optional string mentionType = 2;</code>
+       */
+      public boolean hasMentionType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string mentionType = 2;</code>
+       */
+      public java.lang.String getMentionType() {
+        java.lang.Object ref = mentionType_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            mentionType_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string mentionType = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMentionTypeBytes() {
+        java.lang.Object ref = mentionType_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          mentionType_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string mentionType = 2;</code>
+       */
+      public Builder setMentionType(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        mentionType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string mentionType = 2;</code>
+       */
+      public Builder clearMentionType() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        mentionType_ = getDefaultInstance().getMentionType();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string mentionType = 2;</code>
+       */
+      public Builder setMentionTypeBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        mentionType_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object number_ = "";
+      /**
+       * <code>optional string number = 3;</code>
+       */
+      public boolean hasNumber() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string number = 3;</code>
+       */
+      public java.lang.String getNumber() {
+        java.lang.Object ref = number_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            number_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string number = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNumberBytes() {
+        java.lang.Object ref = number_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          number_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string number = 3;</code>
+       */
+      public Builder setNumber(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        number_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string number = 3;</code>
+       */
+      public Builder clearNumber() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        number_ = getDefaultInstance().getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string number = 3;</code>
+       */
+      public Builder setNumberBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        number_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object gender_ = "";
+      /**
+       * <code>optional string gender = 4;</code>
+       */
+      public boolean hasGender() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string gender = 4;</code>
+       */
+      public java.lang.String getGender() {
+        java.lang.Object ref = gender_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gender_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string gender = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGenderBytes() {
+        java.lang.Object ref = gender_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gender_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string gender = 4;</code>
+       */
+      public Builder setGender(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        gender_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string gender = 4;</code>
+       */
+      public Builder clearGender() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        gender_ = getDefaultInstance().getGender();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string gender = 4;</code>
+       */
+      public Builder setGenderBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        gender_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object animacy_ = "";
+      /**
+       * <code>optional string animacy = 5;</code>
+       */
+      public boolean hasAnimacy() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string animacy = 5;</code>
+       */
+      public java.lang.String getAnimacy() {
+        java.lang.Object ref = animacy_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            animacy_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string animacy = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAnimacyBytes() {
+        java.lang.Object ref = animacy_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          animacy_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string animacy = 5;</code>
+       */
+      public Builder setAnimacy(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        animacy_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string animacy = 5;</code>
+       */
+      public Builder clearAnimacy() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        animacy_ = getDefaultInstance().getAnimacy();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string animacy = 5;</code>
+       */
+      public Builder setAnimacyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        animacy_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object person_ = "";
+      /**
+       * <code>optional string person = 6;</code>
+       */
+      public boolean hasPerson() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string person = 6;</code>
+       */
+      public java.lang.String getPerson() {
+        java.lang.Object ref = person_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            person_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string person = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPersonBytes() {
+        java.lang.Object ref = person_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          person_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string person = 6;</code>
+       */
+      public Builder setPerson(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        person_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string person = 6;</code>
+       */
+      public Builder clearPerson() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        person_ = getDefaultInstance().getPerson();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string person = 6;</code>
+       */
+      public Builder setPersonBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        person_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int startIndex_ ;
+      /**
+       * <code>optional uint32 startIndex = 7;</code>
+       */
+      public boolean hasStartIndex() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional uint32 startIndex = 7;</code>
+       */
+      public int getStartIndex() {
+        return startIndex_;
+      }
+      /**
+       * <code>optional uint32 startIndex = 7;</code>
+       */
+      public Builder setStartIndex(int value) {
+        bitField0_ |= 0x00000040;
+        startIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 startIndex = 7;</code>
+       */
+      public Builder clearStartIndex() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        startIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int endIndex_ ;
+      /**
+       * <code>optional uint32 endIndex = 9;</code>
+       */
+      public boolean hasEndIndex() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional uint32 endIndex = 9;</code>
+       */
+      public int getEndIndex() {
+        return endIndex_;
+      }
+      /**
+       * <code>optional uint32 endIndex = 9;</code>
+       */
+      public Builder setEndIndex(int value) {
+        bitField0_ |= 0x00000080;
+        endIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 endIndex = 9;</code>
+       */
+      public Builder clearEndIndex() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        endIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int headIndex_ ;
+      /**
+       * <code>optional uint32 headIndex = 10;</code>
+       */
+      public boolean hasHeadIndex() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional uint32 headIndex = 10;</code>
+       */
+      public int getHeadIndex() {
+        return headIndex_;
+      }
+      /**
+       * <code>optional uint32 headIndex = 10;</code>
+       */
+      public Builder setHeadIndex(int value) {
+        bitField0_ |= 0x00000100;
+        headIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 headIndex = 10;</code>
+       */
+      public Builder clearHeadIndex() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        headIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object headString_ = "";
+      /**
+       * <code>optional string headString = 11;</code>
+       */
+      public boolean hasHeadString() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional string headString = 11;</code>
+       */
+      public java.lang.String getHeadString() {
+        java.lang.Object ref = headString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            headString_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string headString = 11;</code>
+       */
+      public com.google.protobuf.ByteString
+          getHeadStringBytes() {
+        java.lang.Object ref = headString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          headString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string headString = 11;</code>
+       */
+      public Builder setHeadString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        headString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string headString = 11;</code>
+       */
+      public Builder clearHeadString() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        headString_ = getDefaultInstance().getHeadString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string headString = 11;</code>
+       */
+      public Builder setHeadStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000200;
+        headString_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object nerString_ = "";
+      /**
+       * <code>optional string nerString = 12;</code>
+       */
+      public boolean hasNerString() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional string nerString = 12;</code>
+       */
+      public java.lang.String getNerString() {
+        java.lang.Object ref = nerString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            nerString_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string nerString = 12;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNerStringBytes() {
+        java.lang.Object ref = nerString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nerString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string nerString = 12;</code>
+       */
+      public Builder setNerString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        nerString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string nerString = 12;</code>
+       */
+      public Builder clearNerString() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        nerString_ = getDefaultInstance().getNerString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string nerString = 12;</code>
+       */
+      public Builder setNerStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000400;
+        nerString_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int originalRef_ ;
+      /**
+       * <code>optional uint32 originalRef = 13;</code>
+       */
+      public boolean hasOriginalRef() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional uint32 originalRef = 13;</code>
+       */
+      public int getOriginalRef() {
+        return originalRef_;
+      }
+      /**
+       * <code>optional uint32 originalRef = 13;</code>
+       */
+      public Builder setOriginalRef(int value) {
+        bitField0_ |= 0x00000800;
+        originalRef_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 originalRef = 13;</code>
+       */
+      public Builder clearOriginalRef() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        originalRef_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int goldCorefClusterID_ ;
+      /**
+       * <code>optional int32 goldCorefClusterID = 14;</code>
+       */
+      public boolean hasGoldCorefClusterID() {
+        return ((bitField0_ & 0x00001000) == 0x00001000);
+      }
+      /**
+       * <code>optional int32 goldCorefClusterID = 14;</code>
+       */
+      public int getGoldCorefClusterID() {
+        return goldCorefClusterID_;
+      }
+      /**
+       * <code>optional int32 goldCorefClusterID = 14;</code>
+       */
+      public Builder setGoldCorefClusterID(int value) {
+        bitField0_ |= 0x00001000;
+        goldCorefClusterID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 goldCorefClusterID = 14;</code>
+       */
+      public Builder clearGoldCorefClusterID() {
+        bitField0_ = (bitField0_ & ~0x00001000);
+        goldCorefClusterID_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int corefClusterID_ ;
+      /**
+       * <code>optional int32 corefClusterID = 15;</code>
+       */
+      public boolean hasCorefClusterID() {
+        return ((bitField0_ & 0x00002000) == 0x00002000);
+      }
+      /**
+       * <code>optional int32 corefClusterID = 15;</code>
+       */
+      public int getCorefClusterID() {
+        return corefClusterID_;
+      }
+      /**
+       * <code>optional int32 corefClusterID = 15;</code>
+       */
+      public Builder setCorefClusterID(int value) {
+        bitField0_ |= 0x00002000;
+        corefClusterID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 corefClusterID = 15;</code>
+       */
+      public Builder clearCorefClusterID() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        corefClusterID_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int mentionNum_ ;
+      /**
+       * <code>optional uint32 mentionNum = 16;</code>
+       */
+      public boolean hasMentionNum() {
+        return ((bitField0_ & 0x00004000) == 0x00004000);
+      }
+      /**
+       * <code>optional uint32 mentionNum = 16;</code>
+       */
+      public int getMentionNum() {
+        return mentionNum_;
+      }
+      /**
+       * <code>optional uint32 mentionNum = 16;</code>
+       */
+      public Builder setMentionNum(int value) {
+        bitField0_ |= 0x00004000;
+        mentionNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 mentionNum = 16;</code>
+       */
+      public Builder clearMentionNum() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        mentionNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int sentNum_ ;
+      /**
+       * <code>optional uint32 sentNum = 17;</code>
+       */
+      public boolean hasSentNum() {
+        return ((bitField0_ & 0x00008000) == 0x00008000);
+      }
+      /**
+       * <code>optional uint32 sentNum = 17;</code>
+       */
+      public int getSentNum() {
+        return sentNum_;
+      }
+      /**
+       * <code>optional uint32 sentNum = 17;</code>
+       */
+      public Builder setSentNum(int value) {
+        bitField0_ |= 0x00008000;
+        sentNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 sentNum = 17;</code>
+       */
+      public Builder clearSentNum() {
+        bitField0_ = (bitField0_ & ~0x00008000);
+        sentNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int utter_ ;
+      /**
+       * <code>optional uint32 utter = 18;</code>
+       */
+      public boolean hasUtter() {
+        return ((bitField0_ & 0x00010000) == 0x00010000);
+      }
+      /**
+       * <code>optional uint32 utter = 18;</code>
+       */
+      public int getUtter() {
+        return utter_;
+      }
+      /**
+       * <code>optional uint32 utter = 18;</code>
+       */
+      public Builder setUtter(int value) {
+        bitField0_ |= 0x00010000;
+        utter_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 utter = 18;</code>
+       */
+      public Builder clearUtter() {
+        bitField0_ = (bitField0_ & ~0x00010000);
+        utter_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int paragraph_ ;
+      /**
+       * <code>optional uint32 paragraph = 19;</code>
+       */
+      public boolean hasParagraph() {
+        return ((bitField0_ & 0x00020000) == 0x00020000);
+      }
+      /**
+       * <code>optional uint32 paragraph = 19;</code>
+       */
+      public int getParagraph() {
+        return paragraph_;
+      }
+      /**
+       * <code>optional uint32 paragraph = 19;</code>
+       */
+      public Builder setParagraph(int value) {
+        bitField0_ |= 0x00020000;
+        paragraph_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 paragraph = 19;</code>
+       */
+      public Builder clearParagraph() {
+        bitField0_ = (bitField0_ & ~0x00020000);
+        paragraph_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean isSubject_ ;
+      /**
+       * <code>optional bool isSubject = 20;</code>
+       */
+      public boolean hasIsSubject() {
+        return ((bitField0_ & 0x00040000) == 0x00040000);
+      }
+      /**
+       * <code>optional bool isSubject = 20;</code>
+       */
+      public boolean getIsSubject() {
+        return isSubject_;
+      }
+      /**
+       * <code>optional bool isSubject = 20;</code>
+       */
+      public Builder setIsSubject(boolean value) {
+        bitField0_ |= 0x00040000;
+        isSubject_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isSubject = 20;</code>
+       */
+      public Builder clearIsSubject() {
+        bitField0_ = (bitField0_ & ~0x00040000);
+        isSubject_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isDirectObject_ ;
+      /**
+       * <code>optional bool isDirectObject = 21;</code>
+       */
+      public boolean hasIsDirectObject() {
+        return ((bitField0_ & 0x00080000) == 0x00080000);
+      }
+      /**
+       * <code>optional bool isDirectObject = 21;</code>
+       */
+      public boolean getIsDirectObject() {
+        return isDirectObject_;
+      }
+      /**
+       * <code>optional bool isDirectObject = 21;</code>
+       */
+      public Builder setIsDirectObject(boolean value) {
+        bitField0_ |= 0x00080000;
+        isDirectObject_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isDirectObject = 21;</code>
+       */
+      public Builder clearIsDirectObject() {
+        bitField0_ = (bitField0_ & ~0x00080000);
+        isDirectObject_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isIndirectObject_ ;
+      /**
+       * <code>optional bool isIndirectObject = 22;</code>
+       */
+      public boolean hasIsIndirectObject() {
+        return ((bitField0_ & 0x00100000) == 0x00100000);
+      }
+      /**
+       * <code>optional bool isIndirectObject = 22;</code>
+       */
+      public boolean getIsIndirectObject() {
+        return isIndirectObject_;
+      }
+      /**
+       * <code>optional bool isIndirectObject = 22;</code>
+       */
+      public Builder setIsIndirectObject(boolean value) {
+        bitField0_ |= 0x00100000;
+        isIndirectObject_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isIndirectObject = 22;</code>
+       */
+      public Builder clearIsIndirectObject() {
+        bitField0_ = (bitField0_ & ~0x00100000);
+        isIndirectObject_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isPrepositionObject_ ;
+      /**
+       * <code>optional bool isPrepositionObject = 23;</code>
+       */
+      public boolean hasIsPrepositionObject() {
+        return ((bitField0_ & 0x00200000) == 0x00200000);
+      }
+      /**
+       * <code>optional bool isPrepositionObject = 23;</code>
+       */
+      public boolean getIsPrepositionObject() {
+        return isPrepositionObject_;
+      }
+      /**
+       * <code>optional bool isPrepositionObject = 23;</code>
+       */
+      public Builder setIsPrepositionObject(boolean value) {
+        bitField0_ |= 0x00200000;
+        isPrepositionObject_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isPrepositionObject = 23;</code>
+       */
+      public Builder clearIsPrepositionObject() {
+        bitField0_ = (bitField0_ & ~0x00200000);
+        isPrepositionObject_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean hasTwin_ ;
+      /**
+       * <code>optional bool hasTwin = 24;</code>
+       */
+      public boolean hasHasTwin() {
+        return ((bitField0_ & 0x00400000) == 0x00400000);
+      }
+      /**
+       * <code>optional bool hasTwin = 24;</code>
+       */
+      public boolean getHasTwin() {
+        return hasTwin_;
+      }
+      /**
+       * <code>optional bool hasTwin = 24;</code>
+       */
+      public Builder setHasTwin(boolean value) {
+        bitField0_ |= 0x00400000;
+        hasTwin_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool hasTwin = 24;</code>
+       */
+      public Builder clearHasTwin() {
+        bitField0_ = (bitField0_ & ~0x00400000);
+        hasTwin_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean generic_ ;
+      /**
+       * <code>optional bool generic = 25;</code>
+       */
+      public boolean hasGeneric() {
+        return ((bitField0_ & 0x00800000) == 0x00800000);
+      }
+      /**
+       * <code>optional bool generic = 25;</code>
+       */
+      public boolean getGeneric() {
+        return generic_;
+      }
+      /**
+       * <code>optional bool generic = 25;</code>
+       */
+      public Builder setGeneric(boolean value) {
+        bitField0_ |= 0x00800000;
+        generic_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool generic = 25;</code>
+       */
+      public Builder clearGeneric() {
+        bitField0_ = (bitField0_ & ~0x00800000);
+        generic_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean isSingleton_ ;
+      /**
+       * <code>optional bool isSingleton = 26;</code>
+       */
+      public boolean hasIsSingleton() {
+        return ((bitField0_ & 0x01000000) == 0x01000000);
+      }
+      /**
+       * <code>optional bool isSingleton = 26;</code>
+       */
+      public boolean getIsSingleton() {
+        return isSingleton_;
+      }
+      /**
+       * <code>optional bool isSingleton = 26;</code>
+       */
+      public Builder setIsSingleton(boolean value) {
+        bitField0_ |= 0x01000000;
+        isSingleton_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool isSingleton = 26;</code>
+       */
+      public Builder clearIsSingleton() {
+        bitField0_ = (bitField0_ & ~0x01000000);
+        isSingleton_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean hasBasicDependency_ ;
+      /**
+       * <code>optional bool hasBasicDependency = 27;</code>
+       */
+      public boolean hasHasBasicDependency() {
+        return ((bitField0_ & 0x02000000) == 0x02000000);
+      }
+      /**
+       * <code>optional bool hasBasicDependency = 27;</code>
+       */
+      public boolean getHasBasicDependency() {
+        return hasBasicDependency_;
+      }
+      /**
+       * <code>optional bool hasBasicDependency = 27;</code>
+       */
+      public Builder setHasBasicDependency(boolean value) {
+        bitField0_ |= 0x02000000;
+        hasBasicDependency_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool hasBasicDependency = 27;</code>
+       */
+      public Builder clearHasBasicDependency() {
+        bitField0_ = (bitField0_ & ~0x02000000);
+        hasBasicDependency_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean hasEnhancedDepenedncy_ ;
+      /**
+       * <code>optional bool hasEnhancedDepenedncy = 28;</code>
+       */
+      public boolean hasHasEnhancedDepenedncy() {
+        return ((bitField0_ & 0x04000000) == 0x04000000);
+      }
+      /**
+       * <code>optional bool hasEnhancedDepenedncy = 28;</code>
+       */
+      public boolean getHasEnhancedDepenedncy() {
+        return hasEnhancedDepenedncy_;
+      }
+      /**
+       * <code>optional bool hasEnhancedDepenedncy = 28;</code>
+       */
+      public Builder setHasEnhancedDepenedncy(boolean value) {
+        bitField0_ |= 0x04000000;
+        hasEnhancedDepenedncy_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool hasEnhancedDepenedncy = 28;</code>
+       */
+      public Builder clearHasEnhancedDepenedncy() {
+        bitField0_ = (bitField0_ & ~0x04000000);
+        hasEnhancedDepenedncy_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean hasContextParseTree_ ;
+      /**
+       * <code>optional bool hasContextParseTree = 29;</code>
+       */
+      public boolean hasHasContextParseTree() {
+        return ((bitField0_ & 0x08000000) == 0x08000000);
+      }
+      /**
+       * <code>optional bool hasContextParseTree = 29;</code>
+       */
+      public boolean getHasContextParseTree() {
+        return hasContextParseTree_;
+      }
+      /**
+       * <code>optional bool hasContextParseTree = 29;</code>
+       */
+      public Builder setHasContextParseTree(boolean value) {
+        bitField0_ |= 0x08000000;
+        hasContextParseTree_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool hasContextParseTree = 29;</code>
+       */
+      public Builder clearHasContextParseTree() {
+        bitField0_ = (bitField0_ & ~0x08000000);
+        hasContextParseTree_ = false;
+        onChanged();
+        return this;
+      }
+
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord headIndexedWord_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> headIndexedWordBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      public boolean hasHeadIndexedWord() {
+        return ((bitField0_ & 0x10000000) == 0x10000000);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getHeadIndexedWord() {
+        if (headIndexedWordBuilder_ == null) {
+          return headIndexedWord_;
+        } else {
+          return headIndexedWordBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      public Builder setHeadIndexedWord(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (headIndexedWordBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          headIndexedWord_ = value;
+          onChanged();
+        } else {
+          headIndexedWordBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x10000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      public Builder setHeadIndexedWord(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (headIndexedWordBuilder_ == null) {
+          headIndexedWord_ = builderForValue.build();
+          onChanged();
+        } else {
+          headIndexedWordBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x10000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      public Builder mergeHeadIndexedWord(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (headIndexedWordBuilder_ == null) {
+          if (((bitField0_ & 0x10000000) == 0x10000000) &&
+              headIndexedWord_ != edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance()) {
+            headIndexedWord_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.newBuilder(headIndexedWord_).mergeFrom(value).buildPartial();
+          } else {
+            headIndexedWord_ = value;
+          }
+          onChanged();
+        } else {
+          headIndexedWordBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x10000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      public Builder clearHeadIndexedWord() {
+        if (headIndexedWordBuilder_ == null) {
+          headIndexedWord_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+          onChanged();
+        } else {
+          headIndexedWordBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x10000000);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder getHeadIndexedWordBuilder() {
+        bitField0_ |= 0x10000000;
+        onChanged();
+        return getHeadIndexedWordFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getHeadIndexedWordOrBuilder() {
+        if (headIndexedWordBuilder_ != null) {
+          return headIndexedWordBuilder_.getMessageOrBuilder();
+        } else {
+          return headIndexedWord_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headIndexedWord = 30;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+          getHeadIndexedWordFieldBuilder() {
+        if (headIndexedWordBuilder_ == null) {
+          headIndexedWordBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder>(
+                  getHeadIndexedWord(),
+                  getParentForChildren(),
+                  isClean());
+          headIndexedWord_ = null;
+        }
+        return headIndexedWordBuilder_;
+      }
+
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord dependingVerb_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> dependingVerbBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      public boolean hasDependingVerb() {
+        return ((bitField0_ & 0x20000000) == 0x20000000);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getDependingVerb() {
+        if (dependingVerbBuilder_ == null) {
+          return dependingVerb_;
+        } else {
+          return dependingVerbBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      public Builder setDependingVerb(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (dependingVerbBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          dependingVerb_ = value;
+          onChanged();
+        } else {
+          dependingVerbBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      public Builder setDependingVerb(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (dependingVerbBuilder_ == null) {
+          dependingVerb_ = builderForValue.build();
+          onChanged();
+        } else {
+          dependingVerbBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      public Builder mergeDependingVerb(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (dependingVerbBuilder_ == null) {
+          if (((bitField0_ & 0x20000000) == 0x20000000) &&
+              dependingVerb_ != edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance()) {
+            dependingVerb_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.newBuilder(dependingVerb_).mergeFrom(value).buildPartial();
+          } else {
+            dependingVerb_ = value;
+          }
+          onChanged();
+        } else {
+          dependingVerbBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x20000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      public Builder clearDependingVerb() {
+        if (dependingVerbBuilder_ == null) {
+          dependingVerb_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+          onChanged();
+        } else {
+          dependingVerbBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x20000000);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder getDependingVerbBuilder() {
+        bitField0_ |= 0x20000000;
+        onChanged();
+        return getDependingVerbFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getDependingVerbOrBuilder() {
+        if (dependingVerbBuilder_ != null) {
+          return dependingVerbBuilder_.getMessageOrBuilder();
+        } else {
+          return dependingVerb_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord dependingVerb = 31;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+          getDependingVerbFieldBuilder() {
+        if (dependingVerbBuilder_ == null) {
+          dependingVerbBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder>(
+                  getDependingVerb(),
+                  getParentForChildren(),
+                  isClean());
+          dependingVerb_ = null;
+        }
+        return dependingVerbBuilder_;
+      }
+
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord headWord_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> headWordBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      public boolean hasHeadWord() {
+        return ((bitField0_ & 0x40000000) == 0x40000000);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getHeadWord() {
+        if (headWordBuilder_ == null) {
+          return headWord_;
+        } else {
+          return headWordBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      public Builder setHeadWord(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (headWordBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          headWord_ = value;
+          onChanged();
+        } else {
+          headWordBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x40000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      public Builder setHeadWord(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (headWordBuilder_ == null) {
+          headWord_ = builderForValue.build();
+          onChanged();
+        } else {
+          headWordBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x40000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      public Builder mergeHeadWord(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (headWordBuilder_ == null) {
+          if (((bitField0_ & 0x40000000) == 0x40000000) &&
+              headWord_ != edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance()) {
+            headWord_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.newBuilder(headWord_).mergeFrom(value).buildPartial();
+          } else {
+            headWord_ = value;
+          }
+          onChanged();
+        } else {
+          headWordBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x40000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      public Builder clearHeadWord() {
+        if (headWordBuilder_ == null) {
+          headWord_ = edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+          onChanged();
+        } else {
+          headWordBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x40000000);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder getHeadWordBuilder() {
+        bitField0_ |= 0x40000000;
+        onChanged();
+        return getHeadWordFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getHeadWordOrBuilder() {
+        if (headWordBuilder_ != null) {
+          return headWordBuilder_.getMessageOrBuilder();
+        } else {
+          return headWord_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.IndexedWord headWord = 32;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+          getHeadWordFieldBuilder() {
+        if (headWordBuilder_ == null) {
+          headWordBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder>(
+                  getHeadWord(),
+                  getParentForChildren(),
+                  isClean());
+          headWord_ = null;
+        }
+        return headWordBuilder_;
+      }
+
+      private edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo speakerInfo_ = edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo, edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfoOrBuilder> speakerInfoBuilder_;
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      public boolean hasSpeakerInfo() {
+        return ((bitField0_ & 0x80000000) == 0x80000000);
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo getSpeakerInfo() {
+        if (speakerInfoBuilder_ == null) {
+          return speakerInfo_;
+        } else {
+          return speakerInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      public Builder setSpeakerInfo(edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo value) {
+        if (speakerInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          speakerInfo_ = value;
+          onChanged();
+        } else {
+          speakerInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x80000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      public Builder setSpeakerInfo(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.Builder builderForValue) {
+        if (speakerInfoBuilder_ == null) {
+          speakerInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          speakerInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x80000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      public Builder mergeSpeakerInfo(edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo value) {
+        if (speakerInfoBuilder_ == null) {
+          if (((bitField0_ & 0x80000000) == 0x80000000) &&
+              speakerInfo_ != edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.getDefaultInstance()) {
+            speakerInfo_ =
+              edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.newBuilder(speakerInfo_).mergeFrom(value).buildPartial();
+          } else {
+            speakerInfo_ = value;
+          }
+          onChanged();
+        } else {
+          speakerInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x80000000;
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      public Builder clearSpeakerInfo() {
+        if (speakerInfoBuilder_ == null) {
+          speakerInfo_ = edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.getDefaultInstance();
+          onChanged();
+        } else {
+          speakerInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x80000000);
+        return this;
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.Builder getSpeakerInfoBuilder() {
+        bitField0_ |= 0x80000000;
+        onChanged();
+        return getSpeakerInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfoOrBuilder getSpeakerInfoOrBuilder() {
+        if (speakerInfoBuilder_ != null) {
+          return speakerInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return speakerInfo_;
+        }
+      }
+      /**
+       * <code>optional .edu.stanford.nlp.pipeline.SpeakerInfo speakerInfo = 33;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo, edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfoOrBuilder> 
+          getSpeakerInfoFieldBuilder() {
+        if (speakerInfoBuilder_ == null) {
+          speakerInfoBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo, edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfoOrBuilder>(
+                  getSpeakerInfo(),
+                  getParentForChildren(),
+                  isClean());
+          speakerInfo_ = null;
+        }
+        return speakerInfoBuilder_;
+      }
+
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> sentenceWords_ =
+        java.util.Collections.emptyList();
+      private void ensureSentenceWordsIsMutable() {
+        if (!((bitField1_ & 0x00000001) == 0x00000001)) {
+          sentenceWords_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord>(sentenceWords_);
+          bitField1_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> sentenceWordsBuilder_;
+
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> getSentenceWordsList() {
+        if (sentenceWordsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(sentenceWords_);
+        } else {
+          return sentenceWordsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public int getSentenceWordsCount() {
+        if (sentenceWordsBuilder_ == null) {
+          return sentenceWords_.size();
+        } else {
+          return sentenceWordsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getSentenceWords(int index) {
+        if (sentenceWordsBuilder_ == null) {
+          return sentenceWords_.get(index);
+        } else {
+          return sentenceWordsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder setSentenceWords(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (sentenceWordsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSentenceWordsIsMutable();
+          sentenceWords_.set(index, value);
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder setSentenceWords(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (sentenceWordsBuilder_ == null) {
+          ensureSentenceWordsIsMutable();
+          sentenceWords_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder addSentenceWords(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (sentenceWordsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSentenceWordsIsMutable();
+          sentenceWords_.add(value);
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder addSentenceWords(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (sentenceWordsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSentenceWordsIsMutable();
+          sentenceWords_.add(index, value);
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder addSentenceWords(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (sentenceWordsBuilder_ == null) {
+          ensureSentenceWordsIsMutable();
+          sentenceWords_.add(builderForValue.build());
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder addSentenceWords(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (sentenceWordsBuilder_ == null) {
+          ensureSentenceWordsIsMutable();
+          sentenceWords_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder addAllSentenceWords(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> values) {
+        if (sentenceWordsBuilder_ == null) {
+          ensureSentenceWordsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, sentenceWords_);
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder clearSentenceWords() {
+        if (sentenceWordsBuilder_ == null) {
+          sentenceWords_ = java.util.Collections.emptyList();
+          bitField1_ = (bitField1_ & ~0x00000001);
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public Builder removeSentenceWords(int index) {
+        if (sentenceWordsBuilder_ == null) {
+          ensureSentenceWordsIsMutable();
+          sentenceWords_.remove(index);
+          onChanged();
+        } else {
+          sentenceWordsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder getSentenceWordsBuilder(
+          int index) {
+        return getSentenceWordsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getSentenceWordsOrBuilder(
+          int index) {
+        if (sentenceWordsBuilder_ == null) {
+          return sentenceWords_.get(index);  } else {
+          return sentenceWordsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+           getSentenceWordsOrBuilderList() {
+        if (sentenceWordsBuilder_ != null) {
+          return sentenceWordsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(sentenceWords_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder addSentenceWordsBuilder() {
+        return getSentenceWordsFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder addSentenceWordsBuilder(
+          int index) {
+        return getSentenceWordsFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord sentenceWords = 50;</code>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder> 
+           getSentenceWordsBuilderList() {
+        return getSentenceWordsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+          getSentenceWordsFieldBuilder() {
+        if (sentenceWordsBuilder_ == null) {
+          sentenceWordsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder>(
+                  sentenceWords_,
+                  ((bitField1_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          sentenceWords_ = null;
+        }
+        return sentenceWordsBuilder_;
+      }
+
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> originalSpan_ =
+        java.util.Collections.emptyList();
+      private void ensureOriginalSpanIsMutable() {
+        if (!((bitField1_ & 0x00000002) == 0x00000002)) {
+          originalSpan_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord>(originalSpan_);
+          bitField1_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> originalSpanBuilder_;
+
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> getOriginalSpanList() {
+        if (originalSpanBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(originalSpan_);
+        } else {
+          return originalSpanBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public int getOriginalSpanCount() {
+        if (originalSpanBuilder_ == null) {
+          return originalSpan_.size();
+        } else {
+          return originalSpanBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getOriginalSpan(int index) {
+        if (originalSpanBuilder_ == null) {
+          return originalSpan_.get(index);
+        } else {
+          return originalSpanBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder setOriginalSpan(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (originalSpanBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOriginalSpanIsMutable();
+          originalSpan_.set(index, value);
+          onChanged();
+        } else {
+          originalSpanBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder setOriginalSpan(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (originalSpanBuilder_ == null) {
+          ensureOriginalSpanIsMutable();
+          originalSpan_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          originalSpanBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder addOriginalSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (originalSpanBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOriginalSpanIsMutable();
+          originalSpan_.add(value);
+          onChanged();
+        } else {
+          originalSpanBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder addOriginalSpan(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord value) {
+        if (originalSpanBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureOriginalSpanIsMutable();
+          originalSpan_.add(index, value);
+          onChanged();
+        } else {
+          originalSpanBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder addOriginalSpan(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (originalSpanBuilder_ == null) {
+          ensureOriginalSpanIsMutable();
+          originalSpan_.add(builderForValue.build());
+          onChanged();
+        } else {
+          originalSpanBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder addOriginalSpan(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder builderForValue) {
+        if (originalSpanBuilder_ == null) {
+          ensureOriginalSpanIsMutable();
+          originalSpan_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          originalSpanBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder addAllOriginalSpan(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord> values) {
+        if (originalSpanBuilder_ == null) {
+          ensureOriginalSpanIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, originalSpan_);
+          onChanged();
+        } else {
+          originalSpanBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder clearOriginalSpan() {
+        if (originalSpanBuilder_ == null) {
+          originalSpan_ = java.util.Collections.emptyList();
+          bitField1_ = (bitField1_ & ~0x00000002);
+          onChanged();
+        } else {
+          originalSpanBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public Builder removeOriginalSpan(int index) {
+        if (originalSpanBuilder_ == null) {
+          ensureOriginalSpanIsMutable();
+          originalSpan_.remove(index);
+          onChanged();
+        } else {
+          originalSpanBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder getOriginalSpanBuilder(
+          int index) {
+        return getOriginalSpanFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder getOriginalSpanOrBuilder(
+          int index) {
+        if (originalSpanBuilder_ == null) {
+          return originalSpan_.get(index);  } else {
+          return originalSpanBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+           getOriginalSpanOrBuilderList() {
+        if (originalSpanBuilder_ != null) {
+          return originalSpanBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(originalSpan_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder addOriginalSpanBuilder() {
+        return getOriginalSpanFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder addOriginalSpanBuilder(
+          int index) {
+        return getOriginalSpanFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.IndexedWord originalSpan = 51;</code>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder> 
+           getOriginalSpanBuilderList() {
+        return getOriginalSpanFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder> 
+          getOriginalSpanFieldBuilder() {
+        if (originalSpanBuilder_ == null) {
+          originalSpanBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder>(
+                  originalSpan_,
+                  ((bitField1_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          originalSpan_ = null;
+        }
+        return originalSpanBuilder_;
+      }
+
+      private com.google.protobuf.LazyStringList dependents_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureDependentsIsMutable() {
+        if (!((bitField1_ & 0x00000004) == 0x00000004)) {
+          dependents_ = new com.google.protobuf.LazyStringArrayList(dependents_);
+          bitField1_ |= 0x00000004;
+         }
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getDependentsList() {
+        return dependents_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public int getDependentsCount() {
+        return dependents_.size();
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public java.lang.String getDependents(int index) {
+        return dependents_.get(index);
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDependentsBytes(int index) {
+        return dependents_.getByteString(index);
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public Builder setDependents(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureDependentsIsMutable();
+        dependents_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public Builder addDependents(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureDependentsIsMutable();
+        dependents_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public Builder addAllDependents(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureDependentsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, dependents_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public Builder clearDependents() {
+        dependents_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField1_ = (bitField1_ & ~0x00000004);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string dependents = 52;</code>
+       */
+      public Builder addDependentsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureDependentsIsMutable();
+        dependents_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList preprocessedTerms_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensurePreprocessedTermsIsMutable() {
+        if (!((bitField1_ & 0x00000008) == 0x00000008)) {
+          preprocessedTerms_ = new com.google.protobuf.LazyStringArrayList(preprocessedTerms_);
+          bitField1_ |= 0x00000008;
+         }
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getPreprocessedTermsList() {
+        return preprocessedTerms_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public int getPreprocessedTermsCount() {
+        return preprocessedTerms_.size();
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public java.lang.String getPreprocessedTerms(int index) {
+        return preprocessedTerms_.get(index);
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPreprocessedTermsBytes(int index) {
+        return preprocessedTerms_.getByteString(index);
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public Builder setPreprocessedTerms(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensurePreprocessedTermsIsMutable();
+        preprocessedTerms_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public Builder addPreprocessedTerms(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensurePreprocessedTermsIsMutable();
+        preprocessedTerms_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public Builder addAllPreprocessedTerms(
+          java.lang.Iterable<java.lang.String> values) {
+        ensurePreprocessedTermsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, preprocessedTerms_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public Builder clearPreprocessedTerms() {
+        preprocessedTerms_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField1_ = (bitField1_ & ~0x00000008);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string preprocessedTerms = 53;</code>
+       */
+      public Builder addPreprocessedTermsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensurePreprocessedTermsIsMutable();
+        preprocessedTerms_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Integer> appositions_ = java.util.Collections.emptyList();
+      private void ensureAppositionsIsMutable() {
+        if (!((bitField1_ & 0x00000010) == 0x00000010)) {
+          appositions_ = new java.util.ArrayList<java.lang.Integer>(appositions_);
+          bitField1_ |= 0x00000010;
+         }
+      }
+      /**
+       * <code>repeated int32 appositions = 54;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getAppositionsList() {
+        return java.util.Collections.unmodifiableList(appositions_);
+      }
+      /**
+       * <code>repeated int32 appositions = 54;</code>
+       */
+      public int getAppositionsCount() {
+        return appositions_.size();
+      }
+      /**
+       * <code>repeated int32 appositions = 54;</code>
+       */
+      public int getAppositions(int index) {
+        return appositions_.get(index);
+      }
+      /**
+       * <code>repeated int32 appositions = 54;</code>
+       */
+      public Builder setAppositions(
+          int index, int value) {
+        ensureAppositionsIsMutable();
+        appositions_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 appositions = 54;</code>
+       */
+      public Builder addAppositions(int value) {
+        ensureAppositionsIsMutable();
+        appositions_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 appositions = 54;</code>
+       */
+      public Builder addAllAppositions(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureAppositionsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, appositions_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 appositions = 54;</code>
+       */
+      public Builder clearAppositions() {
+        appositions_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000010);
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Integer> predicateNominatives_ = java.util.Collections.emptyList();
+      private void ensurePredicateNominativesIsMutable() {
+        if (!((bitField1_ & 0x00000020) == 0x00000020)) {
+          predicateNominatives_ = new java.util.ArrayList<java.lang.Integer>(predicateNominatives_);
+          bitField1_ |= 0x00000020;
+         }
+      }
+      /**
+       * <code>repeated int32 predicateNominatives = 55;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getPredicateNominativesList() {
+        return java.util.Collections.unmodifiableList(predicateNominatives_);
+      }
+      /**
+       * <code>repeated int32 predicateNominatives = 55;</code>
+       */
+      public int getPredicateNominativesCount() {
+        return predicateNominatives_.size();
+      }
+      /**
+       * <code>repeated int32 predicateNominatives = 55;</code>
+       */
+      public int getPredicateNominatives(int index) {
+        return predicateNominatives_.get(index);
+      }
+      /**
+       * <code>repeated int32 predicateNominatives = 55;</code>
+       */
+      public Builder setPredicateNominatives(
+          int index, int value) {
+        ensurePredicateNominativesIsMutable();
+        predicateNominatives_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 predicateNominatives = 55;</code>
+       */
+      public Builder addPredicateNominatives(int value) {
+        ensurePredicateNominativesIsMutable();
+        predicateNominatives_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 predicateNominatives = 55;</code>
+       */
+      public Builder addAllPredicateNominatives(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensurePredicateNominativesIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, predicateNominatives_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 predicateNominatives = 55;</code>
+       */
+      public Builder clearPredicateNominatives() {
+        predicateNominatives_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000020);
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Integer> relativePronouns_ = java.util.Collections.emptyList();
+      private void ensureRelativePronounsIsMutable() {
+        if (!((bitField1_ & 0x00000040) == 0x00000040)) {
+          relativePronouns_ = new java.util.ArrayList<java.lang.Integer>(relativePronouns_);
+          bitField1_ |= 0x00000040;
+         }
+      }
+      /**
+       * <code>repeated int32 relativePronouns = 56;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getRelativePronounsList() {
+        return java.util.Collections.unmodifiableList(relativePronouns_);
+      }
+      /**
+       * <code>repeated int32 relativePronouns = 56;</code>
+       */
+      public int getRelativePronounsCount() {
+        return relativePronouns_.size();
+      }
+      /**
+       * <code>repeated int32 relativePronouns = 56;</code>
+       */
+      public int getRelativePronouns(int index) {
+        return relativePronouns_.get(index);
+      }
+      /**
+       * <code>repeated int32 relativePronouns = 56;</code>
+       */
+      public Builder setRelativePronouns(
+          int index, int value) {
+        ensureRelativePronounsIsMutable();
+        relativePronouns_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 relativePronouns = 56;</code>
+       */
+      public Builder addRelativePronouns(int value) {
+        ensureRelativePronounsIsMutable();
+        relativePronouns_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 relativePronouns = 56;</code>
+       */
+      public Builder addAllRelativePronouns(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureRelativePronounsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, relativePronouns_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 relativePronouns = 56;</code>
+       */
+      public Builder clearRelativePronouns() {
+        relativePronouns_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000040);
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Integer> listMembers_ = java.util.Collections.emptyList();
+      private void ensureListMembersIsMutable() {
+        if (!((bitField1_ & 0x00000080) == 0x00000080)) {
+          listMembers_ = new java.util.ArrayList<java.lang.Integer>(listMembers_);
+          bitField1_ |= 0x00000080;
+         }
+      }
+      /**
+       * <code>repeated int32 listMembers = 57;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getListMembersList() {
+        return java.util.Collections.unmodifiableList(listMembers_);
+      }
+      /**
+       * <code>repeated int32 listMembers = 57;</code>
+       */
+      public int getListMembersCount() {
+        return listMembers_.size();
+      }
+      /**
+       * <code>repeated int32 listMembers = 57;</code>
+       */
+      public int getListMembers(int index) {
+        return listMembers_.get(index);
+      }
+      /**
+       * <code>repeated int32 listMembers = 57;</code>
+       */
+      public Builder setListMembers(
+          int index, int value) {
+        ensureListMembersIsMutable();
+        listMembers_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 listMembers = 57;</code>
+       */
+      public Builder addListMembers(int value) {
+        ensureListMembersIsMutable();
+        listMembers_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 listMembers = 57;</code>
+       */
+      public Builder addAllListMembers(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureListMembersIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, listMembers_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 listMembers = 57;</code>
+       */
+      public Builder clearListMembers() {
+        listMembers_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000080);
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Integer> belongToLists_ = java.util.Collections.emptyList();
+      private void ensureBelongToListsIsMutable() {
+        if (!((bitField1_ & 0x00000100) == 0x00000100)) {
+          belongToLists_ = new java.util.ArrayList<java.lang.Integer>(belongToLists_);
+          bitField1_ |= 0x00000100;
+         }
+      }
+      /**
+       * <code>repeated int32 belongToLists = 58;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getBelongToListsList() {
+        return java.util.Collections.unmodifiableList(belongToLists_);
+      }
+      /**
+       * <code>repeated int32 belongToLists = 58;</code>
+       */
+      public int getBelongToListsCount() {
+        return belongToLists_.size();
+      }
+      /**
+       * <code>repeated int32 belongToLists = 58;</code>
+       */
+      public int getBelongToLists(int index) {
+        return belongToLists_.get(index);
+      }
+      /**
+       * <code>repeated int32 belongToLists = 58;</code>
+       */
+      public Builder setBelongToLists(
+          int index, int value) {
+        ensureBelongToListsIsMutable();
+        belongToLists_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 belongToLists = 58;</code>
+       */
+      public Builder addBelongToLists(int value) {
+        ensureBelongToListsIsMutable();
+        belongToLists_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 belongToLists = 58;</code>
+       */
+      public Builder addAllBelongToLists(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureBelongToListsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, belongToLists_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 belongToLists = 58;</code>
+       */
+      public Builder clearBelongToLists() {
+        belongToLists_ = java.util.Collections.emptyList();
+        bitField1_ = (bitField1_ & ~0x00000100);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.Mention)
+    }
+
+    static {
+      defaultInstance = new Mention(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.Mention)
+  }
+
+  public interface IndexedWordOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.IndexedWord)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 sentenceNum = 1;</code>
+     */
+    boolean hasSentenceNum();
+    /**
+     * <code>optional uint32 sentenceNum = 1;</code>
+     */
+    int getSentenceNum();
+
+    /**
+     * <code>optional uint32 tokenIndex = 2;</code>
+     */
+    boolean hasTokenIndex();
+    /**
+     * <code>optional uint32 tokenIndex = 2;</code>
+     */
+    int getTokenIndex();
+
+    /**
+     * <code>optional uint32 docID = 3;</code>
+     */
+    boolean hasDocID();
+    /**
+     * <code>optional uint32 docID = 3;</code>
+     */
+    int getDocID();
+
+    /**
+     * <code>optional uint32 copyCount = 4;</code>
+     */
+    boolean hasCopyCount();
+    /**
+     * <code>optional uint32 copyCount = 4;</code>
+     */
+    int getCopyCount();
+  }
+  /**
+   * Protobuf type {@code edu.stanford.nlp.pipeline.IndexedWord}
+   */
+  public static final class IndexedWord extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.IndexedWord)
+      IndexedWordOrBuilder {
+    // Use IndexedWord.newBuilder() to construct.
+    private IndexedWord(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private IndexedWord(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final IndexedWord defaultInstance;
+    public static IndexedWord getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public IndexedWord getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private IndexedWord(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              sentenceNum_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              tokenIndex_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              docID_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              copyCount_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_IndexedWord_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_IndexedWord_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.class, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<IndexedWord> PARSER =
+        new com.google.protobuf.AbstractParser<IndexedWord>() {
+      public IndexedWord parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new IndexedWord(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<IndexedWord> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int SENTENCENUM_FIELD_NUMBER = 1;
+    private int sentenceNum_;
+    /**
+     * <code>optional uint32 sentenceNum = 1;</code>
+     */
+    public boolean hasSentenceNum() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 sentenceNum = 1;</code>
+     */
+    public int getSentenceNum() {
+      return sentenceNum_;
+    }
+
+    public static final int TOKENINDEX_FIELD_NUMBER = 2;
+    private int tokenIndex_;
+    /**
+     * <code>optional uint32 tokenIndex = 2;</code>
+     */
+    public boolean hasTokenIndex() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 tokenIndex = 2;</code>
+     */
+    public int getTokenIndex() {
+      return tokenIndex_;
+    }
+
+    public static final int DOCID_FIELD_NUMBER = 3;
+    private int docID_;
+    /**
+     * <code>optional uint32 docID = 3;</code>
+     */
+    public boolean hasDocID() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional uint32 docID = 3;</code>
+     */
+    public int getDocID() {
+      return docID_;
+    }
+
+    public static final int COPYCOUNT_FIELD_NUMBER = 4;
+    private int copyCount_;
+    /**
+     * <code>optional uint32 copyCount = 4;</code>
+     */
+    public boolean hasCopyCount() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional uint32 copyCount = 4;</code>
+     */
+    public int getCopyCount() {
+      return copyCount_;
+    }
+
+    private void initFields() {
+      sentenceNum_ = 0;
+      tokenIndex_ = 0;
+      docID_ = 0;
+      copyCount_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, sentenceNum_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, tokenIndex_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeUInt32(3, docID_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeUInt32(4, copyCount_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, sentenceNum_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, tokenIndex_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, docID_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(4, copyCount_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code edu.stanford.nlp.pipeline.IndexedWord}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.IndexedWord)
+        edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWordOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_IndexedWord_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_IndexedWord_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.class, edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.Builder.class);
+      }
+
+      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        sentenceNum_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        tokenIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        docID_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        copyCount_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_IndexedWord_descriptor;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord getDefaultInstanceForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance();
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord build() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord buildPartial() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord result = new edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.sentenceNum_ = sentenceNum_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.tokenIndex_ = tokenIndex_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.docID_ = docID_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.copyCount_ = copyCount_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord) {
+          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord other) {
+        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord.getDefaultInstance()) return this;
+        if (other.hasSentenceNum()) {
+          setSentenceNum(other.getSentenceNum());
+        }
+        if (other.hasTokenIndex()) {
+          setTokenIndex(other.getTokenIndex());
+        }
+        if (other.hasDocID()) {
+          setDocID(other.getDocID());
+        }
+        if (other.hasCopyCount()) {
+          setCopyCount(other.getCopyCount());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.IndexedWord) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int sentenceNum_ ;
+      /**
+       * <code>optional uint32 sentenceNum = 1;</code>
+       */
+      public boolean hasSentenceNum() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 sentenceNum = 1;</code>
+       */
+      public int getSentenceNum() {
+        return sentenceNum_;
+      }
+      /**
+       * <code>optional uint32 sentenceNum = 1;</code>
+       */
+      public Builder setSentenceNum(int value) {
+        bitField0_ |= 0x00000001;
+        sentenceNum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 sentenceNum = 1;</code>
+       */
+      public Builder clearSentenceNum() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sentenceNum_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int tokenIndex_ ;
+      /**
+       * <code>optional uint32 tokenIndex = 2;</code>
+       */
+      public boolean hasTokenIndex() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 tokenIndex = 2;</code>
+       */
+      public int getTokenIndex() {
+        return tokenIndex_;
+      }
+      /**
+       * <code>optional uint32 tokenIndex = 2;</code>
+       */
+      public Builder setTokenIndex(int value) {
+        bitField0_ |= 0x00000002;
+        tokenIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 tokenIndex = 2;</code>
+       */
+      public Builder clearTokenIndex() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        tokenIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int docID_ ;
+      /**
+       * <code>optional uint32 docID = 3;</code>
+       */
+      public boolean hasDocID() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional uint32 docID = 3;</code>
+       */
+      public int getDocID() {
+        return docID_;
+      }
+      /**
+       * <code>optional uint32 docID = 3;</code>
+       */
+      public Builder setDocID(int value) {
+        bitField0_ |= 0x00000004;
+        docID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 docID = 3;</code>
+       */
+      public Builder clearDocID() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        docID_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int copyCount_ ;
+      /**
+       * <code>optional uint32 copyCount = 4;</code>
+       */
+      public boolean hasCopyCount() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional uint32 copyCount = 4;</code>
+       */
+      public int getCopyCount() {
+        return copyCount_;
+      }
+      /**
+       * <code>optional uint32 copyCount = 4;</code>
+       */
+      public Builder setCopyCount(int value) {
+        bitField0_ |= 0x00000008;
+        copyCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 copyCount = 4;</code>
+       */
+      public Builder clearCopyCount() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        copyCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.IndexedWord)
+    }
+
+    static {
+      defaultInstance = new IndexedWord(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.IndexedWord)
+  }
+
+  public interface SpeakerInfoOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.SpeakerInfo)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional string speakerName = 1;</code>
+     */
+    boolean hasSpeakerName();
+    /**
+     * <code>optional string speakerName = 1;</code>
+     */
+    java.lang.String getSpeakerName();
+    /**
+     * <code>optional string speakerName = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getSpeakerNameBytes();
+
+    /**
+     * <code>repeated int32 mentions = 2;</code>
+     */
+    java.util.List<java.lang.Integer> getMentionsList();
+    /**
+     * <code>repeated int32 mentions = 2;</code>
+     */
+    int getMentionsCount();
+    /**
+     * <code>repeated int32 mentions = 2;</code>
+     */
+    int getMentions(int index);
+  }
+  /**
+   * Protobuf type {@code edu.stanford.nlp.pipeline.SpeakerInfo}
+   */
+  public static final class SpeakerInfo extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.SpeakerInfo)
+      SpeakerInfoOrBuilder {
+    // Use SpeakerInfo.newBuilder() to construct.
+    private SpeakerInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SpeakerInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SpeakerInfo defaultInstance;
+    public static SpeakerInfo getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SpeakerInfo getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SpeakerInfo(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              speakerName_ = bs;
+              break;
+            }
+            case 16: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                mentions_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              mentions_.add(input.readInt32());
+              break;
+            }
+            case 18: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
+                mentions_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                mentions_.add(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          mentions_ = java.util.Collections.unmodifiableList(mentions_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.class, edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SpeakerInfo> PARSER =
+        new com.google.protobuf.AbstractParser<SpeakerInfo>() {
+      public SpeakerInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SpeakerInfo(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SpeakerInfo> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int SPEAKERNAME_FIELD_NUMBER = 1;
+    private java.lang.Object speakerName_;
+    /**
+     * <code>optional string speakerName = 1;</code>
+     */
+    public boolean hasSpeakerName() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional string speakerName = 1;</code>
+     */
+    public java.lang.String getSpeakerName() {
+      java.lang.Object ref = speakerName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          speakerName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string speakerName = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSpeakerNameBytes() {
+      java.lang.Object ref = speakerName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        speakerName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MENTIONS_FIELD_NUMBER = 2;
+    private java.util.List<java.lang.Integer> mentions_;
+    /**
+     * <code>repeated int32 mentions = 2;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getMentionsList() {
+      return mentions_;
+    }
+    /**
+     * <code>repeated int32 mentions = 2;</code>
+     */
+    public int getMentionsCount() {
+      return mentions_.size();
+    }
+    /**
+     * <code>repeated int32 mentions = 2;</code>
+     */
+    public int getMentions(int index) {
+      return mentions_.get(index);
+    }
+
+    private void initFields() {
+      speakerName_ = "";
+      mentions_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getSpeakerNameBytes());
+      }
+      for (int i = 0; i < mentions_.size(); i++) {
+        output.writeInt32(2, mentions_.get(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getSpeakerNameBytes());
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < mentions_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(mentions_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getMentionsList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code edu.stanford.nlp.pipeline.SpeakerInfo}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.SpeakerInfo)
+        edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfoOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.class, edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.Builder.class);
+      }
+
+      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        speakerName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        mentions_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_descriptor;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo getDefaultInstanceForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.getDefaultInstance();
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo build() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo buildPartial() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo result = new edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.speakerName_ = speakerName_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          mentions_ = java.util.Collections.unmodifiableList(mentions_);
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.mentions_ = mentions_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo) {
+          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo other) {
+        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo.getDefaultInstance()) return this;
+        if (other.hasSpeakerName()) {
+          bitField0_ |= 0x00000001;
+          speakerName_ = other.speakerName_;
+          onChanged();
+        }
+        if (!other.mentions_.isEmpty()) {
+          if (mentions_.isEmpty()) {
+            mentions_ = other.mentions_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureMentionsIsMutable();
+            mentions_.addAll(other.mentions_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.SpeakerInfo) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object speakerName_ = "";
+      /**
+       * <code>optional string speakerName = 1;</code>
+       */
+      public boolean hasSpeakerName() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string speakerName = 1;</code>
+       */
+      public java.lang.String getSpeakerName() {
+        java.lang.Object ref = speakerName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            speakerName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string speakerName = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSpeakerNameBytes() {
+        java.lang.Object ref = speakerName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          speakerName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string speakerName = 1;</code>
+       */
+      public Builder setSpeakerName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        speakerName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string speakerName = 1;</code>
+       */
+      public Builder clearSpeakerName() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        speakerName_ = getDefaultInstance().getSpeakerName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string speakerName = 1;</code>
+       */
+      public Builder setSpeakerNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        speakerName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<java.lang.Integer> mentions_ = java.util.Collections.emptyList();
+      private void ensureMentionsIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          mentions_ = new java.util.ArrayList<java.lang.Integer>(mentions_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <code>repeated int32 mentions = 2;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getMentionsList() {
+        return java.util.Collections.unmodifiableList(mentions_);
+      }
+      /**
+       * <code>repeated int32 mentions = 2;</code>
+       */
+      public int getMentionsCount() {
+        return mentions_.size();
+      }
+      /**
+       * <code>repeated int32 mentions = 2;</code>
+       */
+      public int getMentions(int index) {
+        return mentions_.get(index);
+      }
+      /**
+       * <code>repeated int32 mentions = 2;</code>
+       */
+      public Builder setMentions(
+          int index, int value) {
+        ensureMentionsIsMutable();
+        mentions_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 mentions = 2;</code>
+       */
+      public Builder addMentions(int value) {
+        ensureMentionsIsMutable();
+        mentions_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 mentions = 2;</code>
+       */
+      public Builder addAllMentions(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureMentionsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, mentions_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 mentions = 2;</code>
+       */
+      public Builder clearMentions() {
+        mentions_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.SpeakerInfo)
+    }
+
+    static {
+      defaultInstance = new SpeakerInfo(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.SpeakerInfo)
+  }
+
   public interface SpanOrBuilder extends
       // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.Span)
       com.google.protobuf.MessageOrBuilder {
@@ -28672,6 +40253,20 @@ public final class CoreNLPProtos {
      * <code>optional .edu.stanford.nlp.pipeline.Timex timex = 7;</code>
      */
     edu.stanford.nlp.pipeline.CoreNLPProtos.TimexOrBuilder getTimexOrBuilder();
+
+    /**
+     * <code>optional string wikipediaEntity = 8;</code>
+     */
+    boolean hasWikipediaEntity();
+    /**
+     * <code>optional string wikipediaEntity = 8;</code>
+     */
+    java.lang.String getWikipediaEntity();
+    /**
+     * <code>optional string wikipediaEntity = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getWikipediaEntityBytes();
   }
   /**
    * Protobuf type {@code edu.stanford.nlp.pipeline.NERMention}
@@ -28773,6 +40368,12 @@ public final class CoreNLPProtos {
                 timex_ = subBuilder.buildPartial();
               }
               bitField0_ |= 0x00000040;
+              break;
+            }
+            case 66: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              wikipediaEntity_ = bs;
               break;
             }
           }
@@ -29007,6 +40608,48 @@ public final class CoreNLPProtos {
       return timex_;
     }
 
+    public static final int WIKIPEDIAENTITY_FIELD_NUMBER = 8;
+    private java.lang.Object wikipediaEntity_;
+    /**
+     * <code>optional string wikipediaEntity = 8;</code>
+     */
+    public boolean hasWikipediaEntity() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string wikipediaEntity = 8;</code>
+     */
+    public java.lang.String getWikipediaEntity() {
+      java.lang.Object ref = wikipediaEntity_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          wikipediaEntity_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string wikipediaEntity = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getWikipediaEntityBytes() {
+      java.lang.Object ref = wikipediaEntity_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        wikipediaEntity_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       sentenceIndex_ = 0;
       tokenStartInSentenceInclusive_ = 0;
@@ -29015,6 +40658,7 @@ public final class CoreNLPProtos {
       normalizedNER_ = "";
       entityType_ = "";
       timex_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Timex.getDefaultInstance();
+      wikipediaEntity_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -29062,6 +40706,9 @@ public final class CoreNLPProtos {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeMessage(7, timex_);
       }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getWikipediaEntityBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -29098,6 +40745,10 @@ public final class CoreNLPProtos {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(7, timex_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getWikipediaEntityBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -29239,6 +40890,8 @@ public final class CoreNLPProtos {
           timexBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000040);
+        wikipediaEntity_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -29299,6 +40952,10 @@ public final class CoreNLPProtos {
         } else {
           result.timex_ = timexBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.wikipediaEntity_ = wikipediaEntity_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -29341,6 +40998,11 @@ public final class CoreNLPProtos {
         }
         if (other.hasTimex()) {
           mergeTimex(other.getTimex());
+        }
+        if (other.hasWikipediaEntity()) {
+          bitField0_ |= 0x00000080;
+          wikipediaEntity_ = other.wikipediaEntity_;
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -29821,6 +41483,82 @@ public final class CoreNLPProtos {
         return timexBuilder_;
       }
 
+      private java.lang.Object wikipediaEntity_ = "";
+      /**
+       * <code>optional string wikipediaEntity = 8;</code>
+       */
+      public boolean hasWikipediaEntity() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string wikipediaEntity = 8;</code>
+       */
+      public java.lang.String getWikipediaEntity() {
+        java.lang.Object ref = wikipediaEntity_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            wikipediaEntity_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string wikipediaEntity = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getWikipediaEntityBytes() {
+        java.lang.Object ref = wikipediaEntity_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          wikipediaEntity_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string wikipediaEntity = 8;</code>
+       */
+      public Builder setWikipediaEntity(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        wikipediaEntity_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string wikipediaEntity = 8;</code>
+       */
+      public Builder clearWikipediaEntity() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        wikipediaEntity_ = getDefaultInstance().getWikipediaEntity();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string wikipediaEntity = 8;</code>
+       */
+      public Builder setWikipediaEntityBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        wikipediaEntity_ = value;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.NERMention)
     }
 
@@ -29832,8 +41570,1211 @@ public final class CoreNLPProtos {
     // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.NERMention)
   }
 
-  public interface OpenIETripleOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.OpenIETriple)
+  public interface SentenceFragmentOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.SentenceFragment)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated uint32 tokenIndex = 1;</code>
+     */
+    java.util.List<java.lang.Integer> getTokenIndexList();
+    /**
+     * <code>repeated uint32 tokenIndex = 1;</code>
+     */
+    int getTokenIndexCount();
+    /**
+     * <code>repeated uint32 tokenIndex = 1;</code>
+     */
+    int getTokenIndex(int index);
+
+    /**
+     * <code>optional uint32 root = 2;</code>
+     */
+    boolean hasRoot();
+    /**
+     * <code>optional uint32 root = 2;</code>
+     */
+    int getRoot();
+
+    /**
+     * <code>optional bool assumedTruth = 3;</code>
+     */
+    boolean hasAssumedTruth();
+    /**
+     * <code>optional bool assumedTruth = 3;</code>
+     */
+    boolean getAssumedTruth();
+
+    /**
+     * <code>optional double score = 4;</code>
+     */
+    boolean hasScore();
+    /**
+     * <code>optional double score = 4;</code>
+     */
+    double getScore();
+  }
+  /**
+   * Protobuf type {@code edu.stanford.nlp.pipeline.SentenceFragment}
+   *
+   * <pre>
+   * An entailed sentence fragment.
+   * Created by the openie annotator.
+   * </pre>
+   */
+  public static final class SentenceFragment extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.SentenceFragment)
+      SentenceFragmentOrBuilder {
+    // Use SentenceFragment.newBuilder() to construct.
+    private SentenceFragment(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SentenceFragment(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SentenceFragment defaultInstance;
+    public static SentenceFragment getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SentenceFragment getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SentenceFragment(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                tokenIndex_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              tokenIndex_.add(input.readUInt32());
+              break;
+            }
+            case 10: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
+                tokenIndex_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                tokenIndex_.add(input.readUInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000001;
+              root_ = input.readUInt32();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000002;
+              assumedTruth_ = input.readBool();
+              break;
+            }
+            case 33: {
+              bitField0_ |= 0x00000004;
+              score_ = input.readDouble();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          tokenIndex_ = java.util.Collections.unmodifiableList(tokenIndex_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SentenceFragment_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SentenceFragment_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.class, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SentenceFragment> PARSER =
+        new com.google.protobuf.AbstractParser<SentenceFragment>() {
+      public SentenceFragment parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SentenceFragment(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SentenceFragment> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int TOKENINDEX_FIELD_NUMBER = 1;
+    private java.util.List<java.lang.Integer> tokenIndex_;
+    /**
+     * <code>repeated uint32 tokenIndex = 1;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getTokenIndexList() {
+      return tokenIndex_;
+    }
+    /**
+     * <code>repeated uint32 tokenIndex = 1;</code>
+     */
+    public int getTokenIndexCount() {
+      return tokenIndex_.size();
+    }
+    /**
+     * <code>repeated uint32 tokenIndex = 1;</code>
+     */
+    public int getTokenIndex(int index) {
+      return tokenIndex_.get(index);
+    }
+
+    public static final int ROOT_FIELD_NUMBER = 2;
+    private int root_;
+    /**
+     * <code>optional uint32 root = 2;</code>
+     */
+    public boolean hasRoot() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 root = 2;</code>
+     */
+    public int getRoot() {
+      return root_;
+    }
+
+    public static final int ASSUMEDTRUTH_FIELD_NUMBER = 3;
+    private boolean assumedTruth_;
+    /**
+     * <code>optional bool assumedTruth = 3;</code>
+     */
+    public boolean hasAssumedTruth() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional bool assumedTruth = 3;</code>
+     */
+    public boolean getAssumedTruth() {
+      return assumedTruth_;
+    }
+
+    public static final int SCORE_FIELD_NUMBER = 4;
+    private double score_;
+    /**
+     * <code>optional double score = 4;</code>
+     */
+    public boolean hasScore() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional double score = 4;</code>
+     */
+    public double getScore() {
+      return score_;
+    }
+
+    private void initFields() {
+      tokenIndex_ = java.util.Collections.emptyList();
+      root_ = 0;
+      assumedTruth_ = false;
+      score_ = 0D;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < tokenIndex_.size(); i++) {
+        output.writeUInt32(1, tokenIndex_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(2, root_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBool(3, assumedTruth_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeDouble(4, score_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < tokenIndex_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeUInt32SizeNoTag(tokenIndex_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getTokenIndexList().size();
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, root_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, assumedTruth_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(4, score_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code edu.stanford.nlp.pipeline.SentenceFragment}
+     *
+     * <pre>
+     * An entailed sentence fragment.
+     * Created by the openie annotator.
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.SentenceFragment)
+        edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragmentOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SentenceFragment_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SentenceFragment_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.class, edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.Builder.class);
+      }
+
+      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        tokenIndex_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        root_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        assumedTruth_ = false;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        score_ = 0D;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_SentenceFragment_descriptor;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment getDefaultInstanceForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.getDefaultInstance();
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment build() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment buildPartial() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment result = new edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          tokenIndex_ = java.util.Collections.unmodifiableList(tokenIndex_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.tokenIndex_ = tokenIndex_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.root_ = root_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.assumedTruth_ = assumedTruth_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.score_ = score_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment) {
+          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment other) {
+        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment.getDefaultInstance()) return this;
+        if (!other.tokenIndex_.isEmpty()) {
+          if (tokenIndex_.isEmpty()) {
+            tokenIndex_ = other.tokenIndex_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureTokenIndexIsMutable();
+            tokenIndex_.addAll(other.tokenIndex_);
+          }
+          onChanged();
+        }
+        if (other.hasRoot()) {
+          setRoot(other.getRoot());
+        }
+        if (other.hasAssumedTruth()) {
+          setAssumedTruth(other.getAssumedTruth());
+        }
+        if (other.hasScore()) {
+          setScore(other.getScore());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.SentenceFragment) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<java.lang.Integer> tokenIndex_ = java.util.Collections.emptyList();
+      private void ensureTokenIndexIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          tokenIndex_ = new java.util.ArrayList<java.lang.Integer>(tokenIndex_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated uint32 tokenIndex = 1;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getTokenIndexList() {
+        return java.util.Collections.unmodifiableList(tokenIndex_);
+      }
+      /**
+       * <code>repeated uint32 tokenIndex = 1;</code>
+       */
+      public int getTokenIndexCount() {
+        return tokenIndex_.size();
+      }
+      /**
+       * <code>repeated uint32 tokenIndex = 1;</code>
+       */
+      public int getTokenIndex(int index) {
+        return tokenIndex_.get(index);
+      }
+      /**
+       * <code>repeated uint32 tokenIndex = 1;</code>
+       */
+      public Builder setTokenIndex(
+          int index, int value) {
+        ensureTokenIndexIsMutable();
+        tokenIndex_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 tokenIndex = 1;</code>
+       */
+      public Builder addTokenIndex(int value) {
+        ensureTokenIndexIsMutable();
+        tokenIndex_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 tokenIndex = 1;</code>
+       */
+      public Builder addAllTokenIndex(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureTokenIndexIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, tokenIndex_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 tokenIndex = 1;</code>
+       */
+      public Builder clearTokenIndex() {
+        tokenIndex_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+
+      private int root_ ;
+      /**
+       * <code>optional uint32 root = 2;</code>
+       */
+      public boolean hasRoot() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 root = 2;</code>
+       */
+      public int getRoot() {
+        return root_;
+      }
+      /**
+       * <code>optional uint32 root = 2;</code>
+       */
+      public Builder setRoot(int value) {
+        bitField0_ |= 0x00000002;
+        root_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 root = 2;</code>
+       */
+      public Builder clearRoot() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        root_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean assumedTruth_ ;
+      /**
+       * <code>optional bool assumedTruth = 3;</code>
+       */
+      public boolean hasAssumedTruth() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bool assumedTruth = 3;</code>
+       */
+      public boolean getAssumedTruth() {
+        return assumedTruth_;
+      }
+      /**
+       * <code>optional bool assumedTruth = 3;</code>
+       */
+      public Builder setAssumedTruth(boolean value) {
+        bitField0_ |= 0x00000004;
+        assumedTruth_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool assumedTruth = 3;</code>
+       */
+      public Builder clearAssumedTruth() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        assumedTruth_ = false;
+        onChanged();
+        return this;
+      }
+
+      private double score_ ;
+      /**
+       * <code>optional double score = 4;</code>
+       */
+      public boolean hasScore() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional double score = 4;</code>
+       */
+      public double getScore() {
+        return score_;
+      }
+      /**
+       * <code>optional double score = 4;</code>
+       */
+      public Builder setScore(double value) {
+        bitField0_ |= 0x00000008;
+        score_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional double score = 4;</code>
+       */
+      public Builder clearScore() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        score_ = 0D;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.SentenceFragment)
+    }
+
+    static {
+      defaultInstance = new SentenceFragment(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.SentenceFragment)
+  }
+
+  public interface TokenLocationOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.TokenLocation)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional uint32 sentenceIndex = 1;</code>
+     */
+    boolean hasSentenceIndex();
+    /**
+     * <code>optional uint32 sentenceIndex = 1;</code>
+     */
+    int getSentenceIndex();
+
+    /**
+     * <code>optional uint32 tokenIndex = 2;</code>
+     */
+    boolean hasTokenIndex();
+    /**
+     * <code>optional uint32 tokenIndex = 2;</code>
+     */
+    int getTokenIndex();
+  }
+  /**
+   * Protobuf type {@code edu.stanford.nlp.pipeline.TokenLocation}
+   *
+   * <pre>
+   * The index of a token in a document, including the sentence
+   * index and the offset.
+   * </pre>
+   */
+  public static final class TokenLocation extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.TokenLocation)
+      TokenLocationOrBuilder {
+    // Use TokenLocation.newBuilder() to construct.
+    private TokenLocation(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private TokenLocation(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final TokenLocation defaultInstance;
+    public static TokenLocation getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public TokenLocation getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private TokenLocation(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              sentenceIndex_ = input.readUInt32();
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              tokenIndex_ = input.readUInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_TokenLocation_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_TokenLocation_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.class, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<TokenLocation> PARSER =
+        new com.google.protobuf.AbstractParser<TokenLocation>() {
+      public TokenLocation parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new TokenLocation(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<TokenLocation> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int SENTENCEINDEX_FIELD_NUMBER = 1;
+    private int sentenceIndex_;
+    /**
+     * <code>optional uint32 sentenceIndex = 1;</code>
+     */
+    public boolean hasSentenceIndex() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional uint32 sentenceIndex = 1;</code>
+     */
+    public int getSentenceIndex() {
+      return sentenceIndex_;
+    }
+
+    public static final int TOKENINDEX_FIELD_NUMBER = 2;
+    private int tokenIndex_;
+    /**
+     * <code>optional uint32 tokenIndex = 2;</code>
+     */
+    public boolean hasTokenIndex() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional uint32 tokenIndex = 2;</code>
+     */
+    public int getTokenIndex() {
+      return tokenIndex_;
+    }
+
+    private void initFields() {
+      sentenceIndex_ = 0;
+      tokenIndex_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeUInt32(1, sentenceIndex_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeUInt32(2, tokenIndex_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(1, sentenceIndex_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, tokenIndex_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code edu.stanford.nlp.pipeline.TokenLocation}
+     *
+     * <pre>
+     * The index of a token in a document, including the sentence
+     * index and the offset.
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.TokenLocation)
+        edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_TokenLocation_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_TokenLocation_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.class, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder.class);
+      }
+
+      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        sentenceIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        tokenIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_TokenLocation_descriptor;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getDefaultInstanceForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.getDefaultInstance();
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation build() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation buildPartial() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation result = new edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.sentenceIndex_ = sentenceIndex_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.tokenIndex_ = tokenIndex_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation) {
+          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation other) {
+        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.getDefaultInstance()) return this;
+        if (other.hasSentenceIndex()) {
+          setSentenceIndex(other.getSentenceIndex());
+        }
+        if (other.hasTokenIndex()) {
+          setTokenIndex(other.getTokenIndex());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int sentenceIndex_ ;
+      /**
+       * <code>optional uint32 sentenceIndex = 1;</code>
+       */
+      public boolean hasSentenceIndex() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional uint32 sentenceIndex = 1;</code>
+       */
+      public int getSentenceIndex() {
+        return sentenceIndex_;
+      }
+      /**
+       * <code>optional uint32 sentenceIndex = 1;</code>
+       */
+      public Builder setSentenceIndex(int value) {
+        bitField0_ |= 0x00000001;
+        sentenceIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 sentenceIndex = 1;</code>
+       */
+      public Builder clearSentenceIndex() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sentenceIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int tokenIndex_ ;
+      /**
+       * <code>optional uint32 tokenIndex = 2;</code>
+       */
+      public boolean hasTokenIndex() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional uint32 tokenIndex = 2;</code>
+       */
+      public int getTokenIndex() {
+        return tokenIndex_;
+      }
+      /**
+       * <code>optional uint32 tokenIndex = 2;</code>
+       */
+      public Builder setTokenIndex(int value) {
+        bitField0_ |= 0x00000002;
+        tokenIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional uint32 tokenIndex = 2;</code>
+       */
+      public Builder clearTokenIndex() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        tokenIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.TokenLocation)
+    }
+
+    static {
+      defaultInstance = new TokenLocation(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.TokenLocation)
+  }
+
+  public interface RelationTripleOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.RelationTriple)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -29915,7 +42856,7 @@ public final class CoreNLPProtos {
         getObjectBytes();
 
     /**
-     * <code>required double confidence = 4;</code>
+     * <code>optional double confidence = 4;</code>
      *
      * <pre>
      * The [optional] confidence of the extraction
@@ -29923,7 +42864,7 @@ public final class CoreNLPProtos {
      */
     boolean hasConfidence();
     /**
-     * <code>required double confidence = 4;</code>
+     * <code>optional double confidence = 4;</code>
      *
      * <pre>
      * The [optional] confidence of the extraction
@@ -29932,79 +42873,136 @@ public final class CoreNLPProtos {
     double getConfidence();
 
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
      *
      * <pre>
-     * The span of the subject in the sentence
+     * The tokens comprising the subject of the triple
      * </pre>
      */
-    boolean hasSubjectSpan();
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> 
+        getSubjectTokensList();
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
      *
      * <pre>
-     * The span of the subject in the sentence
+     * The tokens comprising the subject of the triple
      * </pre>
      */
-    edu.stanford.nlp.pipeline.CoreNLPProtos.Span getSubjectSpan();
+    edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getSubjectTokens(int index);
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
      *
      * <pre>
-     * The span of the subject in the sentence
+     * The tokens comprising the subject of the triple
      * </pre>
      */
-    edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getSubjectSpanOrBuilder();
+    int getSubjectTokensCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+     *
+     * <pre>
+     * The tokens comprising the subject of the triple
+     * </pre>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+        getSubjectTokensOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+     *
+     * <pre>
+     * The tokens comprising the subject of the triple
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getSubjectTokensOrBuilder(
+        int index);
 
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
      *
      * <pre>
-     * The span of the relation in the sentence
+     * The tokens comprising the relation of the triple
      * </pre>
      */
-    boolean hasRelationSpan();
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> 
+        getRelationTokensList();
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
      *
      * <pre>
-     * The span of the relation in the sentence
+     * The tokens comprising the relation of the triple
      * </pre>
      */
-    edu.stanford.nlp.pipeline.CoreNLPProtos.Span getRelationSpan();
+    edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getRelationTokens(int index);
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
      *
      * <pre>
-     * The span of the relation in the sentence
+     * The tokens comprising the relation of the triple
      * </pre>
      */
-    edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getRelationSpanOrBuilder();
+    int getRelationTokensCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+     *
+     * <pre>
+     * The tokens comprising the relation of the triple
+     * </pre>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+        getRelationTokensOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+     *
+     * <pre>
+     * The tokens comprising the relation of the triple
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getRelationTokensOrBuilder(
+        int index);
 
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
      *
      * <pre>
-     * The span of the object in the sentence
+     * The tokens comprising the object of the triple
      * </pre>
      */
-    boolean hasObjectSpan();
+    java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> 
+        getObjectTokensList();
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
      *
      * <pre>
-     * The span of the object in the sentence
+     * The tokens comprising the object of the triple
      * </pre>
      */
-    edu.stanford.nlp.pipeline.CoreNLPProtos.Span getObjectSpan();
+    edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getObjectTokens(int index);
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
      *
      * <pre>
-     * The span of the object in the sentence
+     * The tokens comprising the object of the triple
      * </pre>
      */
-    edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getObjectSpanOrBuilder();
+    int getObjectTokensCount();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+     *
+     * <pre>
+     * The tokens comprising the object of the triple
+     * </pre>
+     */
+    java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+        getObjectTokensOrBuilderList();
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+     *
+     * <pre>
+     * The tokens comprising the object of the triple
+     * </pre>
+     */
+    edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getObjectTokensOrBuilder(
+        int index);
 
     /**
      * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph tree = 8;</code>
@@ -30030,31 +43028,100 @@ public final class CoreNLPProtos {
      * </pre>
      */
     edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraphOrBuilder getTreeOrBuilder();
+
+    /**
+     * <code>optional bool istmod = 9;</code>
+     *
+     * <pre>
+     * If true, this expresses an implicit tmod relation
+     * </pre>
+     */
+    boolean hasIstmod();
+    /**
+     * <code>optional bool istmod = 9;</code>
+     *
+     * <pre>
+     * If true, this expresses an implicit tmod relation
+     * </pre>
+     */
+    boolean getIstmod();
+
+    /**
+     * <code>optional bool prefixBe = 10;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'be' prefix
+     * </pre>
+     */
+    boolean hasPrefixBe();
+    /**
+     * <code>optional bool prefixBe = 10;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'be' prefix
+     * </pre>
+     */
+    boolean getPrefixBe();
+
+    /**
+     * <code>optional bool suffixBe = 11;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'be' suffix
+     * </pre>
+     */
+    boolean hasSuffixBe();
+    /**
+     * <code>optional bool suffixBe = 11;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'be' suffix
+     * </pre>
+     */
+    boolean getSuffixBe();
+
+    /**
+     * <code>optional bool suffixOf = 12;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'of' prefix
+     * </pre>
+     */
+    boolean hasSuffixOf();
+    /**
+     * <code>optional bool suffixOf = 12;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'of' prefix
+     * </pre>
+     */
+    boolean getSuffixOf();
   }
   /**
-   * Protobuf type {@code edu.stanford.nlp.pipeline.OpenIETriple}
+   * Protobuf type {@code edu.stanford.nlp.pipeline.RelationTriple}
    *
    * <pre>
-   * An OpenIE relation triple
+   * An OpenIE relation triple.
+   * Created by the openie annotator.
    * </pre>
    */
-  public static final class OpenIETriple extends
+  public static final class RelationTriple extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.OpenIETriple)
-      OpenIETripleOrBuilder {
-    // Use OpenIETriple.newBuilder() to construct.
-    private OpenIETriple(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.RelationTriple)
+      RelationTripleOrBuilder {
+    // Use RelationTriple.newBuilder() to construct.
+    private RelationTriple(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private OpenIETriple(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private RelationTriple(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final OpenIETriple defaultInstance;
-    public static OpenIETriple getDefaultInstance() {
+    private static final RelationTriple defaultInstance;
+    public static RelationTriple getDefaultInstance() {
       return defaultInstance;
     }
 
-    public OpenIETriple getDefaultInstanceForType() {
+    public RelationTriple getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -30064,7 +43131,7 @@ public final class CoreNLPProtos {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private OpenIETriple(
+    private RelationTriple(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -30110,48 +43177,9 @@ public final class CoreNLPProtos {
               confidence_ = input.readDouble();
               break;
             }
-            case 42: {
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000010) == 0x00000010)) {
-                subBuilder = subjectSpan_.toBuilder();
-              }
-              subjectSpan_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Span.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(subjectSpan_);
-                subjectSpan_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000010;
-              break;
-            }
-            case 50: {
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000020) == 0x00000020)) {
-                subBuilder = relationSpan_.toBuilder();
-              }
-              relationSpan_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Span.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(relationSpan_);
-                relationSpan_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000020;
-              break;
-            }
-            case 58: {
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000040) == 0x00000040)) {
-                subBuilder = objectSpan_.toBuilder();
-              }
-              objectSpan_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.Span.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(objectSpan_);
-                objectSpan_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000040;
-              break;
-            }
             case 66: {
               edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000080) == 0x00000080)) {
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
                 subBuilder = tree_.toBuilder();
               }
               tree_ = input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.PARSER, extensionRegistry);
@@ -30159,7 +43187,51 @@ public final class CoreNLPProtos {
                 subBuilder.mergeFrom(tree_);
                 tree_ = subBuilder.buildPartial();
               }
+              bitField0_ |= 0x00000010;
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000020;
+              istmod_ = input.readBool();
+              break;
+            }
+            case 80: {
+              bitField0_ |= 0x00000040;
+              prefixBe_ = input.readBool();
+              break;
+            }
+            case 88: {
               bitField0_ |= 0x00000080;
+              suffixBe_ = input.readBool();
+              break;
+            }
+            case 96: {
+              bitField0_ |= 0x00000100;
+              suffixOf_ = input.readBool();
+              break;
+            }
+            case 106: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+                subjectTokens_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              subjectTokens_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.PARSER, extensionRegistry));
+              break;
+            }
+            case 114: {
+              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+                relationTokens_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation>();
+                mutable_bitField0_ |= 0x00000020;
+              }
+              relationTokens_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.PARSER, extensionRegistry));
+              break;
+            }
+            case 122: {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+                objectTokens_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation>();
+                mutable_bitField0_ |= 0x00000040;
+              }
+              objectTokens_.add(input.readMessage(edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.PARSER, extensionRegistry));
               break;
             }
           }
@@ -30170,34 +43242,43 @@ public final class CoreNLPProtos {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          subjectTokens_ = java.util.Collections.unmodifiableList(subjectTokens_);
+        }
+        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+          relationTokens_ = java.util.Collections.unmodifiableList(relationTokens_);
+        }
+        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+          objectTokens_ = java.util.Collections.unmodifiableList(objectTokens_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_OpenIETriple_descriptor;
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_RelationTriple_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_OpenIETriple_fieldAccessorTable
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_RelationTriple_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.class, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder.class);
+              edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.class, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<OpenIETriple> PARSER =
-        new com.google.protobuf.AbstractParser<OpenIETriple>() {
-      public OpenIETriple parsePartialFrom(
+    public static com.google.protobuf.Parser<RelationTriple> PARSER =
+        new com.google.protobuf.AbstractParser<RelationTriple>() {
+      public RelationTriple parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new OpenIETriple(input, extensionRegistry);
+        return new RelationTriple(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<OpenIETriple> getParserForType() {
+    public com.google.protobuf.Parser<RelationTriple> getParserForType() {
       return PARSER;
     }
 
@@ -30367,7 +43448,7 @@ public final class CoreNLPProtos {
     public static final int CONFIDENCE_FIELD_NUMBER = 4;
     private double confidence_;
     /**
-     * <code>required double confidence = 4;</code>
+     * <code>optional double confidence = 4;</code>
      *
      * <pre>
      * The [optional] confidence of the extraction
@@ -30377,7 +43458,7 @@ public final class CoreNLPProtos {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required double confidence = 4;</code>
+     * <code>optional double confidence = 4;</code>
      *
      * <pre>
      * The [optional] confidence of the extraction
@@ -30387,103 +43468,169 @@ public final class CoreNLPProtos {
       return confidence_;
     }
 
-    public static final int SUBJECTSPAN_FIELD_NUMBER = 5;
-    private edu.stanford.nlp.pipeline.CoreNLPProtos.Span subjectSpan_;
+    public static final int SUBJECTTOKENS_FIELD_NUMBER = 13;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> subjectTokens_;
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
      *
      * <pre>
-     * The span of the subject in the sentence
+     * The tokens comprising the subject of the triple
      * </pre>
      */
-    public boolean hasSubjectSpan() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> getSubjectTokensList() {
+      return subjectTokens_;
     }
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
      *
      * <pre>
-     * The span of the subject in the sentence
+     * The tokens comprising the subject of the triple
      * </pre>
      */
-    public edu.stanford.nlp.pipeline.CoreNLPProtos.Span getSubjectSpan() {
-      return subjectSpan_;
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+        getSubjectTokensOrBuilderList() {
+      return subjectTokens_;
     }
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
      *
      * <pre>
-     * The span of the subject in the sentence
+     * The tokens comprising the subject of the triple
      * </pre>
      */
-    public edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getSubjectSpanOrBuilder() {
-      return subjectSpan_;
-    }
-
-    public static final int RELATIONSPAN_FIELD_NUMBER = 6;
-    private edu.stanford.nlp.pipeline.CoreNLPProtos.Span relationSpan_;
-    /**
-     * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
-     *
-     * <pre>
-     * The span of the relation in the sentence
-     * </pre>
-     */
-    public boolean hasRelationSpan() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+    public int getSubjectTokensCount() {
+      return subjectTokens_.size();
     }
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
      *
      * <pre>
-     * The span of the relation in the sentence
+     * The tokens comprising the subject of the triple
      * </pre>
      */
-    public edu.stanford.nlp.pipeline.CoreNLPProtos.Span getRelationSpan() {
-      return relationSpan_;
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getSubjectTokens(int index) {
+      return subjectTokens_.get(index);
     }
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
      *
      * <pre>
-     * The span of the relation in the sentence
+     * The tokens comprising the subject of the triple
      * </pre>
      */
-    public edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getRelationSpanOrBuilder() {
-      return relationSpan_;
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getSubjectTokensOrBuilder(
+        int index) {
+      return subjectTokens_.get(index);
     }
 
-    public static final int OBJECTSPAN_FIELD_NUMBER = 7;
-    private edu.stanford.nlp.pipeline.CoreNLPProtos.Span objectSpan_;
+    public static final int RELATIONTOKENS_FIELD_NUMBER = 14;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> relationTokens_;
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
      *
      * <pre>
-     * The span of the object in the sentence
+     * The tokens comprising the relation of the triple
      * </pre>
      */
-    public boolean hasObjectSpan() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> getRelationTokensList() {
+      return relationTokens_;
     }
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
      *
      * <pre>
-     * The span of the object in the sentence
+     * The tokens comprising the relation of the triple
      * </pre>
      */
-    public edu.stanford.nlp.pipeline.CoreNLPProtos.Span getObjectSpan() {
-      return objectSpan_;
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+        getRelationTokensOrBuilderList() {
+      return relationTokens_;
     }
     /**
-     * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
      *
      * <pre>
-     * The span of the object in the sentence
+     * The tokens comprising the relation of the triple
      * </pre>
      */
-    public edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getObjectSpanOrBuilder() {
-      return objectSpan_;
+    public int getRelationTokensCount() {
+      return relationTokens_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+     *
+     * <pre>
+     * The tokens comprising the relation of the triple
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getRelationTokens(int index) {
+      return relationTokens_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+     *
+     * <pre>
+     * The tokens comprising the relation of the triple
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getRelationTokensOrBuilder(
+        int index) {
+      return relationTokens_.get(index);
+    }
+
+    public static final int OBJECTTOKENS_FIELD_NUMBER = 15;
+    private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> objectTokens_;
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+     *
+     * <pre>
+     * The tokens comprising the object of the triple
+     * </pre>
+     */
+    public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> getObjectTokensList() {
+      return objectTokens_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+     *
+     * <pre>
+     * The tokens comprising the object of the triple
+     * </pre>
+     */
+    public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+        getObjectTokensOrBuilderList() {
+      return objectTokens_;
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+     *
+     * <pre>
+     * The tokens comprising the object of the triple
+     * </pre>
+     */
+    public int getObjectTokensCount() {
+      return objectTokens_.size();
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+     *
+     * <pre>
+     * The tokens comprising the object of the triple
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getObjectTokens(int index) {
+      return objectTokens_.get(index);
+    }
+    /**
+     * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+     *
+     * <pre>
+     * The tokens comprising the object of the triple
+     * </pre>
+     */
+    public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getObjectTokensOrBuilder(
+        int index) {
+      return objectTokens_.get(index);
     }
 
     public static final int TREE_FIELD_NUMBER = 8;
@@ -30496,7 +43643,7 @@ public final class CoreNLPProtos {
      * </pre>
      */
     public boolean hasTree() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
      * <code>optional .edu.stanford.nlp.pipeline.DependencyGraph tree = 8;</code>
@@ -30519,15 +43666,111 @@ public final class CoreNLPProtos {
       return tree_;
     }
 
+    public static final int ISTMOD_FIELD_NUMBER = 9;
+    private boolean istmod_;
+    /**
+     * <code>optional bool istmod = 9;</code>
+     *
+     * <pre>
+     * If true, this expresses an implicit tmod relation
+     * </pre>
+     */
+    public boolean hasIstmod() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional bool istmod = 9;</code>
+     *
+     * <pre>
+     * If true, this expresses an implicit tmod relation
+     * </pre>
+     */
+    public boolean getIstmod() {
+      return istmod_;
+    }
+
+    public static final int PREFIXBE_FIELD_NUMBER = 10;
+    private boolean prefixBe_;
+    /**
+     * <code>optional bool prefixBe = 10;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'be' prefix
+     * </pre>
+     */
+    public boolean hasPrefixBe() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional bool prefixBe = 10;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'be' prefix
+     * </pre>
+     */
+    public boolean getPrefixBe() {
+      return prefixBe_;
+    }
+
+    public static final int SUFFIXBE_FIELD_NUMBER = 11;
+    private boolean suffixBe_;
+    /**
+     * <code>optional bool suffixBe = 11;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'be' suffix
+     * </pre>
+     */
+    public boolean hasSuffixBe() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional bool suffixBe = 11;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'be' suffix
+     * </pre>
+     */
+    public boolean getSuffixBe() {
+      return suffixBe_;
+    }
+
+    public static final int SUFFIXOF_FIELD_NUMBER = 12;
+    private boolean suffixOf_;
+    /**
+     * <code>optional bool suffixOf = 12;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'of' prefix
+     * </pre>
+     */
+    public boolean hasSuffixOf() {
+      return ((bitField0_ & 0x00000100) == 0x00000100);
+    }
+    /**
+     * <code>optional bool suffixOf = 12;</code>
+     *
+     * <pre>
+     * If true, this relation string is missing a 'of' prefix
+     * </pre>
+     */
+    public boolean getSuffixOf() {
+      return suffixOf_;
+    }
+
     private void initFields() {
       subject_ = "";
       relation_ = "";
       object_ = "";
       confidence_ = 0D;
-      subjectSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
-      relationSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
-      objectSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+      subjectTokens_ = java.util.Collections.emptyList();
+      relationTokens_ = java.util.Collections.emptyList();
+      objectTokens_ = java.util.Collections.emptyList();
       tree_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
+      istmod_ = false;
+      prefixBe_ = false;
+      suffixBe_ = false;
+      suffixOf_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -30535,34 +43778,6 @@ public final class CoreNLPProtos {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasConfidence()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSubjectSpan()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasRelationSpan()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasObjectSpan()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getSubjectSpan().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getRelationSpan().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getObjectSpan().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (hasTree()) {
         if (!getTree().isInitialized()) {
           memoizedIsInitialized = 0;
@@ -30589,16 +43804,28 @@ public final class CoreNLPProtos {
         output.writeDouble(4, confidence_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeMessage(5, subjectSpan_);
+        output.writeMessage(8, tree_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeMessage(6, relationSpan_);
+        output.writeBool(9, istmod_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        output.writeMessage(7, objectSpan_);
+        output.writeBool(10, prefixBe_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeMessage(8, tree_);
+        output.writeBool(11, suffixBe_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        output.writeBool(12, suffixOf_);
+      }
+      for (int i = 0; i < subjectTokens_.size(); i++) {
+        output.writeMessage(13, subjectTokens_.get(i));
+      }
+      for (int i = 0; i < relationTokens_.size(); i++) {
+        output.writeMessage(14, relationTokens_.get(i));
+      }
+      for (int i = 0; i < objectTokens_.size(); i++) {
+        output.writeMessage(15, objectTokens_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -30627,19 +43854,35 @@ public final class CoreNLPProtos {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, subjectSpan_);
+          .computeMessageSize(8, tree_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(6, relationSpan_);
+          .computeBoolSize(9, istmod_);
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(7, objectSpan_);
+          .computeBoolSize(10, prefixBe_);
       }
       if (((bitField0_ & 0x00000080) == 0x00000080)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(8, tree_);
+          .computeBoolSize(11, suffixBe_);
+      }
+      if (((bitField0_ & 0x00000100) == 0x00000100)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(12, suffixOf_);
+      }
+      for (int i = 0; i < subjectTokens_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(13, subjectTokens_.get(i));
+      }
+      for (int i = 0; i < relationTokens_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(14, relationTokens_.get(i));
+      }
+      for (int i = 0; i < objectTokens_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(15, objectTokens_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -30653,53 +43896,53 @@ public final class CoreNLPProtos {
       return super.writeReplace();
     }
 
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseFrom(
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseFrom(
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseFrom(byte[] data)
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseFrom(
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseFrom(java.io.InputStream input)
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseFrom(
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseDelimitedFrom(java.io.InputStream input)
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseDelimitedFrom(
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseFrom(
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parseFrom(
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -30708,7 +43951,7 @@ public final class CoreNLPProtos {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple prototype) {
+    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -30720,29 +43963,30 @@ public final class CoreNLPProtos {
       return builder;
     }
     /**
-     * Protobuf type {@code edu.stanford.nlp.pipeline.OpenIETriple}
+     * Protobuf type {@code edu.stanford.nlp.pipeline.RelationTriple}
      *
      * <pre>
-     * An OpenIE relation triple
+     * An OpenIE relation triple.
+     * Created by the openie annotator.
      * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.OpenIETriple)
-        edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETripleOrBuilder {
+        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.RelationTriple)
+        edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTripleOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_OpenIETriple_descriptor;
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_RelationTriple_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_OpenIETriple_fieldAccessorTable
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_RelationTriple_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.class, edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.Builder.class);
+                edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.class, edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.Builder.class);
       }
 
-      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.newBuilder()
+      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -30754,9 +43998,9 @@ public final class CoreNLPProtos {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getSubjectSpanFieldBuilder();
-          getRelationSpanFieldBuilder();
-          getObjectSpanFieldBuilder();
+          getSubjectTokensFieldBuilder();
+          getRelationTokensFieldBuilder();
+          getObjectTokensFieldBuilder();
           getTreeFieldBuilder();
         }
       }
@@ -30774,30 +44018,38 @@ public final class CoreNLPProtos {
         bitField0_ = (bitField0_ & ~0x00000004);
         confidence_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000008);
-        if (subjectSpanBuilder_ == null) {
-          subjectSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+        if (subjectTokensBuilder_ == null) {
+          subjectTokens_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
         } else {
-          subjectSpanBuilder_.clear();
+          subjectTokensBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
-        if (relationSpanBuilder_ == null) {
-          relationSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+        if (relationTokensBuilder_ == null) {
+          relationTokens_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000020);
         } else {
-          relationSpanBuilder_.clear();
+          relationTokensBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
-        if (objectSpanBuilder_ == null) {
-          objectSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+        if (objectTokensBuilder_ == null) {
+          objectTokens_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
         } else {
-          objectSpanBuilder_.clear();
+          objectTokensBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
         if (treeBuilder_ == null) {
           tree_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
         } else {
           treeBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000080);
+        istmod_ = false;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        prefixBe_ = false;
+        bitField0_ = (bitField0_ & ~0x00000200);
+        suffixBe_ = false;
+        bitField0_ = (bitField0_ & ~0x00000400);
+        suffixOf_ = false;
+        bitField0_ = (bitField0_ & ~0x00000800);
         return this;
       }
 
@@ -30807,23 +44059,23 @@ public final class CoreNLPProtos {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_OpenIETriple_descriptor;
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_RelationTriple_descriptor;
       }
 
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple getDefaultInstanceForType() {
-        return edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.getDefaultInstance();
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple getDefaultInstanceForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.getDefaultInstance();
       }
 
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple build() {
-        edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple result = buildPartial();
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple build() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple buildPartial() {
-        edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple result = new edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple(this);
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple buildPartial() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple result = new edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -30842,54 +44094,73 @@ public final class CoreNLPProtos {
           to_bitField0_ |= 0x00000008;
         }
         result.confidence_ = confidence_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        if (subjectSpanBuilder_ == null) {
-          result.subjectSpan_ = subjectSpan_;
+        if (subjectTokensBuilder_ == null) {
+          if (((bitField0_ & 0x00000010) == 0x00000010)) {
+            subjectTokens_ = java.util.Collections.unmodifiableList(subjectTokens_);
+            bitField0_ = (bitField0_ & ~0x00000010);
+          }
+          result.subjectTokens_ = subjectTokens_;
         } else {
-          result.subjectSpan_ = subjectSpanBuilder_.build();
+          result.subjectTokens_ = subjectTokensBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        if (relationSpanBuilder_ == null) {
-          result.relationSpan_ = relationSpan_;
+        if (relationTokensBuilder_ == null) {
+          if (((bitField0_ & 0x00000020) == 0x00000020)) {
+            relationTokens_ = java.util.Collections.unmodifiableList(relationTokens_);
+            bitField0_ = (bitField0_ & ~0x00000020);
+          }
+          result.relationTokens_ = relationTokens_;
         } else {
-          result.relationSpan_ = relationSpanBuilder_.build();
+          result.relationTokens_ = relationTokensBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
-        if (objectSpanBuilder_ == null) {
-          result.objectSpan_ = objectSpan_;
+        if (objectTokensBuilder_ == null) {
+          if (((bitField0_ & 0x00000040) == 0x00000040)) {
+            objectTokens_ = java.util.Collections.unmodifiableList(objectTokens_);
+            bitField0_ = (bitField0_ & ~0x00000040);
+          }
+          result.objectTokens_ = objectTokens_;
         } else {
-          result.objectSpan_ = objectSpanBuilder_.build();
+          result.objectTokens_ = objectTokensBuilder_.build();
         }
         if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
+          to_bitField0_ |= 0x00000010;
         }
         if (treeBuilder_ == null) {
           result.tree_ = tree_;
         } else {
           result.tree_ = treeBuilder_.build();
         }
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.istmod_ = istmod_;
+        if (((from_bitField0_ & 0x00000200) == 0x00000200)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.prefixBe_ = prefixBe_;
+        if (((from_bitField0_ & 0x00000400) == 0x00000400)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.suffixBe_ = suffixBe_;
+        if (((from_bitField0_ & 0x00000800) == 0x00000800)) {
+          to_bitField0_ |= 0x00000100;
+        }
+        result.suffixOf_ = suffixOf_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple) {
-          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple)other);
+        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple) {
+          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple other) {
-        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple.getDefaultInstance()) return this;
+      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple other) {
+        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple.getDefaultInstance()) return this;
         if (other.hasSubject()) {
           bitField0_ |= 0x00000001;
           subject_ = other.subject_;
@@ -30908,51 +44179,104 @@ public final class CoreNLPProtos {
         if (other.hasConfidence()) {
           setConfidence(other.getConfidence());
         }
-        if (other.hasSubjectSpan()) {
-          mergeSubjectSpan(other.getSubjectSpan());
+        if (subjectTokensBuilder_ == null) {
+          if (!other.subjectTokens_.isEmpty()) {
+            if (subjectTokens_.isEmpty()) {
+              subjectTokens_ = other.subjectTokens_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+            } else {
+              ensureSubjectTokensIsMutable();
+              subjectTokens_.addAll(other.subjectTokens_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.subjectTokens_.isEmpty()) {
+            if (subjectTokensBuilder_.isEmpty()) {
+              subjectTokensBuilder_.dispose();
+              subjectTokensBuilder_ = null;
+              subjectTokens_ = other.subjectTokens_;
+              bitField0_ = (bitField0_ & ~0x00000010);
+              subjectTokensBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getSubjectTokensFieldBuilder() : null;
+            } else {
+              subjectTokensBuilder_.addAllMessages(other.subjectTokens_);
+            }
+          }
         }
-        if (other.hasRelationSpan()) {
-          mergeRelationSpan(other.getRelationSpan());
+        if (relationTokensBuilder_ == null) {
+          if (!other.relationTokens_.isEmpty()) {
+            if (relationTokens_.isEmpty()) {
+              relationTokens_ = other.relationTokens_;
+              bitField0_ = (bitField0_ & ~0x00000020);
+            } else {
+              ensureRelationTokensIsMutable();
+              relationTokens_.addAll(other.relationTokens_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.relationTokens_.isEmpty()) {
+            if (relationTokensBuilder_.isEmpty()) {
+              relationTokensBuilder_.dispose();
+              relationTokensBuilder_ = null;
+              relationTokens_ = other.relationTokens_;
+              bitField0_ = (bitField0_ & ~0x00000020);
+              relationTokensBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getRelationTokensFieldBuilder() : null;
+            } else {
+              relationTokensBuilder_.addAllMessages(other.relationTokens_);
+            }
+          }
         }
-        if (other.hasObjectSpan()) {
-          mergeObjectSpan(other.getObjectSpan());
+        if (objectTokensBuilder_ == null) {
+          if (!other.objectTokens_.isEmpty()) {
+            if (objectTokens_.isEmpty()) {
+              objectTokens_ = other.objectTokens_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+            } else {
+              ensureObjectTokensIsMutable();
+              objectTokens_.addAll(other.objectTokens_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.objectTokens_.isEmpty()) {
+            if (objectTokensBuilder_.isEmpty()) {
+              objectTokensBuilder_.dispose();
+              objectTokensBuilder_ = null;
+              objectTokens_ = other.objectTokens_;
+              bitField0_ = (bitField0_ & ~0x00000040);
+              objectTokensBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getObjectTokensFieldBuilder() : null;
+            } else {
+              objectTokensBuilder_.addAllMessages(other.objectTokens_);
+            }
+          }
         }
         if (other.hasTree()) {
           mergeTree(other.getTree());
+        }
+        if (other.hasIstmod()) {
+          setIstmod(other.getIstmod());
+        }
+        if (other.hasPrefixBe()) {
+          setPrefixBe(other.getPrefixBe());
+        }
+        if (other.hasSuffixBe()) {
+          setSuffixBe(other.getSuffixBe());
+        }
+        if (other.hasSuffixOf()) {
+          setSuffixOf(other.getSuffixOf());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasConfidence()) {
-          
-          return false;
-        }
-        if (!hasSubjectSpan()) {
-          
-          return false;
-        }
-        if (!hasRelationSpan()) {
-          
-          return false;
-        }
-        if (!hasObjectSpan()) {
-          
-          return false;
-        }
-        if (!getSubjectSpan().isInitialized()) {
-          
-          return false;
-        }
-        if (!getRelationSpan().isInitialized()) {
-          
-          return false;
-        }
-        if (!getObjectSpan().isInitialized()) {
-          
-          return false;
-        }
         if (hasTree()) {
           if (!getTree().isInitialized()) {
             
@@ -30966,11 +44290,11 @@ public final class CoreNLPProtos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple parsedMessage = null;
+        edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.OpenIETriple) e.getUnfinishedMessage();
+          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.RelationTriple) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -31283,7 +44607,7 @@ public final class CoreNLPProtos {
 
       private double confidence_ ;
       /**
-       * <code>required double confidence = 4;</code>
+       * <code>optional double confidence = 4;</code>
        *
        * <pre>
        * The [optional] confidence of the extraction
@@ -31293,7 +44617,7 @@ public final class CoreNLPProtos {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required double confidence = 4;</code>
+       * <code>optional double confidence = 4;</code>
        *
        * <pre>
        * The [optional] confidence of the extraction
@@ -31303,7 +44627,7 @@ public final class CoreNLPProtos {
         return confidence_;
       }
       /**
-       * <code>required double confidence = 4;</code>
+       * <code>optional double confidence = 4;</code>
        *
        * <pre>
        * The [optional] confidence of the extraction
@@ -31316,7 +44640,7 @@ public final class CoreNLPProtos {
         return this;
       }
       /**
-       * <code>required double confidence = 4;</code>
+       * <code>optional double confidence = 4;</code>
        *
        * <pre>
        * The [optional] confidence of the extraction
@@ -31329,460 +44653,940 @@ public final class CoreNLPProtos {
         return this;
       }
 
-      private edu.stanford.nlp.pipeline.CoreNLPProtos.Span subjectSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder> subjectSpanBuilder_;
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      public boolean hasSubjectSpan() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.Span getSubjectSpan() {
-        if (subjectSpanBuilder_ == null) {
-          return subjectSpan_;
-        } else {
-          return subjectSpanBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      public Builder setSubjectSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.Span value) {
-        if (subjectSpanBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          subjectSpan_ = value;
-          onChanged();
-        } else {
-          subjectSpanBuilder_.setMessage(value);
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      public Builder setSubjectSpan(
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder builderForValue) {
-        if (subjectSpanBuilder_ == null) {
-          subjectSpan_ = builderForValue.build();
-          onChanged();
-        } else {
-          subjectSpanBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      public Builder mergeSubjectSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.Span value) {
-        if (subjectSpanBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010) &&
-              subjectSpan_ != edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance()) {
-            subjectSpan_ =
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span.newBuilder(subjectSpan_).mergeFrom(value).buildPartial();
-          } else {
-            subjectSpan_ = value;
-          }
-          onChanged();
-        } else {
-          subjectSpanBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000010;
-        return this;
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      public Builder clearSubjectSpan() {
-        if (subjectSpanBuilder_ == null) {
-          subjectSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
-          onChanged();
-        } else {
-          subjectSpanBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000010);
-        return this;
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder getSubjectSpanBuilder() {
-        bitField0_ |= 0x00000010;
-        onChanged();
-        return getSubjectSpanFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getSubjectSpanOrBuilder() {
-        if (subjectSpanBuilder_ != null) {
-          return subjectSpanBuilder_.getMessageOrBuilder();
-        } else {
-          return subjectSpan_;
-        }
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span subjectSpan = 5;</code>
-       *
-       * <pre>
-       * The span of the subject in the sentence
-       * </pre>
-       */
-      private com.google.protobuf.SingleFieldBuilder<
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder> 
-          getSubjectSpanFieldBuilder() {
-        if (subjectSpanBuilder_ == null) {
-          subjectSpanBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder>(
-                  getSubjectSpan(),
-                  getParentForChildren(),
-                  isClean());
-          subjectSpan_ = null;
-        }
-        return subjectSpanBuilder_;
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> subjectTokens_ =
+        java.util.Collections.emptyList();
+      private void ensureSubjectTokensIsMutable() {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
+          subjectTokens_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation>(subjectTokens_);
+          bitField0_ |= 0x00000010;
+         }
       }
 
-      private edu.stanford.nlp.pipeline.CoreNLPProtos.Span relationSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder> relationSpanBuilder_;
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> subjectTokensBuilder_;
+
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
        *
        * <pre>
-       * The span of the relation in the sentence
+       * The tokens comprising the subject of the triple
        * </pre>
        */
-      public boolean hasRelationSpan() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
-       *
-       * <pre>
-       * The span of the relation in the sentence
-       * </pre>
-       */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.Span getRelationSpan() {
-        if (relationSpanBuilder_ == null) {
-          return relationSpan_;
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> getSubjectTokensList() {
+        if (subjectTokensBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(subjectTokens_);
         } else {
-          return relationSpanBuilder_.getMessage();
+          return subjectTokensBuilder_.getMessageList();
         }
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
        *
        * <pre>
-       * The span of the relation in the sentence
+       * The tokens comprising the subject of the triple
        * </pre>
        */
-      public Builder setRelationSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.Span value) {
-        if (relationSpanBuilder_ == null) {
+      public int getSubjectTokensCount() {
+        if (subjectTokensBuilder_ == null) {
+          return subjectTokens_.size();
+        } else {
+          return subjectTokensBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getSubjectTokens(int index) {
+        if (subjectTokensBuilder_ == null) {
+          return subjectTokens_.get(index);
+        } else {
+          return subjectTokensBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public Builder setSubjectTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (subjectTokensBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          relationSpan_ = value;
+          ensureSubjectTokensIsMutable();
+          subjectTokens_.set(index, value);
           onChanged();
         } else {
-          relationSpanBuilder_.setMessage(value);
+          subjectTokensBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
        *
        * <pre>
-       * The span of the relation in the sentence
+       * The tokens comprising the subject of the triple
        * </pre>
        */
-      public Builder setRelationSpan(
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder builderForValue) {
-        if (relationSpanBuilder_ == null) {
-          relationSpan_ = builderForValue.build();
+      public Builder setSubjectTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (subjectTokensBuilder_ == null) {
+          ensureSubjectTokensIsMutable();
+          subjectTokens_.set(index, builderForValue.build());
           onChanged();
         } else {
-          relationSpanBuilder_.setMessage(builderForValue.build());
+          subjectTokensBuilder_.setMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
        *
        * <pre>
-       * The span of the relation in the sentence
+       * The tokens comprising the subject of the triple
        * </pre>
        */
-      public Builder mergeRelationSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.Span value) {
-        if (relationSpanBuilder_ == null) {
-          if (((bitField0_ & 0x00000020) == 0x00000020) &&
-              relationSpan_ != edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance()) {
-            relationSpan_ =
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span.newBuilder(relationSpan_).mergeFrom(value).buildPartial();
-          } else {
-            relationSpan_ = value;
+      public Builder addSubjectTokens(edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (subjectTokensBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
           }
+          ensureSubjectTokensIsMutable();
+          subjectTokens_.add(value);
           onChanged();
         } else {
-          relationSpanBuilder_.mergeFrom(value);
+          subjectTokensBuilder_.addMessage(value);
         }
-        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
        *
        * <pre>
-       * The span of the relation in the sentence
+       * The tokens comprising the subject of the triple
        * </pre>
        */
-      public Builder clearRelationSpan() {
-        if (relationSpanBuilder_ == null) {
-          relationSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+      public Builder addSubjectTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (subjectTokensBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSubjectTokensIsMutable();
+          subjectTokens_.add(index, value);
           onChanged();
         } else {
-          relationSpanBuilder_.clear();
+          subjectTokensBuilder_.addMessage(index, value);
         }
-        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
        *
        * <pre>
-       * The span of the relation in the sentence
+       * The tokens comprising the subject of the triple
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder getRelationSpanBuilder() {
-        bitField0_ |= 0x00000020;
-        onChanged();
-        return getRelationSpanFieldBuilder().getBuilder();
+      public Builder addSubjectTokens(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (subjectTokensBuilder_ == null) {
+          ensureSubjectTokensIsMutable();
+          subjectTokens_.add(builderForValue.build());
+          onChanged();
+        } else {
+          subjectTokensBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
        *
        * <pre>
-       * The span of the relation in the sentence
+       * The tokens comprising the subject of the triple
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getRelationSpanOrBuilder() {
-        if (relationSpanBuilder_ != null) {
-          return relationSpanBuilder_.getMessageOrBuilder();
+      public Builder addSubjectTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (subjectTokensBuilder_ == null) {
+          ensureSubjectTokensIsMutable();
+          subjectTokens_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          return relationSpan_;
+          subjectTokensBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public Builder addAllSubjectTokens(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> values) {
+        if (subjectTokensBuilder_ == null) {
+          ensureSubjectTokensIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, subjectTokens_);
+          onChanged();
+        } else {
+          subjectTokensBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public Builder clearSubjectTokens() {
+        if (subjectTokensBuilder_ == null) {
+          subjectTokens_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000010);
+          onChanged();
+        } else {
+          subjectTokensBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public Builder removeSubjectTokens(int index) {
+        if (subjectTokensBuilder_ == null) {
+          ensureSubjectTokensIsMutable();
+          subjectTokens_.remove(index);
+          onChanged();
+        } else {
+          subjectTokensBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder getSubjectTokensBuilder(
+          int index) {
+        return getSubjectTokensFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getSubjectTokensOrBuilder(
+          int index) {
+        if (subjectTokensBuilder_ == null) {
+          return subjectTokens_.get(index);  } else {
+          return subjectTokensBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span relationSpan = 6;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
        *
        * <pre>
-       * The span of the relation in the sentence
+       * The tokens comprising the subject of the triple
        * </pre>
        */
-      private com.google.protobuf.SingleFieldBuilder<
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder> 
-          getRelationSpanFieldBuilder() {
-        if (relationSpanBuilder_ == null) {
-          relationSpanBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder>(
-                  getRelationSpan(),
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+           getSubjectTokensOrBuilderList() {
+        if (subjectTokensBuilder_ != null) {
+          return subjectTokensBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(subjectTokens_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder addSubjectTokensBuilder() {
+        return getSubjectTokensFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder addSubjectTokensBuilder(
+          int index) {
+        return getSubjectTokensFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation subjectTokens = 13;</code>
+       *
+       * <pre>
+       * The tokens comprising the subject of the triple
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder> 
+           getSubjectTokensBuilderList() {
+        return getSubjectTokensFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+          getSubjectTokensFieldBuilder() {
+        if (subjectTokensBuilder_ == null) {
+          subjectTokensBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder>(
+                  subjectTokens_,
+                  ((bitField0_ & 0x00000010) == 0x00000010),
                   getParentForChildren(),
                   isClean());
-          relationSpan_ = null;
+          subjectTokens_ = null;
         }
-        return relationSpanBuilder_;
+        return subjectTokensBuilder_;
       }
 
-      private edu.stanford.nlp.pipeline.CoreNLPProtos.Span objectSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder> objectSpanBuilder_;
-      /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
-       *
-       * <pre>
-       * The span of the object in the sentence
-       * </pre>
-       */
-      public boolean hasObjectSpan() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> relationTokens_ =
+        java.util.Collections.emptyList();
+      private void ensureRelationTokensIsMutable() {
+        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+          relationTokens_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation>(relationTokens_);
+          bitField0_ |= 0x00000020;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> relationTokensBuilder_;
+
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
        *
        * <pre>
-       * The span of the object in the sentence
+       * The tokens comprising the relation of the triple
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.Span getObjectSpan() {
-        if (objectSpanBuilder_ == null) {
-          return objectSpan_;
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> getRelationTokensList() {
+        if (relationTokensBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(relationTokens_);
         } else {
-          return objectSpanBuilder_.getMessage();
+          return relationTokensBuilder_.getMessageList();
         }
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
        *
        * <pre>
-       * The span of the object in the sentence
+       * The tokens comprising the relation of the triple
        * </pre>
        */
-      public Builder setObjectSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.Span value) {
-        if (objectSpanBuilder_ == null) {
+      public int getRelationTokensCount() {
+        if (relationTokensBuilder_ == null) {
+          return relationTokens_.size();
+        } else {
+          return relationTokensBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getRelationTokens(int index) {
+        if (relationTokensBuilder_ == null) {
+          return relationTokens_.get(index);
+        } else {
+          return relationTokensBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public Builder setRelationTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (relationTokensBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          objectSpan_ = value;
+          ensureRelationTokensIsMutable();
+          relationTokens_.set(index, value);
           onChanged();
         } else {
-          objectSpanBuilder_.setMessage(value);
+          relationTokensBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000040;
         return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
        *
        * <pre>
-       * The span of the object in the sentence
+       * The tokens comprising the relation of the triple
        * </pre>
        */
-      public Builder setObjectSpan(
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder builderForValue) {
-        if (objectSpanBuilder_ == null) {
-          objectSpan_ = builderForValue.build();
+      public Builder setRelationTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (relationTokensBuilder_ == null) {
+          ensureRelationTokensIsMutable();
+          relationTokens_.set(index, builderForValue.build());
           onChanged();
         } else {
-          objectSpanBuilder_.setMessage(builderForValue.build());
+          relationTokensBuilder_.setMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000040;
         return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
        *
        * <pre>
-       * The span of the object in the sentence
+       * The tokens comprising the relation of the triple
        * </pre>
        */
-      public Builder mergeObjectSpan(edu.stanford.nlp.pipeline.CoreNLPProtos.Span value) {
-        if (objectSpanBuilder_ == null) {
-          if (((bitField0_ & 0x00000040) == 0x00000040) &&
-              objectSpan_ != edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance()) {
-            objectSpan_ =
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span.newBuilder(objectSpan_).mergeFrom(value).buildPartial();
-          } else {
-            objectSpan_ = value;
+      public Builder addRelationTokens(edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (relationTokensBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
           }
+          ensureRelationTokensIsMutable();
+          relationTokens_.add(value);
           onChanged();
         } else {
-          objectSpanBuilder_.mergeFrom(value);
+          relationTokensBuilder_.addMessage(value);
         }
-        bitField0_ |= 0x00000040;
         return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
        *
        * <pre>
-       * The span of the object in the sentence
+       * The tokens comprising the relation of the triple
        * </pre>
        */
-      public Builder clearObjectSpan() {
-        if (objectSpanBuilder_ == null) {
-          objectSpan_ = edu.stanford.nlp.pipeline.CoreNLPProtos.Span.getDefaultInstance();
+      public Builder addRelationTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (relationTokensBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureRelationTokensIsMutable();
+          relationTokens_.add(index, value);
           onChanged();
         } else {
-          objectSpanBuilder_.clear();
+          relationTokensBuilder_.addMessage(index, value);
         }
-        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
        *
        * <pre>
-       * The span of the object in the sentence
+       * The tokens comprising the relation of the triple
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder getObjectSpanBuilder() {
-        bitField0_ |= 0x00000040;
-        onChanged();
-        return getObjectSpanFieldBuilder().getBuilder();
+      public Builder addRelationTokens(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (relationTokensBuilder_ == null) {
+          ensureRelationTokensIsMutable();
+          relationTokens_.add(builderForValue.build());
+          onChanged();
+        } else {
+          relationTokensBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
        *
        * <pre>
-       * The span of the object in the sentence
+       * The tokens comprising the relation of the triple
        * </pre>
        */
-      public edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder getObjectSpanOrBuilder() {
-        if (objectSpanBuilder_ != null) {
-          return objectSpanBuilder_.getMessageOrBuilder();
+      public Builder addRelationTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (relationTokensBuilder_ == null) {
+          ensureRelationTokensIsMutable();
+          relationTokens_.add(index, builderForValue.build());
+          onChanged();
         } else {
-          return objectSpan_;
+          relationTokensBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public Builder addAllRelationTokens(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> values) {
+        if (relationTokensBuilder_ == null) {
+          ensureRelationTokensIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, relationTokens_);
+          onChanged();
+        } else {
+          relationTokensBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public Builder clearRelationTokens() {
+        if (relationTokensBuilder_ == null) {
+          relationTokens_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000020);
+          onChanged();
+        } else {
+          relationTokensBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public Builder removeRelationTokens(int index) {
+        if (relationTokensBuilder_ == null) {
+          ensureRelationTokensIsMutable();
+          relationTokens_.remove(index);
+          onChanged();
+        } else {
+          relationTokensBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder getRelationTokensBuilder(
+          int index) {
+        return getRelationTokensFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getRelationTokensOrBuilder(
+          int index) {
+        if (relationTokensBuilder_ == null) {
+          return relationTokens_.get(index);  } else {
+          return relationTokensBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>required .edu.stanford.nlp.pipeline.Span objectSpan = 7;</code>
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
        *
        * <pre>
-       * The span of the object in the sentence
+       * The tokens comprising the relation of the triple
        * </pre>
        */
-      private com.google.protobuf.SingleFieldBuilder<
-          edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder> 
-          getObjectSpanFieldBuilder() {
-        if (objectSpanBuilder_ == null) {
-          objectSpanBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              edu.stanford.nlp.pipeline.CoreNLPProtos.Span, edu.stanford.nlp.pipeline.CoreNLPProtos.Span.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.SpanOrBuilder>(
-                  getObjectSpan(),
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+           getRelationTokensOrBuilderList() {
+        if (relationTokensBuilder_ != null) {
+          return relationTokensBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(relationTokens_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder addRelationTokensBuilder() {
+        return getRelationTokensFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder addRelationTokensBuilder(
+          int index) {
+        return getRelationTokensFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation relationTokens = 14;</code>
+       *
+       * <pre>
+       * The tokens comprising the relation of the triple
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder> 
+           getRelationTokensBuilderList() {
+        return getRelationTokensFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+          getRelationTokensFieldBuilder() {
+        if (relationTokensBuilder_ == null) {
+          relationTokensBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder>(
+                  relationTokens_,
+                  ((bitField0_ & 0x00000020) == 0x00000020),
                   getParentForChildren(),
                   isClean());
-          objectSpan_ = null;
+          relationTokens_ = null;
         }
-        return objectSpanBuilder_;
+        return relationTokensBuilder_;
+      }
+
+      private java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> objectTokens_ =
+        java.util.Collections.emptyList();
+      private void ensureObjectTokensIsMutable() {
+        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
+          objectTokens_ = new java.util.ArrayList<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation>(objectTokens_);
+          bitField0_ |= 0x00000040;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> objectTokensBuilder_;
+
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> getObjectTokensList() {
+        if (objectTokensBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(objectTokens_);
+        } else {
+          return objectTokensBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public int getObjectTokensCount() {
+        if (objectTokensBuilder_ == null) {
+          return objectTokens_.size();
+        } else {
+          return objectTokensBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation getObjectTokens(int index) {
+        if (objectTokensBuilder_ == null) {
+          return objectTokens_.get(index);
+        } else {
+          return objectTokensBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder setObjectTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (objectTokensBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureObjectTokensIsMutable();
+          objectTokens_.set(index, value);
+          onChanged();
+        } else {
+          objectTokensBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder setObjectTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (objectTokensBuilder_ == null) {
+          ensureObjectTokensIsMutable();
+          objectTokens_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          objectTokensBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder addObjectTokens(edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (objectTokensBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureObjectTokensIsMutable();
+          objectTokens_.add(value);
+          onChanged();
+        } else {
+          objectTokensBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder addObjectTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation value) {
+        if (objectTokensBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureObjectTokensIsMutable();
+          objectTokens_.add(index, value);
+          onChanged();
+        } else {
+          objectTokensBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder addObjectTokens(
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (objectTokensBuilder_ == null) {
+          ensureObjectTokensIsMutable();
+          objectTokens_.add(builderForValue.build());
+          onChanged();
+        } else {
+          objectTokensBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder addObjectTokens(
+          int index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder builderForValue) {
+        if (objectTokensBuilder_ == null) {
+          ensureObjectTokensIsMutable();
+          objectTokens_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          objectTokensBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder addAllObjectTokens(
+          java.lang.Iterable<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation> values) {
+        if (objectTokensBuilder_ == null) {
+          ensureObjectTokensIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, objectTokens_);
+          onChanged();
+        } else {
+          objectTokensBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder clearObjectTokens() {
+        if (objectTokensBuilder_ == null) {
+          objectTokens_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000040);
+          onChanged();
+        } else {
+          objectTokensBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public Builder removeObjectTokens(int index) {
+        if (objectTokensBuilder_ == null) {
+          ensureObjectTokensIsMutable();
+          objectTokens_.remove(index);
+          onChanged();
+        } else {
+          objectTokensBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder getObjectTokensBuilder(
+          int index) {
+        return getObjectTokensFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder getObjectTokensOrBuilder(
+          int index) {
+        if (objectTokensBuilder_ == null) {
+          return objectTokens_.get(index);  } else {
+          return objectTokensBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public java.util.List<? extends edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+           getObjectTokensOrBuilderList() {
+        if (objectTokensBuilder_ != null) {
+          return objectTokensBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(objectTokens_);
+        }
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder addObjectTokensBuilder() {
+        return getObjectTokensFieldBuilder().addBuilder(
+            edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder addObjectTokensBuilder(
+          int index) {
+        return getObjectTokensFieldBuilder().addBuilder(
+            index, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .edu.stanford.nlp.pipeline.TokenLocation objectTokens = 15;</code>
+       *
+       * <pre>
+       * The tokens comprising the object of the triple
+       * </pre>
+       */
+      public java.util.List<edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder> 
+           getObjectTokensBuilderList() {
+        return getObjectTokensFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder> 
+          getObjectTokensFieldBuilder() {
+        if (objectTokensBuilder_ == null) {
+          objectTokensBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocation.Builder, edu.stanford.nlp.pipeline.CoreNLPProtos.TokenLocationOrBuilder>(
+                  objectTokens_,
+                  ((bitField0_ & 0x00000040) == 0x00000040),
+                  getParentForChildren(),
+                  isClean());
+          objectTokens_ = null;
+        }
+        return objectTokensBuilder_;
       }
 
       private edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph tree_ = edu.stanford.nlp.pipeline.CoreNLPProtos.DependencyGraph.getDefaultInstance();
@@ -31937,15 +45741,1563 @@ public final class CoreNLPProtos {
         return treeBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.OpenIETriple)
+      private boolean istmod_ ;
+      /**
+       * <code>optional bool istmod = 9;</code>
+       *
+       * <pre>
+       * If true, this expresses an implicit tmod relation
+       * </pre>
+       */
+      public boolean hasIstmod() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional bool istmod = 9;</code>
+       *
+       * <pre>
+       * If true, this expresses an implicit tmod relation
+       * </pre>
+       */
+      public boolean getIstmod() {
+        return istmod_;
+      }
+      /**
+       * <code>optional bool istmod = 9;</code>
+       *
+       * <pre>
+       * If true, this expresses an implicit tmod relation
+       * </pre>
+       */
+      public Builder setIstmod(boolean value) {
+        bitField0_ |= 0x00000100;
+        istmod_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool istmod = 9;</code>
+       *
+       * <pre>
+       * If true, this expresses an implicit tmod relation
+       * </pre>
+       */
+      public Builder clearIstmod() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        istmod_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean prefixBe_ ;
+      /**
+       * <code>optional bool prefixBe = 10;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'be' prefix
+       * </pre>
+       */
+      public boolean hasPrefixBe() {
+        return ((bitField0_ & 0x00000200) == 0x00000200);
+      }
+      /**
+       * <code>optional bool prefixBe = 10;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'be' prefix
+       * </pre>
+       */
+      public boolean getPrefixBe() {
+        return prefixBe_;
+      }
+      /**
+       * <code>optional bool prefixBe = 10;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'be' prefix
+       * </pre>
+       */
+      public Builder setPrefixBe(boolean value) {
+        bitField0_ |= 0x00000200;
+        prefixBe_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool prefixBe = 10;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'be' prefix
+       * </pre>
+       */
+      public Builder clearPrefixBe() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        prefixBe_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean suffixBe_ ;
+      /**
+       * <code>optional bool suffixBe = 11;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'be' suffix
+       * </pre>
+       */
+      public boolean hasSuffixBe() {
+        return ((bitField0_ & 0x00000400) == 0x00000400);
+      }
+      /**
+       * <code>optional bool suffixBe = 11;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'be' suffix
+       * </pre>
+       */
+      public boolean getSuffixBe() {
+        return suffixBe_;
+      }
+      /**
+       * <code>optional bool suffixBe = 11;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'be' suffix
+       * </pre>
+       */
+      public Builder setSuffixBe(boolean value) {
+        bitField0_ |= 0x00000400;
+        suffixBe_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool suffixBe = 11;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'be' suffix
+       * </pre>
+       */
+      public Builder clearSuffixBe() {
+        bitField0_ = (bitField0_ & ~0x00000400);
+        suffixBe_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean suffixOf_ ;
+      /**
+       * <code>optional bool suffixOf = 12;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'of' prefix
+       * </pre>
+       */
+      public boolean hasSuffixOf() {
+        return ((bitField0_ & 0x00000800) == 0x00000800);
+      }
+      /**
+       * <code>optional bool suffixOf = 12;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'of' prefix
+       * </pre>
+       */
+      public boolean getSuffixOf() {
+        return suffixOf_;
+      }
+      /**
+       * <code>optional bool suffixOf = 12;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'of' prefix
+       * </pre>
+       */
+      public Builder setSuffixOf(boolean value) {
+        bitField0_ |= 0x00000800;
+        suffixOf_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool suffixOf = 12;</code>
+       *
+       * <pre>
+       * If true, this relation string is missing a 'of' prefix
+       * </pre>
+       */
+      public Builder clearSuffixOf() {
+        bitField0_ = (bitField0_ & ~0x00000800);
+        suffixOf_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.RelationTriple)
     }
 
     static {
-      defaultInstance = new OpenIETriple(true);
+      defaultInstance = new RelationTriple(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.OpenIETriple)
+    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.RelationTriple)
+  }
+
+  public interface MapStringStringOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.MapStringString)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated string key = 1;</code>
+     */
+    com.google.protobuf.ProtocolStringList
+        getKeyList();
+    /**
+     * <code>repeated string key = 1;</code>
+     */
+    int getKeyCount();
+    /**
+     * <code>repeated string key = 1;</code>
+     */
+    java.lang.String getKey(int index);
+    /**
+     * <code>repeated string key = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getKeyBytes(int index);
+
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    com.google.protobuf.ProtocolStringList
+        getValueList();
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    int getValueCount();
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    java.lang.String getValue(int index);
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getValueBytes(int index);
+  }
+  /**
+   * Protobuf type {@code edu.stanford.nlp.pipeline.MapStringString}
+   *
+   * <pre>
+   * A map from strings to strings.
+   * Used, minimally, in the CoNLLU featurizer
+   * </pre>
+   */
+  public static final class MapStringString extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.MapStringString)
+      MapStringStringOrBuilder {
+    // Use MapStringString.newBuilder() to construct.
+    private MapStringString(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private MapStringString(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final MapStringString defaultInstance;
+    public static MapStringString getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public MapStringString getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private MapStringString(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                key_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              key_.add(bs);
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                value_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              value_.add(bs);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          key_ = key_.getUnmodifiableView();
+        }
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          value_ = value_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapStringString_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapStringString_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.class, edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<MapStringString> PARSER =
+        new com.google.protobuf.AbstractParser<MapStringString>() {
+      public MapStringString parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new MapStringString(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MapStringString> getParserForType() {
+      return PARSER;
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private com.google.protobuf.LazyStringList key_;
+    /**
+     * <code>repeated string key = 1;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getKeyList() {
+      return key_;
+    }
+    /**
+     * <code>repeated string key = 1;</code>
+     */
+    public int getKeyCount() {
+      return key_.size();
+    }
+    /**
+     * <code>repeated string key = 1;</code>
+     */
+    public java.lang.String getKey(int index) {
+      return key_.get(index);
+    }
+    /**
+     * <code>repeated string key = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getKeyBytes(int index) {
+      return key_.getByteString(index);
+    }
+
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList value_;
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getValueList() {
+      return value_;
+    }
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    public int getValueCount() {
+      return value_.size();
+    }
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    public java.lang.String getValue(int index) {
+      return value_.get(index);
+    }
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getValueBytes(int index) {
+      return value_.getByteString(index);
+    }
+
+    private void initFields() {
+      key_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < key_.size(); i++) {
+        output.writeBytes(1, key_.getByteString(i));
+      }
+      for (int i = 0; i < value_.size(); i++) {
+        output.writeBytes(2, value_.getByteString(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < key_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(key_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getKeyList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < value_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(value_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getValueList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code edu.stanford.nlp.pipeline.MapStringString}
+     *
+     * <pre>
+     * A map from strings to strings.
+     * Used, minimally, in the CoNLLU featurizer
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.MapStringString)
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringStringOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapStringString_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapStringString_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.class, edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.Builder.class);
+      }
+
+      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        key_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapStringString_descriptor;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString getDefaultInstanceForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.getDefaultInstance();
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString build() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString buildPartial() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString result = new edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString(this);
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          key_ = key_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.key_ = key_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          value_ = value_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.value_ = value_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString) {
+          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString other) {
+        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString.getDefaultInstance()) return this;
+        if (!other.key_.isEmpty()) {
+          if (key_.isEmpty()) {
+            key_ = other.key_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureKeyIsMutable();
+            key_.addAll(other.key_);
+          }
+          onChanged();
+        }
+        if (!other.value_.isEmpty()) {
+          if (value_.isEmpty()) {
+            value_ = other.value_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureValueIsMutable();
+            value_.addAll(other.value_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.MapStringString) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.protobuf.LazyStringList key_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureKeyIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          key_ = new com.google.protobuf.LazyStringArrayList(key_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getKeyList() {
+        return key_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public int getKeyCount() {
+        return key_.size();
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public java.lang.String getKey(int index) {
+        return key_.get(index);
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getKeyBytes(int index) {
+        return key_.getByteString(index);
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public Builder setKey(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureKeyIsMutable();
+        key_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public Builder addKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureKeyIsMutable();
+        key_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public Builder addAllKey(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureKeyIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, key_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public Builder clearKey() {
+        key_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string key = 1;</code>
+       */
+      public Builder addKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureKeyIsMutable();
+        key_.add(value);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureValueIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          value_ = new com.google.protobuf.LazyStringArrayList(value_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getValueList() {
+        return value_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public int getValueCount() {
+        return value_.size();
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public java.lang.String getValue(int index) {
+        return value_.get(index);
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getValueBytes(int index) {
+        return value_.getByteString(index);
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder setValue(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValueIsMutable();
+        value_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder addValue(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValueIsMutable();
+        value_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder addAllValue(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureValueIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, value_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder clearValue() {
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder addValueBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValueIsMutable();
+        value_.add(value);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.MapStringString)
+    }
+
+    static {
+      defaultInstance = new MapStringString(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.MapStringString)
+  }
+
+  public interface MapIntStringOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:edu.stanford.nlp.pipeline.MapIntString)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated uint32 key = 1;</code>
+     */
+    java.util.List<java.lang.Integer> getKeyList();
+    /**
+     * <code>repeated uint32 key = 1;</code>
+     */
+    int getKeyCount();
+    /**
+     * <code>repeated uint32 key = 1;</code>
+     */
+    int getKey(int index);
+
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    com.google.protobuf.ProtocolStringList
+        getValueList();
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    int getValueCount();
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    java.lang.String getValue(int index);
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getValueBytes(int index);
+  }
+  /**
+   * Protobuf type {@code edu.stanford.nlp.pipeline.MapIntString}
+   *
+   * <pre>
+   * A map from integers to strings.
+   * Used, minimally, in the CoNLLU featurizer
+   * </pre>
+   */
+  public static final class MapIntString extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:edu.stanford.nlp.pipeline.MapIntString)
+      MapIntStringOrBuilder {
+    // Use MapIntString.newBuilder() to construct.
+    private MapIntString(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private MapIntString(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final MapIntString defaultInstance;
+    public static MapIntString getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public MapIntString getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private MapIntString(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                key_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              key_.add(input.readUInt32());
+              break;
+            }
+            case 10: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001) && input.getBytesUntilLimit() > 0) {
+                key_ = new java.util.ArrayList<java.lang.Integer>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                key_.add(input.readUInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                value_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              value_.add(bs);
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          key_ = java.util.Collections.unmodifiableList(key_);
+        }
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          value_ = value_.getUnmodifiableView();
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapIntString_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapIntString_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.class, edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<MapIntString> PARSER =
+        new com.google.protobuf.AbstractParser<MapIntString>() {
+      public MapIntString parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new MapIntString(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MapIntString> getParserForType() {
+      return PARSER;
+    }
+
+    public static final int KEY_FIELD_NUMBER = 1;
+    private java.util.List<java.lang.Integer> key_;
+    /**
+     * <code>repeated uint32 key = 1;</code>
+     */
+    public java.util.List<java.lang.Integer>
+        getKeyList() {
+      return key_;
+    }
+    /**
+     * <code>repeated uint32 key = 1;</code>
+     */
+    public int getKeyCount() {
+      return key_.size();
+    }
+    /**
+     * <code>repeated uint32 key = 1;</code>
+     */
+    public int getKey(int index) {
+      return key_.get(index);
+    }
+
+    public static final int VALUE_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList value_;
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    public com.google.protobuf.ProtocolStringList
+        getValueList() {
+      return value_;
+    }
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    public int getValueCount() {
+      return value_.size();
+    }
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    public java.lang.String getValue(int index) {
+      return value_.get(index);
+    }
+    /**
+     * <code>repeated string value = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getValueBytes(int index) {
+      return value_.getByteString(index);
+    }
+
+    private void initFields() {
+      key_ = java.util.Collections.emptyList();
+      value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < key_.size(); i++) {
+        output.writeUInt32(1, key_.get(i));
+      }
+      for (int i = 0; i < value_.size(); i++) {
+        output.writeBytes(2, value_.getByteString(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < key_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeUInt32SizeNoTag(key_.get(i));
+        }
+        size += dataSize;
+        size += 1 * getKeyList().size();
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < value_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(value_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getValueList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code edu.stanford.nlp.pipeline.MapIntString}
+     *
+     * <pre>
+     * A map from integers to strings.
+     * Used, minimally, in the CoNLLU featurizer
+     * </pre>
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:edu.stanford.nlp.pipeline.MapIntString)
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntStringOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapIntString_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapIntString_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.class, edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.Builder.class);
+      }
+
+      // Construct using edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        key_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.internal_static_edu_stanford_nlp_pipeline_MapIntString_descriptor;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString getDefaultInstanceForType() {
+        return edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.getDefaultInstance();
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString build() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString buildPartial() {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString result = new edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString(this);
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          key_ = java.util.Collections.unmodifiableList(key_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.key_ = key_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          value_ = value_.getUnmodifiableView();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.value_ = value_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString) {
+          return mergeFrom((edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString other) {
+        if (other == edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString.getDefaultInstance()) return this;
+        if (!other.key_.isEmpty()) {
+          if (key_.isEmpty()) {
+            key_ = other.key_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureKeyIsMutable();
+            key_.addAll(other.key_);
+          }
+          onChanged();
+        }
+        if (!other.value_.isEmpty()) {
+          if (value_.isEmpty()) {
+            value_ = other.value_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureValueIsMutable();
+            value_.addAll(other.value_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (edu.stanford.nlp.pipeline.CoreNLPProtos.MapIntString) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<java.lang.Integer> key_ = java.util.Collections.emptyList();
+      private void ensureKeyIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          key_ = new java.util.ArrayList<java.lang.Integer>(key_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated uint32 key = 1;</code>
+       */
+      public java.util.List<java.lang.Integer>
+          getKeyList() {
+        return java.util.Collections.unmodifiableList(key_);
+      }
+      /**
+       * <code>repeated uint32 key = 1;</code>
+       */
+      public int getKeyCount() {
+        return key_.size();
+      }
+      /**
+       * <code>repeated uint32 key = 1;</code>
+       */
+      public int getKey(int index) {
+        return key_.get(index);
+      }
+      /**
+       * <code>repeated uint32 key = 1;</code>
+       */
+      public Builder setKey(
+          int index, int value) {
+        ensureKeyIsMutable();
+        key_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 key = 1;</code>
+       */
+      public Builder addKey(int value) {
+        ensureKeyIsMutable();
+        key_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 key = 1;</code>
+       */
+      public Builder addAllKey(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureKeyIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, key_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated uint32 key = 1;</code>
+       */
+      public Builder clearKey() {
+        key_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.LazyStringList value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureValueIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          value_ = new com.google.protobuf.LazyStringArrayList(value_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public com.google.protobuf.ProtocolStringList
+          getValueList() {
+        return value_.getUnmodifiableView();
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public int getValueCount() {
+        return value_.size();
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public java.lang.String getValue(int index) {
+        return value_.get(index);
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getValueBytes(int index) {
+        return value_.getByteString(index);
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder setValue(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValueIsMutable();
+        value_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder addValue(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValueIsMutable();
+        value_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder addAllValue(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureValueIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, value_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder clearValue() {
+        value_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string value = 2;</code>
+       */
+      public Builder addValueBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureValueIsMutable();
+        value_.add(value);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:edu.stanford.nlp.pipeline.MapIntString)
+    }
+
+    static {
+      defaultInstance = new MapIntString(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:edu.stanford.nlp.pipeline.MapIntString)
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
@@ -31999,6 +47351,21 @@ public final class CoreNLPProtos {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_edu_stanford_nlp_pipeline_CorefChain_CorefMention_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_edu_stanford_nlp_pipeline_Mention_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_edu_stanford_nlp_pipeline_Mention_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_edu_stanford_nlp_pipeline_IndexedWord_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_edu_stanford_nlp_pipeline_IndexedWord_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_edu_stanford_nlp_pipeline_Span_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -32034,10 +47401,30 @@ public final class CoreNLPProtos {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_edu_stanford_nlp_pipeline_NERMention_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_edu_stanford_nlp_pipeline_OpenIETriple_descriptor;
+    internal_static_edu_stanford_nlp_pipeline_SentenceFragment_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_edu_stanford_nlp_pipeline_OpenIETriple_fieldAccessorTable;
+      internal_static_edu_stanford_nlp_pipeline_SentenceFragment_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_edu_stanford_nlp_pipeline_TokenLocation_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_edu_stanford_nlp_pipeline_TokenLocation_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_edu_stanford_nlp_pipeline_RelationTriple_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_edu_stanford_nlp_pipeline_RelationTriple_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_edu_stanford_nlp_pipeline_MapStringString_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_edu_stanford_nlp_pipeline_MapStringString_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_edu_stanford_nlp_pipeline_MapIntString_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_edu_stanford_nlp_pipeline_MapIntString_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -32048,144 +47435,208 @@ public final class CoreNLPProtos {
   static {
     java.lang.String[] descriptorData = {
       "\n\rCoreNLP.proto\022\031edu.stanford.nlp.pipeli" +
-      "ne\"\216\002\n\010Document\022\014\n\004text\030\001 \002(\t\0225\n\010sentenc" +
+      "ne\"\352\002\n\010Document\022\014\n\004text\030\001 \002(\t\0225\n\010sentenc" +
       "e\030\002 \003(\0132#.edu.stanford.nlp.pipeline.Sent" +
       "ence\0229\n\ncorefChain\030\003 \003(\0132%.edu.stanford." +
-      "nlp.pipeline.CorefChain\022\r\n\005docID\030\004 \001(\t\022;" +
-      "\n\021sentencelessToken\030\005 \003(\0132 .edu.stanford" +
-      ".nlp.pipeline.Token\022/\n\005quote\030\006 \003(\0132 .edu" +
-      ".stanford.nlp.pipeline.Quote*\005\010d\020\200\002\"\322\010\n\010" +
-      "Sentence\022/\n\005token\030\001 \003(\0132 .edu.stanford.n" +
-      "lp.pipeline.Token\022\030\n\020tokenOffsetBegin\030\002 ",
-      "\002(\r\022\026\n\016tokenOffsetEnd\030\003 \002(\r\022\025\n\rsentenceI" +
-      "ndex\030\004 \001(\r\022\034\n\024characterOffsetBegin\030\005 \001(\r" +
-      "\022\032\n\022characterOffsetEnd\030\006 \001(\r\0227\n\tparseTre" +
-      "e\030\007 \001(\0132$.edu.stanford.nlp.pipeline.Pars" +
-      "eTree\022@\n\022binarizedParseTree\030\037 \001(\0132$.edu." +
-      "stanford.nlp.pipeline.ParseTree\022@\n\022annot" +
-      "atedParseTree\030  \001(\0132$.edu.stanford.nlp.p" +
-      "ipeline.ParseTree\022\021\n\tsentiment\030! \001(\t\022=\n\017" +
-      "kBestParseTrees\030\" \003(\0132$.edu.stanford.nlp" +
-      ".pipeline.ParseTree\022E\n\021basicDependencies",
-      "\030\010 \001(\0132*.edu.stanford.nlp.pipeline.Depen" +
-      "dencyGraph\022I\n\025collapsedDependencies\030\t \001(" +
-      "\0132*.edu.stanford.nlp.pipeline.Dependency" +
-      "Graph\022T\n collapsedCCProcessedDependencie" +
-      "s\030\n \001(\0132*.edu.stanford.nlp.pipeline.Depe" +
-      "ndencyGraph\022K\n\027alternativeDependencies\030\r" +
-      " \001(\0132*.edu.stanford.nlp.pipeline.Depende" +
-      "ncyGraph\022=\n\014openieTriple\030\016 \003(\0132\'.edu.sta" +
-      "nford.nlp.pipeline.OpenIETriple\022\021\n\tparag" +
-      "raph\030\013 \001(\r\022\014\n\004text\030\014 \001(\t\022\036\n\026hasRelationA",
-      "nnotations\0303 \001(\010\0221\n\006entity\0304 \003(\0132!.edu.s" +
-      "tanford.nlp.pipeline.Entity\0225\n\010relation\030" +
-      "5 \003(\0132#.edu.stanford.nlp.pipeline.Relati" +
-      "on\022$\n\034hasNumerizedTokensAnnotation\0306 \001(\010" +
-      "\0227\n\010mentions\0307 \003(\0132%.edu.stanford.nlp.pi" +
-      "peline.NERMention*\005\010d\020\200\002\"\360\005\n\005Token\022\014\n\004wo" +
-      "rd\030\001 \002(\t\022\013\n\003pos\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\022\020\n\010" +
-      "category\030\004 \001(\t\022\016\n\006before\030\005 \001(\t\022\r\n\005after\030" +
-      "\006 \001(\t\022\024\n\014originalText\030\007 \001(\t\022\013\n\003ner\030\010 \001(\t" +
-      "\022\025\n\rnormalizedNER\030\t \001(\t\022\r\n\005lemma\030\n \001(\t\022\021",
-      "\n\tbeginChar\030\013 \001(\r\022\017\n\007endChar\030\014 \001(\r\022\021\n\tut" +
-      "terance\030\r \001(\r\022\017\n\007speaker\030\016 \001(\t\022\022\n\nbeginI" +
-      "ndex\030\017 \001(\r\022\020\n\010endIndex\030\020 \001(\r\022\027\n\017tokenBeg" +
-      "inIndex\030\021 \001(\r\022\025\n\rtokenEndIndex\030\022 \001(\r\0224\n\n" +
-      "timexValue\030\023 \001(\0132 .edu.stanford.nlp.pipe" +
-      "line.Timex\022\025\n\rhasXmlContext\030\025 \001(\010\022\022\n\nxml" +
-      "Context\030\026 \003(\t\022\026\n\016corefClusterID\030\027 \001(\r\022\016\n" +
-      "\006answer\030\030 \001(\t\022\025\n\rheadWordIndex\030\032 \001(\r\0225\n\010" +
-      "operator\030\033 \001(\0132#.edu.stanford.nlp.pipeli" +
-      "ne.Operator\0225\n\010polarity\030\034 \001(\0132#.edu.stan",
-      "ford.nlp.pipeline.Polarity\022-\n\004span\030\035 \001(\013" +
-      "2\037.edu.stanford.nlp.pipeline.Span\022\021\n\tsen" +
-      "timent\030\036 \001(\t\022\026\n\016quotationIndex\030\037 \001(\005\022\016\n\006" +
-      "gender\0303 \001(\t\022\020\n\010trueCase\0304 \001(\t\022\024\n\014trueCa" +
-      "seText\0305 \001(\t*\005\010d\020\200\002\"\241\001\n\005Quote\022\014\n\004text\030\001 " +
-      "\001(\t\022\r\n\005begin\030\002 \001(\r\022\013\n\003end\030\003 \001(\r\022\025\n\rsente" +
-      "nceBegin\030\005 \001(\r\022\023\n\013sentenceEnd\030\006 \001(\r\022\022\n\nt" +
-      "okenBegin\030\007 \001(\r\022\020\n\010tokenEnd\030\010 \001(\r\022\r\n\005doc" +
-      "id\030\t \001(\t\022\r\n\005index\030\n \001(\r\"\307\001\n\tParseTree\0223\n" +
-      "\005child\030\001 \003(\0132$.edu.stanford.nlp.pipeline",
-      ".ParseTree\022\r\n\005value\030\002 \001(\t\022\027\n\017yieldBeginI" +
-      "ndex\030\003 \001(\r\022\025\n\ryieldEndIndex\030\004 \001(\r\022\r\n\005sco" +
-      "re\030\005 \001(\001\0227\n\tsentiment\030\006 \001(\0162$.edu.stanfo" +
-      "rd.nlp.pipeline.Sentiment\"\226\003\n\017Dependency" +
-      "Graph\022=\n\004node\030\001 \003(\0132/.edu.stanford.nlp.p" +
-      "ipeline.DependencyGraph.Node\022=\n\004edge\030\002 \003" +
-      "(\0132/.edu.stanford.nlp.pipeline.Dependenc" +
-      "yGraph.Edge\022\020\n\004root\030\003 \003(\rB\002\020\001\032D\n\004Node\022\025\n" +
-      "\rsentenceIndex\030\001 \002(\r\022\r\n\005index\030\002 \002(\r\022\026\n\016c" +
-      "opyAnnotation\030\003 \001(\r\032\254\001\n\004Edge\022\016\n\006source\030\001",
-      " \002(\r\022\016\n\006target\030\002 \002(\r\022\013\n\003dep\030\003 \001(\t\022\017\n\007isE" +
-      "xtra\030\004 \001(\010\022\022\n\nsourceCopy\030\005 \001(\r\022\022\n\ntarget" +
-      "Copy\030\006 \001(\r\022>\n\010language\030\007 \001(\0162#.edu.stanf" +
-      "ord.nlp.pipeline.Language:\007Unknown\"\306\002\n\nC" +
-      "orefChain\022\017\n\007chainID\030\001 \002(\005\022C\n\007mention\030\002 " +
-      "\003(\01322.edu.stanford.nlp.pipeline.CorefCha" +
-      "in.CorefMention\022\026\n\016representative\030\003 \002(\r\032" +
-      "\311\001\n\014CorefMention\022\021\n\tmentionID\030\001 \001(\005\022\023\n\013m" +
-      "entionType\030\002 \001(\t\022\016\n\006number\030\003 \001(\t\022\016\n\006gend" +
-      "er\030\004 \001(\t\022\017\n\007animacy\030\005 \001(\t\022\022\n\nbeginIndex\030",
-      "\006 \001(\r\022\020\n\010endIndex\030\007 \001(\r\022\021\n\theadIndex\030\t \001" +
-      "(\r\022\025\n\rsentenceIndex\030\n \001(\r\022\020\n\010position\030\013 " +
-      "\001(\r\"\"\n\004Span\022\r\n\005begin\030\001 \002(\r\022\013\n\003end\030\002 \002(\r\"" +
-      "w\n\005Timex\022\r\n\005value\030\001 \001(\t\022\020\n\010altValue\030\002 \001(" +
-      "\t\022\014\n\004text\030\003 \001(\t\022\014\n\004type\030\004 \001(\t\022\013\n\003tid\030\005 \001" +
-      "(\t\022\022\n\nbeginPoint\030\006 \001(\r\022\020\n\010endPoint\030\007 \001(\r" +
-      "\"\333\001\n\006Entity\022\021\n\theadStart\030\006 \001(\r\022\017\n\007headEn" +
-      "d\030\007 \001(\r\022\023\n\013mentionType\030\010 \001(\t\022\026\n\016normaliz" +
-      "edName\030\t \001(\t\022\026\n\016headTokenIndex\030\n \001(\r\022\017\n\007" +
-      "corefID\030\013 \001(\t\022\020\n\010objectID\030\001 \001(\t\022\023\n\013exten",
-      "tStart\030\002 \001(\r\022\021\n\textentEnd\030\003 \001(\r\022\014\n\004type\030" +
-      "\004 \001(\t\022\017\n\007subtype\030\005 \001(\t\"\267\001\n\010Relation\022\017\n\007a" +
-      "rgName\030\006 \003(\t\022.\n\003arg\030\007 \003(\0132!.edu.stanford" +
-      ".nlp.pipeline.Entity\022\021\n\tsignature\030\010 \001(\t\022" +
-      "\020\n\010objectID\030\001 \001(\t\022\023\n\013extentStart\030\002 \001(\r\022\021" +
-      "\n\textentEnd\030\003 \001(\r\022\014\n\004type\030\004 \001(\t\022\017\n\007subty" +
-      "pe\030\005 \001(\t\"\262\001\n\010Operator\022\014\n\004name\030\001 \002(\t\022\033\n\023q" +
-      "uantifierSpanBegin\030\002 \002(\005\022\031\n\021quantifierSp" +
-      "anEnd\030\003 \002(\005\022\030\n\020subjectSpanBegin\030\004 \002(\005\022\026\n" +
-      "\016subjectSpanEnd\030\005 \002(\005\022\027\n\017objectSpanBegin",
-      "\030\006 \002(\005\022\025\n\robjectSpanEnd\030\007 \002(\005\"\251\004\n\010Polari" +
-      "ty\022K\n\022projectEquivalence\030\001 \002(\0162/.edu.sta" +
-      "nford.nlp.pipeline.NaturalLogicRelation\022" +
-      "Q\n\030projectForwardEntailment\030\002 \002(\0162/.edu." +
+      "nlp.pipeline.CorefChain\022\r\n\005docID\030\004 \001(\t\022\017" +
+      "\n\007docDate\030\007 \001(\t\022\020\n\010calendar\030\010 \001(\004\022;\n\021sen" +
+      "tencelessToken\030\005 \003(\0132 .edu.stanford.nlp." +
+      "pipeline.Token\022/\n\005quote\030\006 \003(\0132 .edu.stan" +
+      "ford.nlp.pipeline.Quote\0227\n\010mentions\030\t \003(" +
+      "\0132%.edu.stanford.nlp.pipeline.NERMention",
+      "*\005\010d\020\200\002\"\240\014\n\010Sentence\022/\n\005token\030\001 \003(\0132 .ed" +
+      "u.stanford.nlp.pipeline.Token\022\030\n\020tokenOf" +
+      "fsetBegin\030\002 \002(\r\022\026\n\016tokenOffsetEnd\030\003 \002(\r\022" +
+      "\025\n\rsentenceIndex\030\004 \001(\r\022\034\n\024characterOffse" +
+      "tBegin\030\005 \001(\r\022\032\n\022characterOffsetEnd\030\006 \001(\r" +
+      "\0227\n\tparseTree\030\007 \001(\0132$.edu.stanford.nlp.p" +
+      "ipeline.ParseTree\022@\n\022binarizedParseTree\030" +
+      "\037 \001(\0132$.edu.stanford.nlp.pipeline.ParseT" +
+      "ree\022@\n\022annotatedParseTree\030  \001(\0132$.edu.st" +
+      "anford.nlp.pipeline.ParseTree\022\021\n\tsentime",
+      "nt\030! \001(\t\022=\n\017kBestParseTrees\030\" \003(\0132$.edu." +
+      "stanford.nlp.pipeline.ParseTree\022E\n\021basic" +
+      "Dependencies\030\010 \001(\0132*.edu.stanford.nlp.pi" +
+      "peline.DependencyGraph\022I\n\025collapsedDepen" +
+      "dencies\030\t \001(\0132*.edu.stanford.nlp.pipelin" +
+      "e.DependencyGraph\022T\n collapsedCCProcesse" +
+      "dDependencies\030\n \001(\0132*.edu.stanford.nlp.p" +
+      "ipeline.DependencyGraph\022K\n\027alternativeDe" +
+      "pendencies\030\r \001(\0132*.edu.stanford.nlp.pipe" +
+      "line.DependencyGraph\022?\n\014openieTriple\030\016 \003",
+      "(\0132).edu.stanford.nlp.pipeline.RelationT" +
+      "riple\022<\n\tkbpTriple\030\020 \003(\0132).edu.stanford." +
+      "nlp.pipeline.RelationTriple\022E\n\020entailedS" +
+      "entence\030\017 \003(\0132+.edu.stanford.nlp.pipelin" +
+      "e.SentenceFragment\022H\n\024enhancedDependenci" +
+      "es\030\021 \001(\0132*.edu.stanford.nlp.pipeline.Dep" +
+      "endencyGraph\022P\n\034enhancedPlusPlusDependen" +
+      "cies\030\022 \001(\0132*.edu.stanford.nlp.pipeline.D" +
+      "ependencyGraph\0223\n\tcharacter\030\023 \003(\0132 .edu." +
+      "stanford.nlp.pipeline.Token\022\021\n\tparagraph",
+      "\030\013 \001(\r\022\014\n\004text\030\014 \001(\t\022\036\n\026hasRelationAnnot" +
+      "ations\0303 \001(\010\0221\n\006entity\0304 \003(\0132!.edu.stanf" +
+      "ord.nlp.pipeline.Entity\0225\n\010relation\0305 \003(" +
+      "\0132#.edu.stanford.nlp.pipeline.Relation\022$" +
+      "\n\034hasNumerizedTokensAnnotation\0306 \001(\010\0227\n\010" +
+      "mentions\0307 \003(\0132%.edu.stanford.nlp.pipeli" +
+      "ne.NERMention\022<\n\020mentionsForCoref\0308 \003(\0132" +
+      "\".edu.stanford.nlp.pipeline.Mention\022\"\n\032h" +
+      "asCorefMentionsAnnotation\0309 \001(\010\022\022\n\nsente" +
+      "nceID\030: \001(\t*\005\010d\020\200\002\"\235\010\n\005Token\022\014\n\004word\030\001 \002",
+      "(\t\022\013\n\003pos\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\022\020\n\010catego" +
+      "ry\030\004 \001(\t\022\016\n\006before\030\005 \001(\t\022\r\n\005after\030\006 \001(\t\022" +
+      "\024\n\014originalText\030\007 \001(\t\022\013\n\003ner\030\010 \001(\t\022\025\n\rno" +
+      "rmalizedNER\030\t \001(\t\022\r\n\005lemma\030\n \001(\t\022\021\n\tbegi" +
+      "nChar\030\013 \001(\r\022\017\n\007endChar\030\014 \001(\r\022\021\n\tutteranc" +
+      "e\030\r \001(\r\022\017\n\007speaker\030\016 \001(\t\022\022\n\nbeginIndex\030\017" +
+      " \001(\r\022\020\n\010endIndex\030\020 \001(\r\022\027\n\017tokenBeginInde" +
+      "x\030\021 \001(\r\022\025\n\rtokenEndIndex\030\022 \001(\r\0224\n\ntimexV" +
+      "alue\030\023 \001(\0132 .edu.stanford.nlp.pipeline.T" +
+      "imex\022\025\n\rhasXmlContext\030\025 \001(\010\022\022\n\nxmlContex",
+      "t\030\026 \003(\t\022\026\n\016corefClusterID\030\027 \001(\r\022\016\n\006answe" +
+      "r\030\030 \001(\t\022\025\n\rheadWordIndex\030\032 \001(\r\0225\n\010operat" +
+      "or\030\033 \001(\0132#.edu.stanford.nlp.pipeline.Ope" +
+      "rator\0225\n\010polarity\030\034 \001(\0132#.edu.stanford.n" +
+      "lp.pipeline.Polarity\022-\n\004span\030\035 \001(\0132\037.edu" +
+      ".stanford.nlp.pipeline.Span\022\021\n\tsentiment" +
+      "\030\036 \001(\t\022\026\n\016quotationIndex\030\037 \001(\005\022B\n\016conllU" +
+      "Features\030  \001(\0132*.edu.stanford.nlp.pipeli" +
+      "ne.MapStringString\022\021\n\tcoarseTag\030! \001(\t\0228\n" +
+      "\017conllUTokenSpan\030\" \001(\0132\037.edu.stanford.nl",
+      "p.pipeline.Span\022\022\n\nconllUMisc\030# \001(\t\022D\n\023c" +
+      "onllUSecondaryDeps\030$ \001(\0132\'.edu.stanford." +
+      "nlp.pipeline.MapIntString\022\027\n\017wikipediaEn" +
+      "tity\030% \001(\t\022\016\n\006gender\0303 \001(\t\022\020\n\010trueCase\0304" +
+      " \001(\t\022\024\n\014trueCaseText\0305 \001(\t\022\023\n\013chineseCha" +
+      "r\0306 \001(\t\022\022\n\nchineseSeg\0307 \001(\t*\005\010d\020\200\002\"\241\001\n\005Q" +
+      "uote\022\014\n\004text\030\001 \001(\t\022\r\n\005begin\030\002 \001(\r\022\013\n\003end" +
+      "\030\003 \001(\r\022\025\n\rsentenceBegin\030\005 \001(\r\022\023\n\013sentenc" +
+      "eEnd\030\006 \001(\r\022\022\n\ntokenBegin\030\007 \001(\r\022\020\n\010tokenE" +
+      "nd\030\010 \001(\r\022\r\n\005docid\030\t \001(\t\022\r\n\005index\030\n \001(\r\"\307",
+      "\001\n\tParseTree\0223\n\005child\030\001 \003(\0132$.edu.stanfo" +
+      "rd.nlp.pipeline.ParseTree\022\r\n\005value\030\002 \001(\t" +
+      "\022\027\n\017yieldBeginIndex\030\003 \001(\r\022\025\n\ryieldEndInd" +
+      "ex\030\004 \001(\r\022\r\n\005score\030\005 \001(\001\0227\n\tsentiment\030\006 \001" +
+      "(\0162$.edu.stanford.nlp.pipeline.Sentiment" +
+      "\"\226\003\n\017DependencyGraph\022=\n\004node\030\001 \003(\0132/.edu" +
+      ".stanford.nlp.pipeline.DependencyGraph.N" +
+      "ode\022=\n\004edge\030\002 \003(\0132/.edu.stanford.nlp.pip" +
+      "eline.DependencyGraph.Edge\022\020\n\004root\030\003 \003(\r" +
+      "B\002\020\001\032D\n\004Node\022\025\n\rsentenceIndex\030\001 \002(\r\022\r\n\005i",
+      "ndex\030\002 \002(\r\022\026\n\016copyAnnotation\030\003 \001(\r\032\254\001\n\004E" +
+      "dge\022\016\n\006source\030\001 \002(\r\022\016\n\006target\030\002 \002(\r\022\013\n\003d" +
+      "ep\030\003 \001(\t\022\017\n\007isExtra\030\004 \001(\010\022\022\n\nsourceCopy\030" +
+      "\005 \001(\r\022\022\n\ntargetCopy\030\006 \001(\r\022>\n\010language\030\007 " +
+      "\001(\0162#.edu.stanford.nlp.pipeline.Language" +
+      ":\007Unknown\"\306\002\n\nCorefChain\022\017\n\007chainID\030\001 \002(" +
+      "\005\022C\n\007mention\030\002 \003(\01322.edu.stanford.nlp.pi" +
+      "peline.CorefChain.CorefMention\022\026\n\016repres" +
+      "entative\030\003 \002(\r\032\311\001\n\014CorefMention\022\021\n\tmenti" +
+      "onID\030\001 \001(\005\022\023\n\013mentionType\030\002 \001(\t\022\016\n\006numbe",
+      "r\030\003 \001(\t\022\016\n\006gender\030\004 \001(\t\022\017\n\007animacy\030\005 \001(\t" +
+      "\022\022\n\nbeginIndex\030\006 \001(\r\022\020\n\010endIndex\030\007 \001(\r\022\021" +
+      "\n\theadIndex\030\t \001(\r\022\025\n\rsentenceIndex\030\n \001(\r" +
+      "\022\020\n\010position\030\013 \001(\r\"\357\010\n\007Mention\022\021\n\tmentio" +
+      "nID\030\001 \001(\005\022\023\n\013mentionType\030\002 \001(\t\022\016\n\006number" +
+      "\030\003 \001(\t\022\016\n\006gender\030\004 \001(\t\022\017\n\007animacy\030\005 \001(\t\022" +
+      "\016\n\006person\030\006 \001(\t\022\022\n\nstartIndex\030\007 \001(\r\022\020\n\010e" +
+      "ndIndex\030\t \001(\r\022\021\n\theadIndex\030\n \001(\r\022\022\n\nhead" +
+      "String\030\013 \001(\t\022\021\n\tnerString\030\014 \001(\t\022\023\n\013origi" +
+      "nalRef\030\r \001(\r\022\032\n\022goldCorefClusterID\030\016 \001(\005",
+      "\022\026\n\016corefClusterID\030\017 \001(\005\022\022\n\nmentionNum\030\020" +
+      " \001(\r\022\017\n\007sentNum\030\021 \001(\r\022\r\n\005utter\030\022 \001(\r\022\021\n\t" +
+      "paragraph\030\023 \001(\r\022\021\n\tisSubject\030\024 \001(\010\022\026\n\016is" +
+      "DirectObject\030\025 \001(\010\022\030\n\020isIndirectObject\030\026" +
+      " \001(\010\022\033\n\023isPrepositionObject\030\027 \001(\010\022\017\n\007has" +
+      "Twin\030\030 \001(\010\022\017\n\007generic\030\031 \001(\010\022\023\n\013isSinglet" +
+      "on\030\032 \001(\010\022\032\n\022hasBasicDependency\030\033 \001(\010\022\035\n\025" +
+      "hasEnhancedDepenedncy\030\034 \001(\010\022\033\n\023hasContex" +
+      "tParseTree\030\035 \001(\010\022?\n\017headIndexedWord\030\036 \001(" +
+      "\0132&.edu.stanford.nlp.pipeline.IndexedWor",
+      "d\022=\n\rdependingVerb\030\037 \001(\0132&.edu.stanford." +
+      "nlp.pipeline.IndexedWord\0228\n\010headWord\030  \001" +
+      "(\0132&.edu.stanford.nlp.pipeline.IndexedWo" +
+      "rd\022;\n\013speakerInfo\030! \001(\0132&.edu.stanford.n" +
+      "lp.pipeline.SpeakerInfo\022=\n\rsentenceWords" +
+      "\0302 \003(\0132&.edu.stanford.nlp.pipeline.Index" +
+      "edWord\022<\n\014originalSpan\0303 \003(\0132&.edu.stanf" +
+      "ord.nlp.pipeline.IndexedWord\022\022\n\ndependen" +
+      "ts\0304 \003(\t\022\031\n\021preprocessedTerms\0305 \003(\t\022\023\n\013a" +
+      "ppositions\0306 \003(\005\022\034\n\024predicateNominatives",
+      "\0307 \003(\005\022\030\n\020relativePronouns\0308 \003(\005\022\023\n\013list" +
+      "Members\0309 \003(\005\022\025\n\rbelongToLists\030: \003(\005\"X\n\013" +
+      "IndexedWord\022\023\n\013sentenceNum\030\001 \001(\r\022\022\n\ntoke" +
+      "nIndex\030\002 \001(\r\022\r\n\005docID\030\003 \001(\r\022\021\n\tcopyCount" +
+      "\030\004 \001(\r\"4\n\013SpeakerInfo\022\023\n\013speakerName\030\001 \001" +
+      "(\t\022\020\n\010mentions\030\002 \003(\005\"\"\n\004Span\022\r\n\005begin\030\001 " +
+      "\002(\r\022\013\n\003end\030\002 \002(\r\"w\n\005Timex\022\r\n\005value\030\001 \001(\t" +
+      "\022\020\n\010altValue\030\002 \001(\t\022\014\n\004text\030\003 \001(\t\022\014\n\004type" +
+      "\030\004 \001(\t\022\013\n\003tid\030\005 \001(\t\022\022\n\nbeginPoint\030\006 \001(\r\022" +
+      "\020\n\010endPoint\030\007 \001(\r\"\333\001\n\006Entity\022\021\n\theadStar",
+      "t\030\006 \001(\r\022\017\n\007headEnd\030\007 \001(\r\022\023\n\013mentionType\030" +
+      "\010 \001(\t\022\026\n\016normalizedName\030\t \001(\t\022\026\n\016headTok" +
+      "enIndex\030\n \001(\r\022\017\n\007corefID\030\013 \001(\t\022\020\n\010object" +
+      "ID\030\001 \001(\t\022\023\n\013extentStart\030\002 \001(\r\022\021\n\textentE" +
+      "nd\030\003 \001(\r\022\014\n\004type\030\004 \001(\t\022\017\n\007subtype\030\005 \001(\t\"" +
+      "\267\001\n\010Relation\022\017\n\007argName\030\006 \003(\t\022.\n\003arg\030\007 \003" +
+      "(\0132!.edu.stanford.nlp.pipeline.Entity\022\021\n" +
+      "\tsignature\030\010 \001(\t\022\020\n\010objectID\030\001 \001(\t\022\023\n\013ex" +
+      "tentStart\030\002 \001(\r\022\021\n\textentEnd\030\003 \001(\r\022\014\n\004ty" +
+      "pe\030\004 \001(\t\022\017\n\007subtype\030\005 \001(\t\"\262\001\n\010Operator\022\014",
+      "\n\004name\030\001 \002(\t\022\033\n\023quantifierSpanBegin\030\002 \002(" +
+      "\005\022\031\n\021quantifierSpanEnd\030\003 \002(\005\022\030\n\020subjectS" +
+      "panBegin\030\004 \002(\005\022\026\n\016subjectSpanEnd\030\005 \002(\005\022\027" +
+      "\n\017objectSpanBegin\030\006 \002(\005\022\025\n\robjectSpanEnd" +
+      "\030\007 \002(\005\"\251\004\n\010Polarity\022K\n\022projectEquivalenc" +
+      "e\030\001 \002(\0162/.edu.stanford.nlp.pipeline.Natu" +
+      "ralLogicRelation\022Q\n\030projectForwardEntail" +
+      "ment\030\002 \002(\0162/.edu.stanford.nlp.pipeline.N" +
+      "aturalLogicRelation\022Q\n\030projectReverseEnt" +
+      "ailment\030\003 \002(\0162/.edu.stanford.nlp.pipelin",
+      "e.NaturalLogicRelation\022H\n\017projectNegatio" +
+      "n\030\004 \002(\0162/.edu.stanford.nlp.pipeline.Natu" +
+      "ralLogicRelation\022K\n\022projectAlternation\030\005" +
+      " \002(\0162/.edu.stanford.nlp.pipeline.Natural" +
+      "LogicRelation\022E\n\014projectCover\030\006 \002(\0162/.ed" +
+      "u.stanford.nlp.pipeline.NaturalLogicRela" +
+      "tion\022L\n\023projectIndependence\030\007 \002(\0162/.edu." +
       "stanford.nlp.pipeline.NaturalLogicRelati" +
-      "on\022Q\n\030projectReverseEntailment\030\003 \002(\0162/.e" +
-      "du.stanford.nlp.pipeline.NaturalLogicRel" +
-      "ation\022H\n\017projectNegation\030\004 \002(\0162/.edu.sta" +
-      "nford.nlp.pipeline.NaturalLogicRelation\022" +
-      "K\n\022projectAlternation\030\005 \002(\0162/.edu.stanfo",
-      "rd.nlp.pipeline.NaturalLogicRelation\022E\n\014" +
-      "projectCover\030\006 \002(\0162/.edu.stanford.nlp.pi" +
-      "peline.NaturalLogicRelation\022L\n\023projectIn" +
-      "dependence\030\007 \002(\0162/.edu.stanford.nlp.pipe" +
-      "line.NaturalLogicRelation\"\330\001\n\nNERMention" +
-      "\022\025\n\rsentenceIndex\030\001 \001(\r\022%\n\035tokenStartInS" +
-      "entenceInclusive\030\002 \002(\r\022#\n\033tokenEndInSent" +
-      "enceExclusive\030\003 \002(\r\022\013\n\003ner\030\004 \002(\t\022\025\n\rnorm" +
-      "alizedNER\030\005 \001(\t\022\022\n\nentityType\030\006 \001(\t\022/\n\005t" +
-      "imex\030\007 \001(\0132 .edu.stanford.nlp.pipeline.T",
-      "imex\"\261\002\n\014OpenIETriple\022\017\n\007subject\030\001 \001(\t\022\020" +
-      "\n\010relation\030\002 \001(\t\022\016\n\006object\030\003 \001(\t\022\022\n\nconf" +
-      "idence\030\004 \002(\001\0224\n\013subjectSpan\030\005 \002(\0132\037.edu." +
-      "stanford.nlp.pipeline.Span\0225\n\014relationSp" +
-      "an\030\006 \002(\0132\037.edu.stanford.nlp.pipeline.Spa" +
-      "n\0223\n\nobjectSpan\030\007 \002(\0132\037.edu.stanford.nlp" +
-      ".pipeline.Span\0228\n\004tree\030\010 \001(\0132*.edu.stanf" +
-      "ord.nlp.pipeline.DependencyGraph*\215\001\n\010Lan" +
-      "guage\022\013\n\007Unknown\020\000\022\007\n\003Any\020\001\022\n\n\006Arabic\020\002\022" +
-      "\013\n\007Chinese\020\003\022\013\n\007English\020\004\022\n\n\006German\020\005\022\n\n",
-      "\006French\020\006\022\n\n\006Hebrew\020\007\022\013\n\007Spanish\020\010\022\024\n\020Un" +
-      "iversalEnglish\020\t*h\n\tSentiment\022\023\n\017STRONG_" +
-      "NEGATIVE\020\000\022\021\n\rWEAK_NEGATIVE\020\001\022\013\n\007NEUTRAL" +
-      "\020\002\022\021\n\rWEAK_POSITIVE\020\003\022\023\n\017STRONG_POSITIVE" +
-      "\020\004*\223\001\n\024NaturalLogicRelation\022\017\n\013EQUIVALEN" +
-      "CE\020\000\022\026\n\022FORWARD_ENTAILMENT\020\001\022\026\n\022REVERSE_" +
-      "ENTAILMENT\020\002\022\014\n\010NEGATION\020\003\022\017\n\013ALTERNATIO" +
-      "N\020\004\022\t\n\005COVER\020\005\022\020\n\014INDEPENDENCE\020\006B*\n\031edu." +
-      "stanford.nlp.pipelineB\rCoreNLPProtos"
+      "on\"\361\001\n\nNERMention\022\025\n\rsentenceIndex\030\001 \001(\r" +
+      "\022%\n\035tokenStartInSentenceInclusive\030\002 \002(\r\022",
+      "#\n\033tokenEndInSentenceExclusive\030\003 \002(\r\022\013\n\003" +
+      "ner\030\004 \002(\t\022\025\n\rnormalizedNER\030\005 \001(\t\022\022\n\nenti" +
+      "tyType\030\006 \001(\t\022/\n\005timex\030\007 \001(\0132 .edu.stanfo" +
+      "rd.nlp.pipeline.Timex\022\027\n\017wikipediaEntity" +
+      "\030\010 \001(\t\"Y\n\020SentenceFragment\022\022\n\ntokenIndex" +
+      "\030\001 \003(\r\022\014\n\004root\030\002 \001(\r\022\024\n\014assumedTruth\030\003 \001" +
+      "(\010\022\r\n\005score\030\004 \001(\001\":\n\rTokenLocation\022\025\n\rse" +
+      "ntenceIndex\030\001 \001(\r\022\022\n\ntokenIndex\030\002 \001(\r\"\232\003" +
+      "\n\016RelationTriple\022\017\n\007subject\030\001 \001(\t\022\020\n\010rel" +
+      "ation\030\002 \001(\t\022\016\n\006object\030\003 \001(\t\022\022\n\nconfidenc",
+      "e\030\004 \001(\001\022?\n\rsubjectTokens\030\r \003(\0132(.edu.sta" +
+      "nford.nlp.pipeline.TokenLocation\022@\n\016rela" +
+      "tionTokens\030\016 \003(\0132(.edu.stanford.nlp.pipe" +
+      "line.TokenLocation\022>\n\014objectTokens\030\017 \003(\013" +
+      "2(.edu.stanford.nlp.pipeline.TokenLocati" +
+      "on\0228\n\004tree\030\010 \001(\0132*.edu.stanford.nlp.pipe" +
+      "line.DependencyGraph\022\016\n\006istmod\030\t \001(\010\022\020\n\010" +
+      "prefixBe\030\n \001(\010\022\020\n\010suffixBe\030\013 \001(\010\022\020\n\010suff" +
+      "ixOf\030\014 \001(\010\"-\n\017MapStringString\022\013\n\003key\030\001 \003" +
+      "(\t\022\r\n\005value\030\002 \003(\t\"*\n\014MapIntString\022\013\n\003key",
+      "\030\001 \003(\r\022\r\n\005value\030\002 \003(\t*\243\001\n\010Language\022\013\n\007Un" +
+      "known\020\000\022\007\n\003Any\020\001\022\n\n\006Arabic\020\002\022\013\n\007Chinese\020" +
+      "\003\022\013\n\007English\020\004\022\n\n\006German\020\005\022\n\n\006French\020\006\022\n" +
+      "\n\006Hebrew\020\007\022\013\n\007Spanish\020\010\022\024\n\020UniversalEngl" +
+      "ish\020\t\022\024\n\020UniversalChinese\020\n*h\n\tSentiment" +
+      "\022\023\n\017STRONG_NEGATIVE\020\000\022\021\n\rWEAK_NEGATIVE\020\001" +
+      "\022\013\n\007NEUTRAL\020\002\022\021\n\rWEAK_POSITIVE\020\003\022\023\n\017STRO" +
+      "NG_POSITIVE\020\004*\223\001\n\024NaturalLogicRelation\022\017" +
+      "\n\013EQUIVALENCE\020\000\022\026\n\022FORWARD_ENTAILMENT\020\001\022" +
+      "\026\n\022REVERSE_ENTAILMENT\020\002\022\014\n\010NEGATION\020\003\022\017\n",
+      "\013ALTERNATION\020\004\022\t\n\005COVER\020\005\022\020\n\014INDEPENDENC" +
+      "E\020\006B*\n\031edu.stanford.nlp.pipelineB\rCoreNL" +
+      "PProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -32204,19 +47655,19 @@ public final class CoreNLPProtos {
     internal_static_edu_stanford_nlp_pipeline_Document_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Document_descriptor,
-        new java.lang.String[] { "Text", "Sentence", "CorefChain", "DocID", "SentencelessToken", "Quote", });
+        new java.lang.String[] { "Text", "Sentence", "CorefChain", "DocID", "DocDate", "Calendar", "SentencelessToken", "Quote", "Mentions", });
     internal_static_edu_stanford_nlp_pipeline_Sentence_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_edu_stanford_nlp_pipeline_Sentence_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Sentence_descriptor,
-        new java.lang.String[] { "Token", "TokenOffsetBegin", "TokenOffsetEnd", "SentenceIndex", "CharacterOffsetBegin", "CharacterOffsetEnd", "ParseTree", "BinarizedParseTree", "AnnotatedParseTree", "Sentiment", "KBestParseTrees", "BasicDependencies", "CollapsedDependencies", "CollapsedCCProcessedDependencies", "AlternativeDependencies", "OpenieTriple", "Paragraph", "Text", "HasRelationAnnotations", "Entity", "Relation", "HasNumerizedTokensAnnotation", "Mentions", });
+        new java.lang.String[] { "Token", "TokenOffsetBegin", "TokenOffsetEnd", "SentenceIndex", "CharacterOffsetBegin", "CharacterOffsetEnd", "ParseTree", "BinarizedParseTree", "AnnotatedParseTree", "Sentiment", "KBestParseTrees", "BasicDependencies", "CollapsedDependencies", "CollapsedCCProcessedDependencies", "AlternativeDependencies", "OpenieTriple", "KbpTriple", "EntailedSentence", "EnhancedDependencies", "EnhancedPlusPlusDependencies", "Character", "Paragraph", "Text", "HasRelationAnnotations", "Entity", "Relation", "HasNumerizedTokensAnnotation", "Mentions", "MentionsForCoref", "HasCorefMentionsAnnotation", "SentenceID", });
     internal_static_edu_stanford_nlp_pipeline_Token_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_edu_stanford_nlp_pipeline_Token_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Token_descriptor,
-        new java.lang.String[] { "Word", "Pos", "Value", "Category", "Before", "After", "OriginalText", "Ner", "NormalizedNER", "Lemma", "BeginChar", "EndChar", "Utterance", "Speaker", "BeginIndex", "EndIndex", "TokenBeginIndex", "TokenEndIndex", "TimexValue", "HasXmlContext", "XmlContext", "CorefClusterID", "Answer", "HeadWordIndex", "Operator", "Polarity", "Span", "Sentiment", "QuotationIndex", "Gender", "TrueCase", "TrueCaseText", });
+        new java.lang.String[] { "Word", "Pos", "Value", "Category", "Before", "After", "OriginalText", "Ner", "NormalizedNER", "Lemma", "BeginChar", "EndChar", "Utterance", "Speaker", "BeginIndex", "EndIndex", "TokenBeginIndex", "TokenEndIndex", "TimexValue", "HasXmlContext", "XmlContext", "CorefClusterID", "Answer", "HeadWordIndex", "Operator", "Polarity", "Span", "Sentiment", "QuotationIndex", "ConllUFeatures", "CoarseTag", "ConllUTokenSpan", "ConllUMisc", "ConllUSecondaryDeps", "WikipediaEntity", "Gender", "TrueCase", "TrueCaseText", "ChineseChar", "ChineseSeg", });
     internal_static_edu_stanford_nlp_pipeline_Quote_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_edu_stanford_nlp_pipeline_Quote_fieldAccessorTable = new
@@ -32259,54 +47710,96 @@ public final class CoreNLPProtos {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_CorefChain_CorefMention_descriptor,
         new java.lang.String[] { "MentionID", "MentionType", "Number", "Gender", "Animacy", "BeginIndex", "EndIndex", "HeadIndex", "SentenceIndex", "Position", });
-    internal_static_edu_stanford_nlp_pipeline_Span_descriptor =
+    internal_static_edu_stanford_nlp_pipeline_Mention_descriptor =
       getDescriptor().getMessageTypes().get(7);
+    internal_static_edu_stanford_nlp_pipeline_Mention_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_edu_stanford_nlp_pipeline_Mention_descriptor,
+        new java.lang.String[] { "MentionID", "MentionType", "Number", "Gender", "Animacy", "Person", "StartIndex", "EndIndex", "HeadIndex", "HeadString", "NerString", "OriginalRef", "GoldCorefClusterID", "CorefClusterID", "MentionNum", "SentNum", "Utter", "Paragraph", "IsSubject", "IsDirectObject", "IsIndirectObject", "IsPrepositionObject", "HasTwin", "Generic", "IsSingleton", "HasBasicDependency", "HasEnhancedDepenedncy", "HasContextParseTree", "HeadIndexedWord", "DependingVerb", "HeadWord", "SpeakerInfo", "SentenceWords", "OriginalSpan", "Dependents", "PreprocessedTerms", "Appositions", "PredicateNominatives", "RelativePronouns", "ListMembers", "BelongToLists", });
+    internal_static_edu_stanford_nlp_pipeline_IndexedWord_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_edu_stanford_nlp_pipeline_IndexedWord_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_edu_stanford_nlp_pipeline_IndexedWord_descriptor,
+        new java.lang.String[] { "SentenceNum", "TokenIndex", "DocID", "CopyCount", });
+    internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_edu_stanford_nlp_pipeline_SpeakerInfo_descriptor,
+        new java.lang.String[] { "SpeakerName", "Mentions", });
+    internal_static_edu_stanford_nlp_pipeline_Span_descriptor =
+      getDescriptor().getMessageTypes().get(10);
     internal_static_edu_stanford_nlp_pipeline_Span_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Span_descriptor,
         new java.lang.String[] { "Begin", "End", });
     internal_static_edu_stanford_nlp_pipeline_Timex_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_edu_stanford_nlp_pipeline_Timex_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Timex_descriptor,
         new java.lang.String[] { "Value", "AltValue", "Text", "Type", "Tid", "BeginPoint", "EndPoint", });
     internal_static_edu_stanford_nlp_pipeline_Entity_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_edu_stanford_nlp_pipeline_Entity_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Entity_descriptor,
         new java.lang.String[] { "HeadStart", "HeadEnd", "MentionType", "NormalizedName", "HeadTokenIndex", "CorefID", "ObjectID", "ExtentStart", "ExtentEnd", "Type", "Subtype", });
     internal_static_edu_stanford_nlp_pipeline_Relation_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_edu_stanford_nlp_pipeline_Relation_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Relation_descriptor,
         new java.lang.String[] { "ArgName", "Arg", "Signature", "ObjectID", "ExtentStart", "ExtentEnd", "Type", "Subtype", });
     internal_static_edu_stanford_nlp_pipeline_Operator_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_edu_stanford_nlp_pipeline_Operator_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Operator_descriptor,
         new java.lang.String[] { "Name", "QuantifierSpanBegin", "QuantifierSpanEnd", "SubjectSpanBegin", "SubjectSpanEnd", "ObjectSpanBegin", "ObjectSpanEnd", });
     internal_static_edu_stanford_nlp_pipeline_Polarity_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_edu_stanford_nlp_pipeline_Polarity_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_Polarity_descriptor,
         new java.lang.String[] { "ProjectEquivalence", "ProjectForwardEntailment", "ProjectReverseEntailment", "ProjectNegation", "ProjectAlternation", "ProjectCover", "ProjectIndependence", });
     internal_static_edu_stanford_nlp_pipeline_NERMention_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_edu_stanford_nlp_pipeline_NERMention_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_edu_stanford_nlp_pipeline_NERMention_descriptor,
-        new java.lang.String[] { "SentenceIndex", "TokenStartInSentenceInclusive", "TokenEndInSentenceExclusive", "Ner", "NormalizedNER", "EntityType", "Timex", });
-    internal_static_edu_stanford_nlp_pipeline_OpenIETriple_descriptor =
-      getDescriptor().getMessageTypes().get(14);
-    internal_static_edu_stanford_nlp_pipeline_OpenIETriple_fieldAccessorTable = new
+        new java.lang.String[] { "SentenceIndex", "TokenStartInSentenceInclusive", "TokenEndInSentenceExclusive", "Ner", "NormalizedNER", "EntityType", "Timex", "WikipediaEntity", });
+    internal_static_edu_stanford_nlp_pipeline_SentenceFragment_descriptor =
+      getDescriptor().getMessageTypes().get(17);
+    internal_static_edu_stanford_nlp_pipeline_SentenceFragment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_edu_stanford_nlp_pipeline_OpenIETriple_descriptor,
-        new java.lang.String[] { "Subject", "Relation", "Object", "Confidence", "SubjectSpan", "RelationSpan", "ObjectSpan", "Tree", });
+        internal_static_edu_stanford_nlp_pipeline_SentenceFragment_descriptor,
+        new java.lang.String[] { "TokenIndex", "Root", "AssumedTruth", "Score", });
+    internal_static_edu_stanford_nlp_pipeline_TokenLocation_descriptor =
+      getDescriptor().getMessageTypes().get(18);
+    internal_static_edu_stanford_nlp_pipeline_TokenLocation_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_edu_stanford_nlp_pipeline_TokenLocation_descriptor,
+        new java.lang.String[] { "SentenceIndex", "TokenIndex", });
+    internal_static_edu_stanford_nlp_pipeline_RelationTriple_descriptor =
+      getDescriptor().getMessageTypes().get(19);
+    internal_static_edu_stanford_nlp_pipeline_RelationTriple_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_edu_stanford_nlp_pipeline_RelationTriple_descriptor,
+        new java.lang.String[] { "Subject", "Relation", "Object", "Confidence", "SubjectTokens", "RelationTokens", "ObjectTokens", "Tree", "Istmod", "PrefixBe", "SuffixBe", "SuffixOf", });
+    internal_static_edu_stanford_nlp_pipeline_MapStringString_descriptor =
+      getDescriptor().getMessageTypes().get(20);
+    internal_static_edu_stanford_nlp_pipeline_MapStringString_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_edu_stanford_nlp_pipeline_MapStringString_descriptor,
+        new java.lang.String[] { "Key", "Value", });
+    internal_static_edu_stanford_nlp_pipeline_MapIntString_descriptor =
+      getDescriptor().getMessageTypes().get(21);
+    internal_static_edu_stanford_nlp_pipeline_MapIntString_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_edu_stanford_nlp_pipeline_MapIntString_descriptor,
+        new java.lang.String[] { "Key", "Value", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

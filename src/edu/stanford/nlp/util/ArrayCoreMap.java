@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import edu.stanford.nlp.util.logging.PrettyLogger;
 import edu.stanford.nlp.util.logging.Redwood;
@@ -37,6 +38,12 @@ import edu.stanford.nlp.util.logging.Redwood.RedwoodChannels;
  * @author rafferty
  */
 public class ArrayCoreMap implements CoreMap /*, Serializable */ {
+
+  /**
+   * A listener for when a key is retrieved by the CoreMap.
+   * This should only be used for testing.
+   */
+  public static Consumer<Class<? extends Key<?>>> listener; // = null;
 
   /** Initial capacity of the array */
   private static final int INITIAL_CAPACITY = 4;
@@ -108,27 +115,15 @@ public class ArrayCoreMap implements CoreMap /*, Serializable */ {
   public <VALUE> VALUE get(Class<? extends Key<VALUE>> key) {
     for (int i = 0; i < size; i++) {
       if (key == keys[i]) {
+        if (listener != null) {
+          listener.accept(key);  // For tracking which entities were returned by the CoreMap
+        }
         return (VALUE)values[i];
       }
     }
     return null;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public <VALUE> boolean has(Class<? extends Key<VALUE>> key) {
-    for (int i = 0; i < size; i++) {
-      if (keys[i] == key) {
-        return true;
-      }
-    }
-
-    return false;
-  }
 
   /**
    * {@inheritDoc}
@@ -205,6 +200,22 @@ public class ArrayCoreMap implements CoreMap /*, Serializable */ {
         return size;
       }
     };
+  }
+
+  /**
+   * Return a set of keys such that the value of that key is not null.
+   *
+   * @return A hash set such that each element of the set is a key in this CoreMap that has a
+   *         non-null value.
+   */
+  public Set<Class<?>> keySetNotNull() {
+    Set<Class<?>> mapKeys = new IdentityHashSet<>();
+    for (int i = 0; i < size(); ++i) {
+      if (values[i] != null) {
+        mapKeys.add(this.keys[i]);
+      }
+    }
+    return mapKeys;
   }
 
   /**
@@ -463,7 +474,7 @@ public class ArrayCoreMap implements CoreMap /*, Serializable */ {
    * return, this is reset to null for that particular thread.
    */
   private static final ThreadLocal<TwoDimensionalMap<CoreMap, CoreMap, Boolean>> equalsCalled =
-          new ThreadLocal<TwoDimensionalMap<CoreMap, CoreMap, Boolean>>();
+          new ThreadLocal<>();
 
 
   /**
@@ -495,7 +506,7 @@ public class ArrayCoreMap implements CoreMap /*, Serializable */ {
       return false;
     }
     for (Class key : this.keySet()) {
-      if (!other.has(key)) {
+      if (!other.containsKey(key)) {
         return false;
       }
       Object thisV = this.get(key), otherV = other.get(key);
@@ -584,7 +595,7 @@ public class ArrayCoreMap implements CoreMap /*, Serializable */ {
    * to null for that particular thread.
    */
   private static final ThreadLocal<IdentityHashSet<CoreMap>> hashCodeCalled =
-          new ThreadLocal<IdentityHashSet<CoreMap>>();
+          new ThreadLocal<>();
 
 
   /**
@@ -597,7 +608,7 @@ public class ArrayCoreMap implements CoreMap /*, Serializable */ {
     IdentityHashSet<CoreMap> calledSet = hashCodeCalled.get();
     boolean createdCalledSet = (calledSet == null);
     if (createdCalledSet) {
-      calledSet = new IdentityHashSet<CoreMap>();
+      calledSet = new IdentityHashSet<>();
       hashCodeCalled.set(calledSet);
     }
 
@@ -656,7 +667,7 @@ public class ArrayCoreMap implements CoreMap /*, Serializable */ {
     Redwood.startTrack(description);
 
     // sort keys by class name
-    List<Class> sortedKeys = new ArrayList<Class>(this.keySet());
+    List<Class> sortedKeys = new ArrayList<>(this.keySet());
     Collections.sort(sortedKeys,
         (a, b) -> a.getCanonicalName().compareTo(b.getCanonicalName()));
 

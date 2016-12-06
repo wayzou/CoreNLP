@@ -1,4 +1,5 @@
-package edu.stanford.nlp.pipeline;
+package edu.stanford.nlp.pipeline; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.List;
 
@@ -12,10 +13,13 @@ import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.semgraph.SemanticGraphFactory;
 import edu.stanford.nlp.util.CoreMap;
-import edu.stanford.nlp.util.ScoredObject;
+
 
 /** @author David McClosky */
-public class ParserAnnotatorUtils {
+public class ParserAnnotatorUtils  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ParserAnnotatorUtils.class);
 
   private ParserAnnotatorUtils() {} // static methods
 
@@ -45,9 +49,11 @@ public class ParserAnnotatorUtils {
       if (first) {
         sentence.set(TreeCoreAnnotations.TreeAnnotation.class, tree);
         if (verbose) {
-          System.err.println("Tree is:");
+          log.info("Tree is:");
           tree.pennPrint(System.err);
         }
+
+        setMissingTags(sentence, tree);
 
         if (buildGraphs) {
           // generate the dependency graph
@@ -57,16 +63,20 @@ public class ParserAnnotatorUtils {
           SemanticGraph deps = SemanticGraphFactory.generateCollapsedDependencies(gsf.newGrammaticalStructure(tree), extras);
           SemanticGraph uncollapsedDeps = SemanticGraphFactory.generateUncollapsedDependencies(gsf.newGrammaticalStructure(tree), extras);
           SemanticGraph ccDeps = SemanticGraphFactory.generateCCProcessedDependencies(gsf.newGrammaticalStructure(tree), extras);
+          SemanticGraph enhancedDeps = SemanticGraphFactory.generateEnhancedDependencies(gsf.newGrammaticalStructure(tree));
+          SemanticGraph enhancedPlusPlusDeps = SemanticGraphFactory.generateEnhancedPlusPlusDependencies(gsf.newGrammaticalStructure(tree));
+
+
           if (verbose) {
-            System.err.println("SDs:");
-            System.err.println(deps.toString(SemanticGraph.OutputFormat.LIST));
+            log.info("SDs:");
+            log.info(deps.toString(SemanticGraph.OutputFormat.LIST));
           }
           sentence.set(SemanticGraphCoreAnnotations.CollapsedDependenciesAnnotation.class, deps);
           sentence.set(SemanticGraphCoreAnnotations.BasicDependenciesAnnotation.class, uncollapsedDeps);
           sentence.set(SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation.class, ccDeps);
+          sentence.set(SemanticGraphCoreAnnotations.EnhancedDependenciesAnnotation.class, enhancedDeps);
+          sentence.set(SemanticGraphCoreAnnotations.EnhancedPlusPlusDependenciesAnnotation.class, enhancedPlusPlusDeps);
         }
-
-        setMissingTags(sentence, tree);
 
         first = false;
       }

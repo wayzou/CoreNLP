@@ -39,7 +39,9 @@ import edu.stanford.nlp.util.Generics;
 import edu.stanford.nlp.util.Index;
 import edu.stanford.nlp.util.Pair;
 import edu.stanford.nlp.util.HashIndex;
-import edu.stanford.nlp.util.logging.Logging;
+
+
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.*;
 
@@ -48,7 +50,10 @@ import java.util.*;
  *
  * @author Kristina Toutanova (kristina@cs.stanford.edu)
  */
-public class NaiveBayesClassifierFactory<L, F> implements ClassifierFactory<L, F, NaiveBayesClassifier<L, F>> {
+public class NaiveBayesClassifierFactory<L, F> implements ClassifierFactory<L, F, NaiveBayesClassifier<L, F>>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(NaiveBayesClassifierFactory.class);
 
   private static final long serialVersionUID = -8164165428834534041L;
   public static final int JL = 0;
@@ -61,6 +66,8 @@ public class NaiveBayesClassifierFactory<L, F> implements ClassifierFactory<L, F
   private int prior = LogPrior.LogPriorType.NULL.ordinal();
   private Index<L> labelIndex;
   private Index<F> featureIndex;
+
+  final static Redwood.RedwoodChannels logger = Redwood.channels(NaiveBayesClassifierFactory.class);
 
   public NaiveBayesClassifierFactory() {
   }
@@ -77,26 +84,26 @@ public class NaiveBayesClassifierFactory<L, F> implements ClassifierFactory<L, F
       int numClasses, Index<L> labelIndex, Index<F> featureIndex) {
     Set<L> labelSet = Generics.newHashSet();
     NBWeights nbWeights = trainWeights(data, labels, numFeatures, numClasses);
-    Counter<L> priors = new ClassicCounter<L>();
+    Counter<L> priors = new ClassicCounter<>();
     double[] pr = nbWeights.priors;
     for (int i = 0; i < pr.length; i++) {
       priors.incrementCount(labelIndex.get(i), pr[i]);
       labelSet.add(labelIndex.get(i));
     }
-    Counter<Pair<Pair<L, F>, Number>> weightsCounter = new ClassicCounter<Pair<Pair<L, F>, Number>>();
+    Counter<Pair<Pair<L, F>, Number>> weightsCounter = new ClassicCounter<>();
     double[][][] wts = nbWeights.weights;
     for (int c = 0; c < numClasses; c++) {
       L label = labelIndex.get(c);
       for (int f = 0; f < numFeatures; f++) {
         F feature = featureIndex.get(f);
-        Pair<L, F> p = new Pair<L, F>(label, feature);
+        Pair<L, F> p = new Pair<>(label, feature);
         for (int val = 0; val < wts[c][f].length; val++) {
-          Pair<Pair<L, F>, Number> key = new Pair<Pair<L, F>, Number>(p, Integer.valueOf(val));
+          Pair<Pair<L, F>, Number> key = new Pair<>(p, Integer.valueOf(val));
           weightsCounter.incrementCount(key, wts[c][f][val]);
         }
       }
     }
-    return new NaiveBayesClassifier<L, F>(weightsCounter, priors, labelSet);
+    return new NaiveBayesClassifier<>(weightsCounter, priors, labelSet);
 
   }
 
@@ -108,8 +115,8 @@ public class NaiveBayesClassifierFactory<L, F> implements ClassifierFactory<L, F
     int numFeatures = featureSet.size();
     int[][] data = new int[examples.size()][numFeatures];
     int[] labels = new int[examples.size()];
-    labelIndex = new HashIndex<L>();
-    featureIndex = new HashIndex<F>();
+    labelIndex = new HashIndex<>();
+    featureIndex = new HashIndex<>();
     for (F feat : featureSet) {
       featureIndex.add(feat);
     }
@@ -190,8 +197,8 @@ public class NaiveBayesClassifierFactory<L, F> implements ClassifierFactory<L, F
       }
     }
     int totalFeatures = sumValues[numFeatures - 1] + numValues[numFeatures - 1] + 1;
-    Logging.logger(this.getClass()).info("total feats " + totalFeatures);
-    LogConditionalObjectiveFunction<L, F> objective = new LogConditionalObjectiveFunction<L, F>(totalFeatures, numClasses, newdata, labels, prior, sigma, 0.0);
+    logger.info("total feats " + totalFeatures);
+    LogConditionalObjectiveFunction<L, F> objective = new LogConditionalObjectiveFunction<>(totalFeatures, numClasses, newdata, labels, prior, sigma, 0.0);
     Minimizer<DiffFunction> min = new QNMinimizer();
     double[] argmin = min.minimize(objective, 1e-4, objective.initial());
     double[][] wts = objective.to2D(argmin);
@@ -320,9 +327,9 @@ public class NaiveBayesClassifierFactory<L, F> implements ClassifierFactory<L, F
 //      //now classifiy
 //
 //      float accTrain = classifier.accuracy(train.iterator());
-//      System.err.println("training accuracy " + accTrain);
+//      log.info("training accuracy " + accTrain);
 //      float accTest = classifier.accuracy(test.iterator());
-//      System.err.println("test accuracy " + accTest);
+//      log.info("test accuracy " + accTest);
 //
 //    }
 //    System.out.println("Unconstrained conditional likelihood no prior :");
@@ -332,9 +339,9 @@ public class NaiveBayesClassifierFactory<L, F> implements ClassifierFactory<L, F
 //      //now classify
 //
 //      float accTrain = classifier.accuracy(train.iterator());
-//      System.err.println("training accuracy " + accTrain);
+//      log.info("training accuracy " + accTrain);
 //      float accTest = classifier.accuracy(test.iterator());
-//      System.err.println("test accuracy " + accTest);
+//      log.info("test accuracy " + accTest);
 //    }
 //  }
 

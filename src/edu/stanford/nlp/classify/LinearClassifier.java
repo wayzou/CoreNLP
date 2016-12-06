@@ -37,13 +37,14 @@ import edu.stanford.nlp.stats.ClassicCounter;
 import edu.stanford.nlp.stats.Counter;
 import edu.stanford.nlp.stats.Distribution;
 import edu.stanford.nlp.stats.Counters;
-import edu.stanford.nlp.util.logging.Logging;
 
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.function.Function;
+
+import edu.stanford.nlp.util.logging.Redwood;
 
 
 /**
@@ -63,22 +64,25 @@ import java.util.function.Function;
  * @param <L> The type of the labels in the Classifier
  * @param <F> The type of the features in the Classifier
  */
-public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RVFClassifier<L, F> {
+public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RVFClassifier<L, F>  {
 
-  /** Classifier weights. First index is the featureIndex value and second
-   *  index is the labelIndex value.
-   */
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(LinearClassifier.class);
+
+  /** Classifier weights. First index is the featureIndex value and second index is the labelIndex value. */
   private double[][] weights;
   private Index<L> labelIndex;
   private Index<F> featureIndex;
   public boolean intern = false;   // variable should be deleted when breaking serialization anyway....
-  private double[] thresholds = null;
+  private double[] thresholds; // = null;
 
   private static final long serialVersionUID = 8499574525453275255L;
 
   private static final int MAX_FEATURE_ALIGN_WIDTH = 50;
 
   public static final String TEXT_SERIALIZATION_DELIMITER = "\t";
+
+  static final Redwood.RedwoodChannels logger = Redwood.channels(LinearClassifier.class);
 
   @Override
   public Collection<L> labels() {
@@ -99,7 +103,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
 
   private double weight(int iFeature, int iLabel) {
     if (iFeature < 0) {
-      //Logging.logger(this.getClass()).info("feature not seen ");
+      //logger.info("feature not seen ");
       return 0.0;
     }
     assert iFeature < weights.length;
@@ -121,7 +125,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
   /* --- obsolete method from before this class was rewritten using arrays
   public Counter scoresOf(Datum example) {
     Counter scores = new Counter();
-    for (Object l : labels()) {
+    for (L l : labels()) {
       scores.setCount(l, scoreOf(example, l));
     }
     return scores;
@@ -141,15 +145,15 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
       int index = featureIndex.indexOf(f);
       if (index >= 0) {
         features[i++] = index;
-      } else {
-        //Logging.logger(this.getClass()).info("FEATURE LESS THAN ZERO: " + f);
+      // } else {
+        //logger.info("FEATURE LESS THAN ZERO: " + f);
       }
     }
     int[] activeFeatures = new int[i];
     synchronized (System.class) {
       System.arraycopy(features, 0, activeFeatures, 0, i);
     }
-    Counter<L> scores = new ClassicCounter<L>();
+    Counter<L> scores = new ClassicCounter<>();
     for (L lab : labels()) {
       scores.setCount(lab, scoreOf(activeFeatures, lab));
     }
@@ -161,7 +165,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
    *  for each class.
    */
   public Counter<L> scoresOf(int[] features) {
-    Counter<L> scores = new ClassicCounter<L>();
+    Counter<L> scores = new ClassicCounter<>();
     for (L label : labels())
       scores.setCount(label, scoreOf(features, label));
     return scores;
@@ -171,7 +175,9 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
    *  Ignores the true label of the Datum.
    */
   public double scoreOf(Datum<L, F> example, L label) {
-    if(example instanceof RVFDatum<?, ?>)return scoreOfRVFDatum((RVFDatum<L,F>)example, label);
+    if (example instanceof RVFDatum<?, ?>) {
+      return scoreOfRVFDatum((RVFDatum<L,F>)example, label);
+    }
     int iLabel = labelIndex.indexOf(label);
     double score = 0.0;
     for (F f : example.asFeatures()) {
@@ -187,9 +193,9 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
   @Override
   @Deprecated
   public Counter<L> scoresOf(RVFDatum<L, F> example) {
-    Counter<L> scores = new ClassicCounter<L>();
+    Counter<L> scores = new ClassicCounter<>();
     for (L l : labels()) {
-      scores.setCount(l, scoreOf(example, l));
+      scores.setCount(l, scoreOfRVFDatum(example, l));
     }
     //System.out.println("Scores are: " + scores + "   (gold: " + example.label() + ")");
     return scores;
@@ -200,9 +206,16 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
    *  for an RVFDatum.
    */
   private Counter<L> scoresOfRVFDatum(RVFDatum<L, F> example) {
-    Counter<L> scores = new ClassicCounter<L>();
+    Counter<L> scores = new ClassicCounter<>();
+    // Index the features in the datum
+    Counter<F> asCounter = example.asFeaturesCounter();
+    Counter<Integer> asIndexedCounter = new ClassicCounter<>(asCounter.size());
+    for (Map.Entry<F, Double> entry : asCounter.entrySet()) {
+      asIndexedCounter.setCount(featureIndex.indexOf(entry.getKey()), entry.getValue());
+    }
+    // Set the scores appropriately
     for (L l : labels()) {
-      scores.setCount(l, scoreOfRVFDatum(example, l));
+      scores.setCount(l, scoreOfRVFDatum(asIndexedCounter, l));
     }
     //System.out.println("Scores are: " + scores + "   (gold: " + example.label() + ")");
     return scores;
@@ -210,14 +223,17 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
 
   /** Returns the score of the RVFDatum for the specified label.
    *  Ignores the true label of the RVFDatum.
+   *
+   *  @param example Used to get the observed x value. Its label is ignored.
+   *  @param label The label y that the observed value is scored with.
+   *  @return A linear classifier score
    */
-  @Deprecated
-  public double scoreOf(RVFDatum<L, F> example, L label) {
+  private double scoreOfRVFDatum(RVFDatum<L, F> example, L label) {
     int iLabel = labelIndex.indexOf(label);
     double score = 0.0;
     Counter<F> features = example.asFeaturesCounter();
-    for (F f : features.keySet()) {
-      score += weight(f, iLabel) * features.getCount(f);
+    for (Map.Entry<F, Double> entry : features.entrySet()) {
+      score += weight(entry.getKey(), iLabel) * entry.getValue();
     }
     return score + thresholds[iLabel];
   }
@@ -225,12 +241,11 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
   /** Returns the score of the RVFDatum for the specified label.
    *  Ignores the true label of the RVFDatum.
    */
-  private double scoreOfRVFDatum(RVFDatum<L, F> example, L label) {
+  private double scoreOfRVFDatum(Counter<Integer> features, L label) {
     int iLabel = labelIndex.indexOf(label);
     double score = 0.0;
-    Counter<F> features = example.asFeaturesCounter();
-    for (F f : features.keySet()) {
-      score += weight(f, iLabel) * features.getCount(f);
+    for (Map.Entry<Integer, Double> entry : features.entrySet()) {
+      score += weight(entry.getKey(), iLabel) * entry.getValue();
     }
     return score + thresholds[iLabel];
   }
@@ -492,7 +507,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
                                                  boolean descending)
   {
     edu.stanford.nlp.util.PriorityQueue<Pair<Integer,Integer>> biggestKeys =
-      new FixedPrioritiesPriorityQueue<Pair<Integer,Integer>>();
+            new FixedPrioritiesPriorityQueue<>();
 
     // locate biggest keys
     for (int feat = 0; feat < weights.length; feat++) {
@@ -516,23 +531,23 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
             if (thisWeight < lowest) {
               // remove smallest
               biggestKeys.removeFirst();
-              biggestKeys.add(new Pair<Integer, Integer>(feat, lab), thisWeight);
+              biggestKeys.add(new Pair<>(feat, lab), thisWeight);
             }
           } else {
             // always add it if don't have enough features yet
-            biggestKeys.add(new Pair<Integer, Integer>(feat, lab), thisWeight);
+            biggestKeys.add(new Pair<>(feat, lab), thisWeight);
           }
         }
       }
     }
 
-    List<Triple<F,L,Double>> topFeatures = new ArrayList<Triple<F,L,Double>>(biggestKeys.size());
+    List<Triple<F,L,Double>> topFeatures = new ArrayList<>(biggestKeys.size());
     while (!biggestKeys.isEmpty()) {
       Pair<Integer,Integer> p = biggestKeys.removeFirst();
       double weight = weights[p.first()][p.second()];
       F feat = featureIndex.get(p.first());
       L label = labelIndex.get(p.second());
-      topFeatures.add(new Triple<F,L,Double>(feat, label, weight));
+      topFeatures.add(new Triple<>(feat, label, weight));
     }
     if (descending) {
       Collections.reverse(topFeatures);
@@ -594,9 +609,9 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
   public String toBiggestWeightFeaturesString(boolean useMagnitude,
       int numFeatures,
       boolean printDescending) {
-    // this used to try to use a treeset, but that was WRONG....
+    // this used to try to use a TreeSet, but that was WRONG....
     edu.stanford.nlp.util.PriorityQueue<Pair<Integer,Integer>> biggestKeys =
-      new FixedPrioritiesPriorityQueue<Pair<Integer,Integer>>();
+            new FixedPrioritiesPriorityQueue<>();
 
     // locate biggest keys
     for (int feat = 0; feat < weights.length; feat++) {
@@ -614,11 +629,11 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
           if (thisWeight < lowest) {
             // remove smallest
             biggestKeys.removeFirst();
-            biggestKeys.add(new Pair<Integer, Integer>(feat, lab), thisWeight);
+            biggestKeys.add(new Pair<>(feat, lab), thisWeight);
           }
         } else {
           // always add it if don't have enough features yet
-          biggestKeys.add(new Pair<Integer, Integer>(feat, lab), thisWeight);
+          biggestKeys.add(new Pair<>(feat, lab), thisWeight);
         }
       }
     }
@@ -627,7 +642,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
     // (Note: can't repeatedly iterate over PriorityQueue.)
     int actualSize = biggestKeys.size();
     Pair<Integer, Integer>[] bigArray = ErasureUtils.<Pair<Integer, Integer>>mkTArray(Pair.class,actualSize);
-    // Logging.logger(this.getClass()).info("biggestKeys is " + biggestKeys);
+    // logger.info("biggestKeys is " + biggestKeys);
     if (printDescending) {
       for (int j = actualSize - 1; j >= 0; j--) {
         bigArray[j] = biggestKeys.removeFirst();
@@ -638,7 +653,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
       }
     }
     List<Pair<Integer, Integer>> bigColl = Arrays.asList(bigArray);
-    // Logging.logger(this.getClass()).info("bigColl is " + bigColl);
+    // logger.info("bigColl is " + bigColl);
 
     // find longest key length (for pretty printing) with a limit
     int maxLeng = 0;
@@ -683,7 +698,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
    * @return A human readable string about the classifier distribution.
    */
   public String toDistributionString(int threshold) {
-    Counter<Double> weightCounts = new ClassicCounter<Double>();
+    Counter<Double> weightCounts = new ClassicCounter<>();
     StringBuilder s = new StringBuilder();
     s.append("Total number of weights: ").append(totalSize());
     for (double[] weightArray : weights) {
@@ -715,7 +730,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
     double max = 0.0, min = 0.0;
     for (int f = 0; f < weights.length; f++) {
       for (int l = 0; l < weights[f].length; l++) {
-        Pair<F, L> feat = new Pair<F, L>(featureIndex.get(f), labelIndex.get(l));
+        Pair<F, L> feat = new Pair<>(featureIndex.get(f), labelIndex.get(l));
         num++;
         double wt = weights[f][l];
         total += wt;
@@ -798,7 +813,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
    * @throws IllegalArgumentException if the style name is unrecognized
    */
   public String toString(String style, int param) {
-    if (style == null || "".equals(style)) {
+    if (style == null || style.isEmpty()) {
       return "LinearClassifier with " + featureIndex.size() + " features, " +
               labelIndex.size() + " classes, and " +
               labelIndex.size() * featureIndex.size() + " parameters.\n";
@@ -842,15 +857,15 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
   private static void printHistCounts(int ind, String title, PrintWriter pw, double[][] hist, Object[][] histEg) {
     pw.println(title);
     for (int i = 0; i < 200; i++) {
-      int intpart, fracpart;
+      int intPart, fracPart;
       if (i < 100) {
-        intpart = 10 - ((i + 9) / 10);
-        fracpart = (10 - (i % 10)) % 10;
+        intPart = 10 - ((i + 9) / 10);
+        fracPart = (10 - (i % 10)) % 10;
       } else {
-        intpart = (i / 10) - 10;
-        fracpart = i % 10;
+        intPart = (i / 10) - 10;
+        fracPart = i % 10;
       }
-      pw.print("[" + ((i < 100) ? "-" : "") + intpart + "." + fracpart + ", " + ((i < 100) ? "-" : "") + intpart + "." + fracpart + "+0.1): " + hist[ind][i]);
+      pw.print("[" + ((i < 100) ? "-" : "") + intPart + "." + fracPart + ", " + ((i < 100) ? "-" : "") + intPart + "." + fracPart + "+0.1): " + hist[ind][i]);
       if (histEg[ind][i] != null) {
         pw.print("  [" + histEg[ind][i] + ((hist[ind][i] > 1) ? ", ..." : "") + "]");
       }
@@ -864,7 +879,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);
     pw.println("Linear classifier with the following weights");
-    Datum<L, F> allFeatures = new BasicDatum<L, F>(features(), (L)null);
+    Datum<L, F> allFeatures = new BasicDatum<>(features(), (L) null);
     justificationOf(allFeatures, pw);
     return sw.toString();
   }
@@ -872,25 +887,31 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
 
   /**
    * Print all features in the classifier and the weight that they assign
-   * to each class.
+   * to each class. Print to stderr.
    */
   public void dump() {
-    Datum<L, F> allFeatures = new BasicDatum<L, F>(features(), (L)null);
+    Datum<L, F> allFeatures = new BasicDatum<>(features(), (L) null);
     justificationOf(allFeatures);
   }
 
+  /**
+   * Print all features in the classifier and the weight that they assign
+   * to each class. Print to the given PrintWriter.
+   */
   public void dump(PrintWriter pw) {
-    Datum<L, F> allFeatures = new BasicDatum<L, F>(features(), (L)null);
+    Datum<L, F> allFeatures = new BasicDatum<>(features(), (L) null);
     justificationOf(allFeatures, pw);
   }
 
-
-
-  @Deprecated
-  public void justificationOf(RVFDatum<L, F> example) {
-    PrintWriter pw = new PrintWriter(System.err, true);
-    justificationOf(example, pw);
+  /**
+   * Print all features in the classifier and the weight that they assign
+   * to each class. The feature names are printed in sorted order.
+   */
+  public void dumpSorted() {
+    Datum<L, F> allFeatures = new BasicDatum<>(features(), (L) null);
+    justificationOf(allFeatures, new PrintWriter(System.err, true), true);
   }
+
 
   /**
    * Print all features active for a particular datum and the weight that
@@ -915,11 +936,11 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
     // don't make it ridiculously wide
     featureLength = Math.min(featureLength, MAX_FEATURE_ALIGN_WIDTH);
 
-    for (Object l : labels()) {
+    for (L l : labels()) {
       labelLength = Math.max(labelLength, l.toString().length());
     }
 
-    StringBuilder header = new StringBuilder("");
+    StringBuilder header = new StringBuilder();
     for (int s = 0; s < featureLength; s++) {
       header.append(' ');
     }
@@ -977,96 +998,29 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
   }
 
 
-  /**
-   * Print all features active for a particular datum and the weight that
-   * the classifier assigns to each class for those features.
-   */
-  @Deprecated
-  public void justificationOf(RVFDatum<L, F> example, PrintWriter pw) {
-    int featureLength = 0;
-    int labelLength = 6;
-    NumberFormat nf = NumberFormat.getNumberInstance();
-    nf.setMinimumFractionDigits(2);
-    nf.setMaximumFractionDigits(2);
-    if (nf instanceof DecimalFormat) {
-      ((DecimalFormat) nf).setPositivePrefix(" ");
-    }
-    Counter<F> features = example.asFeaturesCounter();
-    for (F f : features.keySet()) {
-      featureLength = Math.max(featureLength, f.toString().length() + 2 +
-          nf.format(features.getCount(f)).length());
-    }
-    // make as wide as total printout
-    featureLength = Math.max(featureLength, "Total:".length());
-    // don't make it ridiculously wide
-    featureLength = Math.min(featureLength, MAX_FEATURE_ALIGN_WIDTH);
-
-    for (Object l : labels()) {
-      labelLength = Math.max(labelLength, l.toString().length());
-    }
-
-    StringBuilder header = new StringBuilder("");
-    for (int s = 0; s < featureLength; s++) {
-      header.append(' ');
-    }
-    for (L l : labels()) {
-      header.append(' ');
-      header.append(StringUtils.pad(l, labelLength));
-    }
-    pw.println(header);
-    for (F f : features.keySet()) {
-      String fStr = f.toString();
-      StringBuilder line = new StringBuilder(fStr);
-      line.append("[").append(nf.format(features.getCount(f))).append("]");
-      fStr = line.toString();
-      for (int s = fStr.length(); s < featureLength; s++) {
-        line.append(' ');
-      }
-      for (L l : labels()) {
-        String lStr = nf.format(weight(f, l));
-        line.append(' ');
-        line.append(lStr);
-        for (int s = lStr.length(); s < labelLength; s++) {
-          line.append(' ');
-        }
-      }
-      pw.println(line);
-    }
-    Counter<L> scores = scoresOf(example);
-    StringBuilder footer = new StringBuilder("Total:");
-    for (int s = footer.length(); s < featureLength; s++) {
-      footer.append(' ');
-    }
-    for (L l : labels()) {
-      footer.append(' ');
-      String str = nf.format(scores.getCount(l));
-      footer.append(str);
-      for (int s = str.length(); s < labelLength; s++) {
-        footer.append(' ');
-      }
-    }
-    pw.println(footer);
-    Distribution<L> distr = Distribution.distributionFromLogisticCounter(scores);
-    footer = new StringBuilder("Prob:");
-    for (int s = footer.length(); s < featureLength; s++) {
-      footer.append(' ');
-    }
-    for (L l : labels()) {
-      footer.append(' ');
-      String str = nf.format(distr.getCount(l));
-      footer.append(str);
-      for (int s = str.length(); s < labelLength; s++) {
-        footer.append(' ');
-      }
-    }
-    pw.println(footer);
-  }
-
-
   public void justificationOf(Datum<L, F> example) {
     PrintWriter pw = new PrintWriter(System.err, true);
     justificationOf(example, pw);
   }
+
+  /**
+   * Print all features active for a particular datum and the weight that
+   * the classifier assigns to each class for those features.
+   */
+  public void justificationOf(Datum<L, F> example, PrintWriter pw) {
+    justificationOf(example, pw, null);
+  }
+
+  /**
+   * Print all features active for a particular datum and the weight that
+   * the classifier assigns to each class for those features. Sorts by feature
+   * name if 'sorted' is true.
+   */
+  public void justificationOf(Datum<L, F> example, PrintWriter pw, boolean sorted) {
+    if(example instanceof RVFDatum<?, ?>)
+    justificationOf(example, pw, null, sorted);
+  }
+
 
   public <T> void justificationOf(Datum<L, F> example, PrintWriter pw, Function<F, T> printer) {
     justificationOf(example, pw, printer, false);
@@ -1088,6 +1042,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
       justificationOfRVFDatum((RVFDatum<L,F>)example,pw);
       return;
     }
+
     NumberFormat nf = NumberFormat.getNumberInstance();
     nf.setMinimumFractionDigits(2);
     nf.setMaximumFractionDigits(2);
@@ -1195,7 +1150,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
     Map<L,Counter<F>> mapOfCounters = Generics.newHashMap();
     for(L label : labelIndex){
       int labelID = labelIndex.indexOf(label);
-      Counter<F> c = new ClassicCounter<F>();
+      Counter<F> c = new ClassicCounter<>();
       mapOfCounters.put(label, c);
       for (F f : featureIndex) {
         c.incrementCount(f, weights[featureIndex.indexOf(f)][labelID]);
@@ -1204,37 +1159,9 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
     return mapOfCounters;
   }
 
-  /**
-   * Print all features active for a particular datum and the weight that
-   * the classifier assigns to each class for those features.
-   */
-  public void justificationOf(Datum<L, F> example, PrintWriter pw) {
-    justificationOf(example, pw, null);
-  }
-
-
-  /**
-   * Print all features in the classifier and the weight that they assign
-   * to each class. The feature names are printed in sorted order.
-   */
-  public void dumpSorted() {
-    Datum<L, F> allFeatures = new BasicDatum<L, F>(features(), (L)null);
-    justificationOf(allFeatures, new PrintWriter(System.err, true), true);
-  }
-
-  /**
-   * Print all features active for a particular datum and the weight that
-   * the classifier assigns to each class for those features. Sorts by feature
-   * name if 'sorted' is true.
-   */
-  public void justificationOf(Datum<L, F> example, PrintWriter pw, boolean sorted) {
-    if(example instanceof RVFDatum<?, ?>)
-    justificationOf(example, pw, null, sorted);
-  }
-
 
   public Counter<L> scoresOf(Datum<L, F> example, Collection<L> possibleLabels) {
-    Counter<L> scores = new ClassicCounter<L>();
+    Counter<L> scores = new ClassicCounter<>();
     for (L l : possibleLabels) {
       if (labelIndex.indexOf(l) == -1) {
         continue;
@@ -1308,15 +1235,15 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
    *
    *  @param weights The parameters of the classifier. The first index is the
    *                 featureIndex value and second index is the labelIndex value.
-   * @param featureIndex An index from F to integers used to index the features in the weights array
-   * @param labelIndex An index from L to integers used to index the labels in the weights array
+   *  @param featureIndex An index from F to integers used to index the features in the weights array
+   *  @param labelIndex An index from L to integers used to index the labels in the weights array
    */
   public LinearClassifier(double[][] weights, Index<F> featureIndex, Index<L> labelIndex) {
     this.featureIndex = featureIndex;
     this.labelIndex = labelIndex;
     this.weights = weights;
     thresholds = new double[labelIndex.size()];
-    Arrays.fill(thresholds, 0.0);
+    // Arrays.fill(thresholds, 0.0); // not needed; Java arrays zero initialized
   }
 
   // todo: This is unused and seems broken (ignores passed in thresholds)
@@ -1336,7 +1263,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
   }
 
   private static <F, L> Counter<Pair<F, L>> makeWeightCounter(double[] weights, Index<Pair<F, L>> weightIndex) {
-    Counter<Pair<F,L>> weightCounter = new ClassicCounter<Pair<F,L>>();
+    Counter<Pair<F,L>> weightCounter = new ClassicCounter<>();
     for (int i = 0; i < weightIndex.size(); i++) {
       if (weights[i] == 0) {
         continue; // no need to save 0 weights
@@ -1351,13 +1278,13 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
   }
 
   public LinearClassifier(Counter<? extends Pair<F, L>> weightCounter) {
-    this(weightCounter, new ClassicCounter<L>());
+    this(weightCounter, new ClassicCounter<>());
   }
 
   public LinearClassifier(Counter<? extends Pair<F, L>> weightCounter, Counter<L> thresholdsC) {
     Collection<? extends Pair<F, L>> keys = weightCounter.keySet();
-    featureIndex = new HashIndex<F>();
-    labelIndex = new HashIndex<L>();
+    featureIndex = new HashIndex<>();
+    labelIndex = new HashIndex<>();
     for (Pair<F, L> p : keys) {
       featureIndex.add(p.first());
       labelIndex.add(p.second());
@@ -1367,7 +1294,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
       thresholds[labelIndex.indexOf(label)] = thresholdsC.getCount(label);
     }
     weights = new double[featureIndex.size()][labelIndex.size()];
-    Pair<F, L> tempPair = new Pair<F, L>();
+    Pair<F, L> tempPair = new Pair<>();
     for (int f = 0; f < weights.length; f++) {
       for (int l = 0; l < weights[f].length; l++) {
         tempPair.first = featureIndex.get(f);
@@ -1379,9 +1306,9 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
 
 
   public void adaptWeights(Dataset<L, F> adapt,LinearClassifierFactory<L, F> lcf) {
-    Logging.logger(this.getClass()).info("before adapting, weights size="+weights.length);
+    logger.info("before adapting, weights size="+weights.length);
     weights = lcf.adaptWeights(weights,adapt);
-    Logging.logger(this.getClass()).info("after adapting, weights size=" + weights.length);
+    logger.info("after adapting, weights size=" + weights.length);
   }
 
   public double[][] weights() {
@@ -1397,7 +1324,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
    * Simple convenience wrapper for IOUtils.readFromString.
    */
   public static <L, F> LinearClassifier<L, F> readClassifier(String loadPath) {
-    System.err.print("Deserializing classifier from " + loadPath + "...");
+    log.info("Deserializing classifier from " + loadPath + "...");
 
     try {
       ObjectInputStream ois = IOUtils.readStreamFromString(loadPath);
@@ -1455,7 +1382,7 @@ public class LinearClassifier<L, F> implements ProbabilisticClassifier<L, F>, RV
       }
       out.close();
     } catch (Exception e) {
-      Logging.logger(this.getClass()).info("Error attempting to save classifier to file=" + file);
+      logger.info("Error attempting to save classifier to file=" + file);
       e.printStackTrace();
     }
   }

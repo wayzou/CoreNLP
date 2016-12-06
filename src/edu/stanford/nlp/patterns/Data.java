@@ -1,7 +1,6 @@
 package edu.stanford.nlp.patterns;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +10,7 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.stats.ClassicCounter;
 import edu.stanford.nlp.stats.Counter;
 import edu.stanford.nlp.util.*;
-import edu.stanford.nlp.util.Execution.Option;
+import edu.stanford.nlp.util.ArgumentParser.Option;
 import edu.stanford.nlp.util.logging.Redwood;
 
 public class Data {
@@ -27,7 +26,7 @@ public class Data {
   public static String inMemorySaveFileLocation= "";
 
   public static Counter<CandidatePhrase> processedDataFreq = null;
-  public static Counter<String> domainNGramRawFreq = new ClassicCounter<String>();;
+  public static Counter<String> domainNGramRawFreq = new ClassicCounter<>();;
 
   public static double ratioGoogleNgramFreqWithDataFreq = 1;
 
@@ -41,7 +40,7 @@ public class Data {
 
   //public static Counter<String> googleNGram = new ClassicCounter<String>();
 
-  public static Map<String, Map<String, List<Integer>>> matchedTokensForEachPhrase = new ConcurrentHashMap<String, Map<String, List<Integer>>>();
+  public static Map<String, Map<String, List<Integer>>> matchedTokensForEachPhrase = new ConcurrentHashMap<>();
 
   public static void computeRawFreqIfNull(int numWordsCompound, boolean batchProcess) {
     ConstantsAndVariables.DataSentsIterator iter = new ConstantsAndVariables.DataSentsIterator(batchProcess);

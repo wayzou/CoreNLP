@@ -1,4 +1,5 @@
 package edu.stanford.nlp.pipeline;
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.ie.NERClassifierCombiner;
 import edu.stanford.nlp.ie.regexp.NumberSequenceClassifier;
@@ -19,7 +20,10 @@ import java.util.*;
  *
  * @author Gabor Angeli
  */
-public class AnnotatorImplementations {
+public class AnnotatorImplementations  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(AnnotatorImplementations.class);
 
   /**
    * Tokenize, emulating the Penn Treebank
@@ -82,30 +86,44 @@ public class AnnotatorImplementations {
     if (models.isEmpty()) {
       // Allow for no real NER model - can just use numeric classifiers or SUTime.
       // Have to unset ner.model, so unlikely that people got here by accident.
-      System.err.println("WARNING: no NER models specified");
+      log.info("WARNING: no NER models specified");
     }
 
     boolean applyNumericClassifiers =
             PropertiesUtils.getBool(properties,
                     NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_PROPERTY,
                     NERClassifierCombiner.APPLY_NUMERIC_CLASSIFIERS_DEFAULT);
+
+    boolean applyRegexner =
+        PropertiesUtils.getBool(properties,
+            NERClassifierCombiner.APPLY_GAZETTE_PROPERTY,
+            NERClassifierCombiner.APPLY_GAZETTE_DEFAULT);
+
     boolean useSUTime =
             PropertiesUtils.getBool(properties,
                     NumberSequenceClassifier.USE_SUTIME_PROPERTY,
                     NumberSequenceClassifier.USE_SUTIME_DEFAULT);
 
-    boolean verbose = false;
+    NERClassifierCombiner.Language nerLanguage = NERClassifierCombiner.Language.fromString(PropertiesUtils.getString(properties,
+        NERClassifierCombiner.NER_LANGUAGE_PROPERTY, null), NERClassifierCombiner.NER_LANGUAGE_DEFAULT);
+
+    boolean verbose = PropertiesUtils.getBool(properties, "ner." + "verbose", false);
 
     String[] loadPaths = models.toArray(new String[models.size()]);
 
     Properties combinerProperties = PropertiesUtils.extractSelectedProperties(properties,
             NERClassifierCombiner.DEFAULT_PASS_DOWN_PROPERTIES);
-    NERClassifierCombiner nerCombiner = new NERClassifierCombiner(applyNumericClassifiers,
-            useSUTime, combinerProperties, loadPaths);
+    if (useSUTime) {
+      // Make sure SUTime parameters are included
+      Properties sutimeProps = PropertiesUtils.extractPrefixedProperties(properties, NumberSequenceClassifier.SUTIME_PROPERTY  + ".", true);
+      PropertiesUtils.overWriteProperties(combinerProperties, sutimeProps);
+    }
+    NERClassifierCombiner nerCombiner = new NERClassifierCombiner(applyNumericClassifiers, nerLanguage,
+            useSUTime, applyRegexner, combinerProperties, loadPaths);
 
     int nThreads = PropertiesUtils.getInt(properties, "ner.nthreads", PropertiesUtils.getInt(properties, "nthreads", 1));
     long maxTime = PropertiesUtils.getLong(properties, "ner.maxtime", 0);
-    int maxSentenceLength = PropertiesUtils.getInt(properties, "ner.maxlength", Integer.MAX_VALUE);
+    int maxSentenceLength = PropertiesUtils.getInt(properties, "ner.maxlen", Integer.MAX_VALUE);
 
     return new NERCombinerAnnotator(nerCombiner, verbose, nThreads, maxTime, maxSentenceLength);
   }
@@ -187,17 +205,48 @@ public class AnnotatorImplementations {
   /**
    * Infer the original casing of tokens
    */
-  public Annotator trueCase(Properties properties, String modelLoc,
-                               String classBias,
-                               String mixedCaseFileName,
-                               boolean verbose) {
-    return new TrueCaseAnnotator(modelLoc, classBias, mixedCaseFileName, verbose);
+  public Annotator trueCase(Properties properties) {
+    return new TrueCaseAnnotator(properties);
   }
 
   /**
-   * Annotate for coreference
+   * Annotate for mention (statistical or hybrid)
+   */
+  public Annotator mention(Properties properties) {
+    // TO DO: split up coref and mention properties
+    Properties corefProperties = PropertiesUtils.extractPrefixedProperties(properties,
+            Annotator.STANFORD_COREF + ".",
+            true);
+    Properties mentionProperties = PropertiesUtils.extractPrefixedProperties(properties,
+            Annotator.STANFORD_MENTION + ".",
+            true);
+
+    Properties allPropsForCoref = new Properties();
+    allPropsForCoref.putAll(corefProperties);
+    allPropsForCoref.putAll(mentionProperties);
+    return new MentionAnnotator(allPropsForCoref);
+  }
+
+  /**
+   * Annotate for coreference (statistical or hybrid)
    */
   public Annotator coref(Properties properties) {
+    Properties corefProperties = PropertiesUtils.extractPrefixedProperties(properties,
+            Annotator.STANFORD_COREF + ".",
+            true);
+    Properties mentionProperties = PropertiesUtils.extractPrefixedProperties(properties,
+            Annotator.STANFORD_MENTION + ".",
+            true);
+    Properties allPropsForCoref = new Properties();
+    allPropsForCoref.putAll(corefProperties);
+    allPropsForCoref.putAll(mentionProperties);
+    return new CorefAnnotator(allPropsForCoref);
+  }
+
+  /**
+   * Annotate for coreference (deterministic)
+   */
+  public Annotator dcoref(Properties properties) {
     return new DeterministicCorefAnnotator(properties);
   }
 
@@ -251,4 +300,21 @@ public class AnnotatorImplementations {
     return new QuoteAnnotator(relevantProperties);
   }
 
+  /**
+   * Add universal dependencies features
+   */
+  public Annotator udfeats(Properties properties) {
+    return new UDFeatureAnnotator();
+  }
+
+  /**
+   * Annotate for KBP relations
+   */
+  public Annotator kbp(Properties properties) {
+    return new KBPAnnotator(Annotator.STANFORD_KBP, properties);
+  }
+
+  public Annotator link(Properties properties) {
+    return new WikidictAnnotator(Annotator.STANFORD_LINK, properties);
+  }
 }

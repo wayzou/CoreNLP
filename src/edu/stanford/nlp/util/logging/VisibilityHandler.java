@@ -1,10 +1,10 @@
 
 package edu.stanford.nlp.util.logging;
 
-import edu.stanford.nlp.util.Generics;
 import edu.stanford.nlp.util.logging.Redwood.Record;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.List;
 
@@ -16,19 +16,18 @@ import java.util.List;
  * @author Gabor Angeli (angeli at cs.stanford)
  */
 public class VisibilityHandler extends LogRecordHandler {
-  private static enum State { SHOW_ALL, HIDE_ALL }
+
+  private enum State { SHOW_ALL, HIDE_ALL }
 
   private VisibilityHandler.State defaultState = State.SHOW_ALL;
-  private final Set<Object> deltaPool = Generics.newHashSet();
+  private final Set<Object> deltaPool = new HashSet<>();  // replacing with Generics.newHashSet() makes classloader go haywire?
 
-  public VisibilityHandler() { }
+  public VisibilityHandler() { }  // default is SHOW_ALL
 
   public VisibilityHandler(Object[] channels) {
     if (channels.length > 0) {
       defaultState = State.HIDE_ALL;
-      for (Object channel : channels) {
-        deltaPool.add(channel);
-      }
+      Collections.addAll(deltaPool, channels);
     }
   }
 
@@ -54,7 +53,7 @@ public class VisibilityHandler extends LogRecordHandler {
    * @param filter The channel to also show
    * @return true if this channel was already being shown.
    */
-  public boolean alsoShow(Object filter){
+  public boolean alsoShow(Object filter) {
     switch(this.defaultState){
     case HIDE_ALL:
       return this.deltaPool.add(filter);
@@ -71,7 +70,7 @@ public class VisibilityHandler extends LogRecordHandler {
    * @param filter The channel to also hide
    * @return true if this channel was already being hidden.
    */
-  public boolean alsoHide(Object filter){
+  public boolean alsoHide(Object filter) {
     switch(this.defaultState){
     case HIDE_ALL:
       return this.deltaPool.remove(filter);
@@ -83,6 +82,7 @@ public class VisibilityHandler extends LogRecordHandler {
   }
 
   /** {@inheritDoc} */
+  @Override
   public List<Record> handle(Record record) {
     boolean isPrinting = false;
     if(record.force()){
@@ -102,11 +102,18 @@ public class VisibilityHandler extends LogRecordHandler {
           break;
         case SHOW_ALL:
           //--Default True
-          boolean somethingSeen =  false;
-          for(Object tag : record.channels()){
-            if(this.deltaPool.contains(tag)){ somethingSeen = true; break; }
+          if (!this.deltaPool.isEmpty()) {  // Short-circuit for efficiency
+            boolean somethingSeen =  false;
+            for (Object tag : record.channels()) {
+              if (this.deltaPool.contains(tag)) {
+                somethingSeen = true;
+                break;
+              }
+            }
+            isPrinting = !somethingSeen;
+          } else {
+            isPrinting = true;
           }
-          isPrinting = !somethingSeen;
           break;
         default:
           throw new IllegalStateException("Unknown default state setting: " + this.defaultState);
@@ -114,9 +121,7 @@ public class VisibilityHandler extends LogRecordHandler {
     }
     //--Return
     if(isPrinting){
-      ArrayList<Record> retVal = new ArrayList<Record>();
-      retVal.add(record);
-      return retVal;
+      return Collections.singletonList(record);
     } else {
       return EMPTY;
     }
@@ -132,4 +137,5 @@ public class VisibilityHandler extends LogRecordHandler {
   public List<Record> signalEndTrack(int newDepth, long timeOfEnd) {
     return EMPTY;
   }
+
 }

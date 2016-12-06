@@ -1,12 +1,6 @@
 
-/*
-* 	@Author:  Danqi Chen
-* 	@Email:  danqi@cs.stanford.edu
-*	@Created:  2014-08-25
-* 	@Last Modified:  2014-10-05
-*/
-
 package edu.stanford.nlp.parser.nndep;
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.io.RuntimeIOException;
@@ -29,7 +23,10 @@ import java.io.*;
  *  @author Jon Gauthier
  */
 
-class Util {
+public class Util  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(Util.class);
 
   private Util() {} // static methods
 
@@ -42,11 +39,11 @@ class Util {
     int count = 0;
     double mean = 0.0;
     double std = 0.0;
-    for (int i = 0; i < A.length; ++ i)
-      for (int j = 0; j < A[i].length; ++ j) {
+    for (double[] aA : A)
+      for (int j = 0; j < aA.length; ++j) {
         count += 1;
-        mean += A[i][j];
-        std += A[i][j] * A[i][j];
+        mean += aA[j];
+        std += aA[j] * aA[j];
       }
     mean = mean / count;
     std = Math.sqrt(std / count - mean * mean);
@@ -146,26 +143,32 @@ class Util {
     try {
       reader = IOUtils.readerFromString(inFile);
 
-      CoreMap sentence = new CoreLabel();
       List<CoreLabel> sentenceTokens = new ArrayList<>();
-
       DependencyTree tree = new DependencyTree();
 
       for (String line : IOUtils.getLineIterable(reader, false)) {
         String[] splits = line.split("\t");
         if (splits.length < 10) {
-          trees.add(tree);
-          sentence.set(CoreAnnotations.TokensAnnotation.class, sentenceTokens);
-          sents.add(sentence);
-
-          tree = new DependencyTree();
-          sentence = new CoreLabel();
-          sentenceTokens = new ArrayList<>();
+          if (sentenceTokens.size() > 0) {
+            trees.add(tree);
+            CoreMap sentence = new CoreLabel();
+            sentence.set(CoreAnnotations.TokensAnnotation.class, sentenceTokens);
+            sents.add(sentence);
+            tree = new DependencyTree();
+            sentenceTokens = new ArrayList<>();
+          }
         } else {
           String word = splits[1],
                   pos = cPOS ? splits[3] : splits[4],
                   depType = splits[7];
-          int head = Integer.parseInt(splits[6]);
+
+          int head = -1;
+          try {
+            head = Integer.parseInt(splits[6]);
+          }
+          catch (NumberFormatException e) {
+            continue;
+          }
 
           CoreLabel token = tf.makeToken(word, 0, 0);
           token.setTag(pos);
@@ -178,7 +181,7 @@ class Util {
           else
             tree.add(head, Config.UNKNOWN);
         }
-      }    
+      }
     } catch (IOException e) {
       throw new RuntimeIOException(e);
     } finally {
@@ -222,7 +225,7 @@ class Util {
 
   public static void printTreeStats(String str, List<DependencyTree> trees)
   {
-    System.err.println(Config.SEPARATOR + " " + str);
+    log.info(Config.SEPARATOR + " " + str);
     int nTrees = trees.size();
     int nonTree = 0;
     int multiRoot = 0;

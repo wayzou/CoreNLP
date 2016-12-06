@@ -1,6 +1,7 @@
 // StanfordCoreNLP -- a suite of NLP tools
 
-package edu.stanford.nlp.dcoref;
+package edu.stanford.nlp.dcoref; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -41,7 +42,10 @@ import edu.stanford.nlp.util.StringUtils;
  *
  * @author Marta Recasens, Marie-Catherine de Marneffe
  */
-public class SingletonPredictor {
+public class SingletonPredictor  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(SingletonPredictor.class);
 
   /**
    * Set index for each token and sentence in the document.
@@ -63,7 +67,7 @@ public class SingletonPredictor {
    */
   public GeneralDataset<String, String> generateFeatureVectors(Properties props) throws Exception {
 
-    GeneralDataset<String, String> dataset = new Dataset<String, String>();    
+    GeneralDataset<String, String> dataset = new Dataset<>();
     
     Dictionaries dict = new Dictionaries(props);
     MentionExtractor mentionExtractor =
@@ -84,12 +88,12 @@ public class SingletonPredictor {
           IndexedWord head = mention.dependency.getNodeByIndexSafe(mention.headWord.index());
           if(head == null) continue;          
           ArrayList<String> feats = mention.getSingletonFeatures(dict);
-          dataset.add(new BasicDatum<String, String>(feats, "1"));
+          dataset.add(new BasicDatum<>(feats, "1"));
         }       
       }
 
       // Generate features for singletons with class label 0 
-      ArrayList<CoreLabel> gold_heads = new ArrayList<CoreLabel>();
+      ArrayList<CoreLabel> gold_heads = new ArrayList<>();
       for(Mention gold_men : document.allGoldMentions.values()){
         gold_heads.add(gold_men.headWord);
       }      
@@ -103,8 +107,8 @@ public class SingletonPredictor {
         // If the mention is in the gold set, it is not a singleton and thus ignore
         if(gold_heads.contains(predicted_men.headWord)) continue;
 
-        dataset.add(new BasicDatum<String, String>(
-            predicted_men.getSingletonFeatures(dict), "0"));             
+        dataset.add(new BasicDatum<>(
+                predicted_men.getSingletonFeatures(dict), "0"));
       }
     }
     
@@ -119,7 +123,7 @@ public class SingletonPredictor {
    */
   public LogisticClassifier<String, String> train(GeneralDataset<String, String> pDataset){
     LogisticClassifierFactory<String, String> lcf =
-        new LogisticClassifierFactory<String, String>();
+            new LogisticClassifierFactory<>();
     LogisticClassifier<String, String> classifier = lcf.trainClassifier(pDataset);
 
     return classifier;
@@ -132,11 +136,11 @@ public class SingletonPredictor {
   public void saveToSerialized(LogisticClassifier<String, String> predictor,
                                String filename) {
     try {
-      System.err.print("Writing singleton predictor in serialized format to file " + filename + ' ');
+      log.info("Writing singleton predictor in serialized format to file " + filename + ' ');
       ObjectOutputStream out = IOUtils.writeStreamFromString(filename);
       out.writeObject(predictor);
       out.close();
-      System.err.println("done.");
+      log.info("done.");
     } catch (IOException ioe) {
       throw new RuntimeIOException(ioe);
     }
@@ -146,11 +150,11 @@ public class SingletonPredictor {
     Properties props = null;
     if (args.length > 0) props = StringUtils.argsToProperties(args);
     if (!props.containsKey("dcoref.conll2011")) {
-      System.err.println("-dcoref.conll2011 [input_CoNLL_corpus]: was not specified");
+      log.info("-dcoref.conll2011 [input_CoNLL_corpus]: was not specified");
       return;
     }
     if (!props.containsKey("singleton.predictor.output")) {
-      System.err.println("-singleton.predictor.output [output_model_file]: was not specified");
+      log.info("-singleton.predictor.output [output_model_file]: was not specified");
       return;
     }
     

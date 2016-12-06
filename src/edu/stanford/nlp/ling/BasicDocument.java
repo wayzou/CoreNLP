@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ling;
+package edu.stanford.nlp.ling; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.process.TokenizerFactory;
 import edu.stanford.nlp.process.PTBTokenizer;
@@ -31,7 +32,10 @@ import java.util.List;
  *
  * @param <L> The type of the labels
  */
-public class BasicDocument<L> extends ArrayList<Word> implements Document<L, Word, Word> {
+public class BasicDocument<L> extends ArrayList<Word> implements Document<L, Word, Word>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(BasicDocument.class);
 
   /**
    * title of this document (never null).
@@ -46,7 +50,7 @@ public class BasicDocument<L> extends ArrayList<Word> implements Document<L, Wor
   /**
    * Label(s) for this document.
    */
-  protected final List<L> labels = new ArrayList<L>();
+  protected final List<L> labels = new ArrayList<>();
 
   /**
    * TokenizerFactory used to convert the text into words inside
@@ -91,7 +95,7 @@ public class BasicDocument<L> extends ArrayList<Word> implements Document<L, Wor
    * for convenience (so it's more like a constructor, but inherited).
    */
   public static <L> BasicDocument<L> init(String text, String title, boolean keepOriginalText) {
-    BasicDocument<L> basicDocument = new BasicDocument<L>();
+    BasicDocument<L> basicDocument = new BasicDocument<>();
     // initializes the List of labels and sets the title
     basicDocument.setTitle(title);
 
@@ -393,7 +397,7 @@ public class BasicDocument<L> extends ArrayList<Word> implements Document<L, Wor
     try {
       bd = ErasureUtils.<BasicDocument<L>>uncheckedCast(getClass().newInstance());
     } catch (Exception e) {
-      bd = new BasicDocument<L>();
+      bd = new BasicDocument<>();
     }
 
     // copies over basic meta-data
@@ -462,12 +466,12 @@ public class BasicDocument<L> extends ArrayList<Word> implements Document<L, Wor
    * Prints the state of the given BasicDocument to stderr.
    */
   public static <L> void printState(BasicDocument<L> bd) throws Exception {
-    System.err.println("BasicDocument:");
-    System.err.println("\tTitle: " + bd.title());
-    System.err.println("\tLabels: " + bd.labels());
-    System.err.println("\tOriginalText: " + bd.originalText());
-    System.err.println("\tWords: " + bd);
-    System.err.println();
+    log.info("BasicDocument:");
+    log.info("\tTitle: " + bd.title());
+    log.info("\tLabels: " + bd.labels());
+    log.info("\tOriginalText: " + bd.originalText());
+    log.info("\tWords: " + bd);
+    log.info();
   }
 
   private static final long serialVersionUID = -24171720584352262L;

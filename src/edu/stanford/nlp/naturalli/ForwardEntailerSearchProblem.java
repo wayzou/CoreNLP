@@ -1,4 +1,5 @@
-package edu.stanford.nlp.naturalli;
+package edu.stanford.nlp.naturalli; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.IndexedWord;
@@ -19,7 +20,10 @@ import java.util.stream.Collectors;
  *
  * @author Gabor Angeli
  */
-public class ForwardEntailerSearchProblem {
+public class ForwardEntailerSearchProblem  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ForwardEntailerSearchProblem.class);
 
   /**
    * The parse of this fragment. The vertices in the parse tree should be a subset
@@ -48,13 +52,6 @@ public class ForwardEntailerSearchProblem {
   public final NaturalLogicWeights weights;
 
   /**
-   * A mapping from the actual index of a vertex in a sentence, to its index in the deletion
-   * mask.
-   */
-  private final byte[] indexToMaskIndex;
-
-
-  /**
    * A result from the search over possible shortenings of the sentence.
    */
   private static class SearchResult {
@@ -78,15 +75,15 @@ public class ForwardEntailerSearchProblem {
    * A state in the search, denoting a partial shortening of the sentence.
    */
   private static class SearchState {
-    public final long deletionMask;
+    public final BitSet deletionMask;
     public final int currentIndex;
     public final SemanticGraph tree;
     public final String lastDeletedEdge;
     public final SearchState source;
     public final double score;
 
-    private SearchState(long deletionMask, int currentIndex, SemanticGraph tree, String lastDeletedEdge, SearchState source, double score) {
-      this.deletionMask = deletionMask;
+    private SearchState(BitSet deletionMask, int currentIndex, SemanticGraph tree, String lastDeletedEdge, SearchState source, double score) {
+      this.deletionMask = (BitSet) deletionMask.clone();
       this.currentIndex = currentIndex;
       this.tree = tree;
       this.lastDeletedEdge = lastDeletedEdge;
@@ -109,13 +106,6 @@ public class ForwardEntailerSearchProblem {
     this.maxResults = maxResults;
     this.maxTicks = maxTicks;
     this.weights = weights;
-    List<IndexedWord> vertices = this.parseTree.vertexListSorted();
-    indexToMaskIndex = new byte[vertices.get(vertices.size() - 1).index()];
-    byte i = 0;
-    for (IndexedWord vertex : vertices) {
-      indexToMaskIndex[vertex.index() - 1] = i;
-      i += 1;
-    }
   }
 
 
@@ -127,14 +117,10 @@ public class ForwardEntailerSearchProblem {
    */
   @SuppressWarnings("unchecked")
   public List<SentenceFragment> search() {
-    if (parseTree.vertexSet().size() > 63) {
-      return Collections.EMPTY_LIST;
-    } else {
-      return searchImplementation().stream()
-          .map(x -> new SentenceFragment(x.tree, truthOfPremise, false).changeScore(x.confidence))
-          .filter(x -> x.words.size() > 0 )
-          .collect(Collectors.toList());
-    }
+    return searchImplementation().stream()
+        .map(x -> new SentenceFragment(x.tree, truthOfPremise, false).changeScore(x.confidence))
+        .filter(x -> x.words.size() > 0 )
+        .collect(Collectors.toList());
   }
 
   /**
@@ -149,8 +135,15 @@ public class ForwardEntailerSearchProblem {
     assert Util.isTree(parseTree);
     // (remove common determiners)
     List<String> determinerRemovals = new ArrayList<>();
-    parseTree.getLeafVertices().stream().filter(vertex -> vertex.word().equalsIgnoreCase("the") || vertex.word().equalsIgnoreCase("a") ||
-        vertex.word().equalsIgnoreCase("an")).forEach(vertex -> {
+    parseTree.getLeafVertices().stream().filter(vertex ->
+        "the".equalsIgnoreCase(vertex.word()) ||
+            "a".equalsIgnoreCase(vertex.word()) ||
+            "an".equalsIgnoreCase(vertex.word()) ||
+            "this".equalsIgnoreCase(vertex.word()) ||
+            "that".equalsIgnoreCase(vertex.word()) ||
+            "those".equalsIgnoreCase(vertex.word()) ||
+            "these".equalsIgnoreCase(vertex.word())
+    ).forEach(vertex -> {
       parseTree.removeVertex(vertex);
       assert Util.isTree(parseTree);
       determinerRemovals.add("det");
@@ -161,7 +154,7 @@ public class ForwardEntailerSearchProblem {
       if( parseTree.inDegree(vertex) > 1 ) {
         SemanticGraphEdge conjAnd = null;
         for (SemanticGraphEdge edge : parseTree.incomingEdgeIterable(vertex)) {
-          if (edge.getRelation().toString().equals("conj:and")) {
+          if ("conj:and".equals(edge.getRelation().toString())) {
             conjAnd = edge;
           }
         }
@@ -179,7 +172,7 @@ public class ForwardEntailerSearchProblem {
     // Find the subject / object split
     // This takes max O(n^2) time, expected O(n*log(n)) time.
     // Optimal is O(n), but I'm too lazy to implement it.
-    boolean isSubject[] = new boolean[65];
+    BitSet isSubject = new BitSet(256);
     for (IndexedWord vertex : parseTree.vertexSet()) {
       // Search up the tree for a subj node; if found, mark that vertex as a subject.
       Iterator<SemanticGraphEdge> incomingEdges = parseTree.incomingEdgeIterator(vertex);
@@ -190,7 +183,8 @@ public class ForwardEntailerSearchProblem {
       int numIters = 0;
       while (edge != null) {
         if (edge.getRelation().toString().endsWith("subj")) {
-          isSubject[vertex.index() - 1] = true;
+          assert vertex.index() > 0;
+          isSubject.set(vertex.index() - 1);
           break;
         }
         incomingEdges = parseTree.incomingEdgeIterator(edge.getGovernor());
@@ -201,7 +195,7 @@ public class ForwardEntailerSearchProblem {
         }
         numIters += 1;
         if (numIters > 100) {
-          System.err.println("ERROR: tree has apparent depth > 100");
+//          log.error("tree has apparent depth > 100");
           return Collections.EMPTY_LIST;
         }
       }
@@ -233,20 +227,22 @@ public class ForwardEntailerSearchProblem {
     try {
       topologicalVertices = parseTree.topologicalSort();
     } catch (IllegalStateException e) {
-      System.err.println("Could not topologically sort the vertices! Using left-to-right traversal.");
+//      log.info("Could not topologically sort the vertices! Using left-to-right traversal.");
       topologicalVertices = parseTree.vertexListSorted();
     }
     if (topologicalVertices.isEmpty()) {
       return results;
     }
     Stack<SearchState> fringe = new Stack<>();
-    fringe.push(new SearchState(0l, 0, parseTree, null, null, 1.0));
+    fringe.push(new SearchState(new BitSet(256), 0, parseTree, null, null, 1.0));
 
     // Start the search
     int numTicks = 0;
     while (!fringe.isEmpty()) {
       // Overhead with popping a node.
-      if (numTicks >= maxTicks) { return results; }
+      if (numTicks >= maxTicks) {
+        return results;
+      }
       numTicks += 1;
       if (results.size() >= maxResults) {
         return results;
@@ -260,7 +256,8 @@ public class ForwardEntailerSearchProblem {
       int numIters = 0;
       while (nextIndex < topologicalVertices.size()) {
         IndexedWord nextWord = topologicalVertices.get(nextIndex);
-        if (  ((state.deletionMask >>> (indexToMaskIndex[nextWord.index() - 1])) & 0x1l) == 0) {
+        assert nextWord.index() > 0;
+        if (!state.deletionMask.get(nextWord.index() - 1)) {
           fringe.push(new SearchState(state.deletionMask, nextIndex, state.tree, null, state, state.score));
           break;
         } else {
@@ -268,7 +265,7 @@ public class ForwardEntailerSearchProblem {
         }
         numIters += 1;
         if (numIters > 10000) {
-          System.err.println("ERROR: logic error (apparent infinite loop); returning");
+//          log.error("logic error (apparent infinite loop); returning");
           return results;
         }
       }
@@ -291,8 +288,9 @@ public class ForwardEntailerSearchProblem {
           if ((operator = token.get(NaturalLogicAnnotations.OperatorAnnotation.class)) != null) {
             lexicalRelation = operator.instance.deleteRelation;
           } else {
+            assert edge.getDependent().index() > 0;
             lexicalRelation = NaturalLogicRelation.forDependencyDeletion(edge.getRelation().toString(),
-                isSubject[edge.getDependent().index() - 1]);
+                isSubject.get(edge.getDependent().index() - 1));
           }
           NaturalLogicRelation projectedRelation = tokenPolarity.projectLexicalRelation(lexicalRelation);
           // Make sure this is a valid entailment
@@ -304,14 +302,14 @@ public class ForwardEntailerSearchProblem {
 
       if (canDelete) {
         // Register the deletion
-        Lazy<Pair<SemanticGraph,Long>> treeWithDeletionsAndNewMask = Lazy.of(() -> {
+        Lazy<Pair<SemanticGraph,BitSet>> treeWithDeletionsAndNewMask = Lazy.of(() -> {
           SemanticGraph impl = new SemanticGraph(state.tree);
-          long newMask = state.deletionMask;
+          BitSet newMask = state.deletionMask;
           for (IndexedWord vertex : state.tree.descendants(currentWord)) {
             impl.removeVertex(vertex);
-            newMask |= (0x1l << (indexToMaskIndex[vertex.index() - 1]));
-            assert indexToMaskIndex[vertex.index() - 1] < 64;
-            assert ((newMask >>> (indexToMaskIndex[vertex.index() - 1])) & 0x1l) == 1;
+            assert vertex.index() > 0;
+            newMask.set(vertex.index() - 1);
+            assert newMask.get(vertex.index() - 1);
           }
           return Pair.makePair(impl, newMask);
         });
@@ -337,9 +335,9 @@ public class ForwardEntailerSearchProblem {
           numIters = 0;
           while (nextIndex < topologicalVertices.size()) {
             IndexedWord nextWord = topologicalVertices.get(nextIndex);
-            long newMask = treeWithDeletionsAndNewMask.get().second;
+            BitSet newMask = treeWithDeletionsAndNewMask.get().second;
             SemanticGraph treeWithDeletions = treeWithDeletionsAndNewMask.get().first;
-            if (  ((newMask >>> (indexToMaskIndex[nextWord.index() - 1])) & 0x1l) == 0) {
+            if ( !newMask.get(nextWord.index() - 1) ) {
               assert treeWithDeletions.containsVertex(topologicalVertices.get(nextIndex));
               fringe.push(new SearchState(newMask, nextIndex, treeWithDeletions, null, state, newScore));
               break;
@@ -348,7 +346,7 @@ public class ForwardEntailerSearchProblem {
             }
             numIters += 1;
             if (numIters > 10000) {
-              System.err.println("ERROR: logic error (apparent infinite loop); returning");
+//              log.error("logic error (apparent infinite loop); returning");
               return results;
             }
           }

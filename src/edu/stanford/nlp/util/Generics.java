@@ -1,4 +1,5 @@
-package edu.stanford.nlp.util;
+package edu.stanford.nlp.util; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
@@ -45,49 +46,52 @@ import edu.stanford.nlp.util.concurrent.SynchronizedInterner;
  *
  * @author Ilya Sherman
  */
-public class Generics {
+public class Generics  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(Generics.class);
 
   private Generics() {} // static class
 
   /* Collections */
   public static <E> ArrayList<E> newArrayList() {
-    return new ArrayList<E>();
+    return new ArrayList<>();
   }
 
   public static <E> ArrayList<E> newArrayList(int size) {
-    return new ArrayList<E>(size);
+    return new ArrayList<>(size);
   }
 
   public static <E> ArrayList<E> newArrayList(Collection<? extends E> c) {
-    return new ArrayList<E>(c);
+    return new ArrayList<>(c);
   }
 
   public static <E> LinkedList<E> newLinkedList() {
-    return new LinkedList<E>();
+    return new LinkedList<>();
   }
 
   public static <E> LinkedList<E> newLinkedList(Collection<? extends E> c) {
-    return new LinkedList<E>(c);
+    return new LinkedList<>(c);
   }
 
   public static <E> Stack<E> newStack() {
-    return new Stack<E>();
+    return new Stack<>();
   }
 
   public static <E> BinaryHeapPriorityQueue<E> newBinaryHeapPriorityQueue() {
-    return new BinaryHeapPriorityQueue<E>();
+    return new BinaryHeapPriorityQueue<>();
   }
 
   public static <E> TreeSet<E> newTreeSet() {
-    return new TreeSet<E>();
+    return new TreeSet<>();
   }
 
   public static <E> TreeSet<E> newTreeSet(Comparator<? super E> comparator) {
-    return new TreeSet<E>(comparator);
+    return new TreeSet<>(comparator);
   }
 
   public static <E> TreeSet<E> newTreeSet(SortedSet<E> s) {
-    return new TreeSet<E>(s);
+    return new TreeSet<>(s);
   }
 
   public static final String HASH_SET_PROPERTY = "edu.stanford.nlp.hashset.impl";
@@ -113,7 +117,7 @@ public class Generics {
     try {
       return HASH_SET_CLASS.getConstructor(Integer.TYPE);
     } catch (Exception e) {
-      System.err.println("Warning: could not find a constructor for objects of " + HASH_SET_CLASS + " which takes an integer argument.  Will use the no argument constructor instead.");
+      log.info("Warning: could not find a constructor for objects of " + HASH_SET_CLASS + " which takes an integer argument.  Will use the no argument constructor instead.");
     }
     return null;
   }
@@ -177,7 +181,7 @@ public class Generics {
     try {
       return HASH_MAP_CLASS.getConstructor(Integer.TYPE);
     } catch (Exception e) {
-      System.err.println("Warning: could not find a constructor for objects of " + HASH_MAP_CLASS + " which takes an integer argument.  Will use the no argument constructor instead.");
+      log.info("Warning: could not find a constructor for objects of " + HASH_MAP_CLASS + " which takes an integer argument.  Will use the no argument constructor instead.");
     }
     return null;
   }
@@ -220,7 +224,7 @@ public class Generics {
   }
 
   public static <K,V> IdentityHashMap<K,V> newIdentityHashMap() {
-    return new IdentityHashMap<K,V>();
+    return new IdentityHashMap<>();
   }
 
   public static <K> Set<K> newIdentityHashSet() {
@@ -228,54 +232,64 @@ public class Generics {
   }
 
   public static <K,V> WeakHashMap<K,V> newWeakHashMap() {
-    return new WeakHashMap<K,V>();
+    return new WeakHashMap<>();
   }
 
   public static <K,V> ConcurrentHashMap<K,V> newConcurrentHashMap() {
-    return new ConcurrentHashMap<K,V>();
+    return new ConcurrentHashMap<>();
   }
 
   public static <K,V> ConcurrentHashMap<K,V> newConcurrentHashMap(int initialCapacity) {
-    return new ConcurrentHashMap<K,V>(initialCapacity);
+    return new ConcurrentHashMap<>(initialCapacity);
   }
 
   public static <K,V> ConcurrentHashMap<K,V> newConcurrentHashMap(int initialCapacity,
       float loadFactor, int concurrencyLevel) {
-    return new ConcurrentHashMap<K,V>(initialCapacity, loadFactor, concurrencyLevel);
+    return new ConcurrentHashMap<>(initialCapacity, loadFactor, concurrencyLevel);
   }
 
   public static <K,V> TreeMap<K,V> newTreeMap() {
-    return new TreeMap<K,V>();
+    return new TreeMap<>();
   }
 
   public static <E> Index<E> newIndex() {
-    return new HashIndex<E>();
+    return new HashIndex<>();
+  }
+
+  public static <E> Set<E> newConcurrentHashSet() {
+    return Collections.newSetFromMap(new ConcurrentHashMap<>());
+  }
+
+  public static <E> Set<E> newConcurrentHashSet(Set<E> set) {
+    Set<E> ret = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    ret.addAll(set);
+    return ret;
   }
 
 
   /* Other */
   public static <T1,T2> Pair<T1,T2> newPair(T1 first, T2 second) {
-    return new Pair<T1,T2>(first, second);
+    return new Pair<>(first, second);
   }
 
   public static <T1,T2, T3> Triple<T1,T2, T3> newTriple(T1 first, T2 second, T3 third) {
-    return new Triple<T1,T2, T3>(first, second, third);
+    return new Triple<>(first, second, third);
   }
 
   public static <T> Interner<T> newInterner() {
-    return new Interner<T>();
+    return new Interner<>();
   }
 
   public static <T> SynchronizedInterner<T> newSynchronizedInterner(Interner<T> interner) {
-    return new SynchronizedInterner<T>(interner);
+    return new SynchronizedInterner<>(interner);
   }
 
   public static <T> SynchronizedInterner<T> newSynchronizedInterner(Interner<T> interner,
                                                                     Object mutex) {
-    return new SynchronizedInterner<T>(interner, mutex);
+    return new SynchronizedInterner<>(interner, mutex);
   }
 
   public static <T> WeakReference<T> newWeakReference(T referent) {
-    return new WeakReference<T>(referent);
+    return new WeakReference<>(referent);
   }
 }

@@ -24,7 +24,8 @@
 //    USA
 //
 
-package edu.stanford.nlp.dcoref;
+package edu.stanford.nlp.dcoref; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -56,7 +57,10 @@ import edu.stanford.nlp.util.Generics;
  * @author Mihai Surdeanu
  * @author Karthik Raghunathan
  */
-public class MUCMentionExtractor extends MentionExtractor {
+public class MUCMentionExtractor extends MentionExtractor  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(MUCMentionExtractor.class);
 
   private final TokenizerFactory<CoreLabel> tokenizerFactory;
   private final String fileContents;
@@ -85,11 +89,11 @@ public class MUCMentionExtractor extends MentionExtractor {
 
   @Override
   public Document nextDoc() throws Exception {
-    List<List<CoreLabel>> allWords = new ArrayList<List<CoreLabel>>();
-    List<Tree> allTrees = new ArrayList<Tree>();
-    List<List<Mention>> allGoldMentions = new ArrayList<List<Mention>>();
+    List<List<CoreLabel>> allWords = new ArrayList<>();
+    List<Tree> allTrees = new ArrayList<>();
+    List<List<Mention>> allGoldMentions = new ArrayList<>();
     List<List<Mention>> allPredictedMentions;
-    List<CoreMap> allSentences = new ArrayList<CoreMap>();
+    List<CoreMap> allSentences = new ArrayList<>();
     Annotation docAnno = new Annotation("");
 
     Pattern docPattern = Pattern.compile("<DOC>(.*?)</DOC>", Pattern.DOTALL+Pattern.CASE_INSENSITIVE);
@@ -131,10 +135,10 @@ public class MUCMentionExtractor extends MentionExtractor {
       }
       // END FIXING TOKENIZATION PROBLEMS
 
-      List<CoreLabel> sentence = new ArrayList<CoreLabel>();
+      List<CoreLabel> sentence = new ArrayList<>();
       // MUC accepts embedded coref mentions, so we need to keep a stack for the mentions currently open
-      Stack<Mention> stack = new Stack<Mention>();
-      List<Mention> mentions = new ArrayList<Mention>();
+      Stack<Mention> stack = new Stack<>();
+      List<Mention> mentions = new ArrayList<>();
 
       allWords.add(sentence);
       allGoldMentions.add(mentions);
@@ -268,7 +272,7 @@ public class MUCMentionExtractor extends MentionExtractor {
       List<CoreLabel> unannotatedSent = allWords.get(i);
       List<Mention> mentionInSent = allGoldMentions.get(i);
       for (Mention m : mentionInSent){
-        m.dependency = allSentences.get(i).get(SemanticGraphCoreAnnotations.AlternativeDependenciesAnnotation.class);
+        m.dependency = allSentences.get(i).get(SemanticGraphCoreAnnotations.EnhancedDependenciesAnnotation.class);
       }
       if(annotatedSent.size() != unannotatedSent.size()){
         throw new IllegalStateException("annotatedSent != unannotatedSent");

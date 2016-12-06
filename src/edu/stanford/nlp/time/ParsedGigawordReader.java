@@ -1,4 +1,5 @@
-package edu.stanford.nlp.time;
+package edu.stanford.nlp.time; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,7 +30,10 @@ import edu.stanford.nlp.util.Iterables;
 /**
  * @author Karthik Raghunathan
  */
-public class ParsedGigawordReader implements Iterable<Annotation> {
+public class ParsedGigawordReader implements Iterable<Annotation>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ParsedGigawordReader.class);
 
   private Iterable<File> files;
 
@@ -81,7 +85,7 @@ public class ParsedGigawordReader implements Iterable<Annotation> {
             doc.append(line);
             doc.append('\n');
 //            if(line.contains("<DOC id")){
-//              System.err.println(line);
+//              log.info(line);
 //            }
             if (line.equals("</DOC>")) {
               break;
@@ -103,7 +107,7 @@ public class ParsedGigawordReader implements Iterable<Annotation> {
           xml = xml.replaceAll("sid=(.*)>", "sid=\"$1\">");
           xml = xml.replaceAll("</SENT>\n</DOC>", "</SENT>\n</TEXT>\n</DOC>");
           xml = new String(xml.getBytes(), "UTF8");
-          //System.err.println("This is what goes in:\n" + xml);
+          //log.info("This is what goes in:\n" + xml);
           return toAnnotation(xml);
         } catch (IOException e) {
           throw new RuntimeIOException(e);
@@ -189,14 +193,14 @@ public class ParsedGigawordReader implements Iterable<Annotation> {
     Element textElem = docElem.getFirstChildElement("TEXT");
     StringBuilder text = new StringBuilder();
     int offset = 0;
-    List<CoreMap> sentences = new ArrayList<CoreMap>();
+    List<CoreMap> sentences = new ArrayList<>();
     Elements sentenceElements = textElem.getChildElements("SENT");
     for (int crtsent = 0; crtsent < sentenceElements.size(); crtsent ++){
       Element sentElem = sentenceElements.get(crtsent);
       CoreMap sentence = new ArrayCoreMap();
       sentence.set(CoreAnnotations.CharacterOffsetBeginAnnotation.class, offset);
       Tree tree = Tree.valueOf(sentElem.getChild(0).getValue()); // XXX ms: is this the same as sentElem.getText() in JDOM?
-      List<CoreLabel> tokens = new ArrayList<CoreLabel>();
+      List<CoreLabel> tokens = new ArrayList<>();
       List<Tree> preTerminals = preTerminals(tree);
       for (Tree preTerminal: preTerminals) {
         String posTag = preTerminal.value();
@@ -240,7 +244,7 @@ public class ParsedGigawordReader implements Iterable<Annotation> {
   // It depends on whether the code is somehow using preterminals with multiple children.
 
   private static List<Tree> preTerminals(Tree tree) {
-    List<Tree> preTerminals = new ArrayList<Tree>();
+    List<Tree> preTerminals = new ArrayList<>();
     for (Tree descendant: tree) {
       if (isPreterminal(descendant)) {
         preTerminals.add(descendant);

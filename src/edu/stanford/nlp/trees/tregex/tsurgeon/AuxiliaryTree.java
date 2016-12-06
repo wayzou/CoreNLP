@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees.tregex.tsurgeon;
+package edu.stanford.nlp.trees.tregex.tsurgeon; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.LabelFactory;
@@ -14,7 +15,10 @@ import java.util.regex.Matcher;
 /**
  * @author Roger Levy (rog@nlp.stanford.edu)
  */
-class AuxiliaryTree {
+public class AuxiliaryTree  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(AuxiliaryTree.class);
 
   private final String originalTreeString;
   final Tree tree;
@@ -31,7 +35,7 @@ class AuxiliaryTree {
       throw new TsurgeonParseException("Error -- no foot node found for " + originalTreeString);
     }
     namesToNodes = Generics.newHashMap();
-    nodesToNames = new IdentityHashMap<Tree,String>();
+    nodesToNames = new IdentityHashMap<>();
     initializeNamesNodesMaps(tree);
   }
 
@@ -68,7 +72,7 @@ class AuxiliaryTree {
     Map<String,Tree> newNamesToNodes = Generics.newHashMap();
     Pair<Tree,Tree> result = copyHelper(tree, newNamesToNodes, treeFactory, labelFactory);
     //if(! result.first().dominates(result.second()))
-      //System.err.println("Error -- aux tree copy doesn't dominate foot copy.");
+      //log.info("Error -- aux tree copy doesn't dominate foot copy.");
     matcher.newNodeNames.putAll(newNamesToNodes);
     return new AuxiliaryTree(result.first(), result.second(), newNamesToNodes, originalTreeString);
   }
@@ -79,19 +83,19 @@ class AuxiliaryTree {
     Tree newFoot = null;
     if (node.isLeaf()) {
       if (node == foot) { // found the foot node; pass it up.
-        clone = treeFactory.newTreeNode(node.label(), new ArrayList<Tree>(0));
+        clone = treeFactory.newTreeNode(node.label(), new ArrayList<>(0));
         newFoot = clone;
       } else {
         clone = treeFactory.newLeaf(labelFactory.newLabel(node.label()));
       }
     } else {
-      List<Tree> newChildren = new ArrayList<Tree>(node.children().length);
+      List<Tree> newChildren = new ArrayList<>(node.children().length);
       for (Tree child : node.children()) {
         Pair<Tree,Tree> newChild = copyHelper(child, newNamesToNodes, treeFactory, labelFactory);
         newChildren.add(newChild.first());
         if (newChild.second() != null) {
           if (newFoot != null) {
-            System.err.println("Error -- two feet found when copying auxiliary tree " + tree.toString() + "; using last foot found.");
+            log.info("Error -- two feet found when copying auxiliary tree " + tree.toString() + "; using last foot found.");
           }
           newFoot = newChild.second();
         }
@@ -102,7 +106,7 @@ class AuxiliaryTree {
     if (nodesToNames.containsKey(node))
       newNamesToNodes.put(nodesToNames.get(node),clone);
 
-    return new Pair<Tree,Tree>(clone,newFoot);
+    return new Pair<>(clone, newFoot);
   }
 
 
@@ -127,7 +131,7 @@ class AuxiliaryTree {
     Tree footNode = findFootNodeHelper(t);
     Tree result = footNode;
     if (footNode != null) {
-      Tree newFootNode = footNode.treeFactory().newTreeNode(footNode.label(), new ArrayList<Tree>());
+      Tree newFootNode = footNode.treeFactory().newTreeNode(footNode.label(), new ArrayList<>());
 
       Tree parent = footNode.parent(t);
       if (parent != null) {

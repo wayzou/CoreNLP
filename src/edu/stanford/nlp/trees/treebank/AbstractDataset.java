@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees.treebank;
+package edu.stanford.nlp.trees.treebank; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -24,7 +25,10 @@ import edu.stanford.nlp.util.Generics;
  * @author Spence Green
  *
  */
-public abstract class AbstractDataset implements Dataset {
+public abstract class AbstractDataset implements Dataset  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(AbstractDataset.class);
 
   protected final List<String> outputFileList;
   protected Mapper posMapper = null;
@@ -61,9 +65,9 @@ public abstract class AbstractDataset implements Dataset {
   protected Properties options;
 
   public AbstractDataset() {
-    outputFileList = new ArrayList<String>();
-    pathsToData = new ArrayList<File>();
-    pathsToMappings = new ArrayList<File>();
+    outputFileList = new ArrayList<>();
+    pathsToData = new ArrayList<>();
+    pathsToMappings = new ArrayList<>();
     toStringBuffer = new StringBuilder();
 
     //Read the raw file as UTF-8 irrespective of output encoding
@@ -98,7 +102,7 @@ public abstract class AbstractDataset implements Dataset {
 
   public boolean setOptions(Properties opts) {
     options = opts;
-    List<String> sortedKeys = new ArrayList<String>(opts.stringPropertyNames());
+    List<String> sortedKeys = new ArrayList<>(opts.stringPropertyNames());
     Collections.sort(sortedKeys);
     for(String param : sortedKeys) {
       String value = opts.getProperty(param);

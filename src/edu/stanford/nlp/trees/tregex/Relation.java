@@ -1,4 +1,5 @@
-package edu.stanford.nlp.trees.tregex;
+package edu.stanford.nlp.trees.tregex; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -333,7 +334,7 @@ abstract class Relation implements Serializable {
 
         @Override
         public void initialize() {
-          searchStack = new Stack<Tree>();
+          searchStack = new Stack<>();
           for (int i = t.numChildren() - 1; i >= 0; i--) {
             searchStack.push(t.getChild(i));
           }
@@ -390,8 +391,8 @@ abstract class Relation implements Serializable {
     @Override
     boolean satisfies(Tree t1, Tree t2, Tree root, final TregexMatcher matcher) {
       Tree[] kids = t1.children();
-      for (int i = 0, n = kids.length; i < n; i++) {
-        if (kids[i] == t2) {
+      for (Tree kid : kids) {
+        if (kid == t2) {
           return true;
         }
       }
@@ -460,7 +461,7 @@ abstract class Relation implements Serializable {
 
         @Override
         public void initialize() {
-          searchStack = new Stack<Tree>();
+          searchStack = new Stack<>();
           Tree current = t;
           Tree parent = matcher.getParent(t);
           while (parent != null) {
@@ -551,7 +552,7 @@ abstract class Relation implements Serializable {
 
         @Override
         public void initialize() {
-          searchStack = new Stack<Tree>();
+          searchStack = new Stack<>();
           Tree current = t;
           Tree parent = matcher.getParent(t);
           while (parent != null) {
@@ -1034,7 +1035,7 @@ abstract class Relation implements Serializable {
 
         @Override
         public void initialize() {
-          searchStack = new Stack<Tree>();
+          searchStack = new Stack<>();
           if (!t.isLeaf() && t.children().length == 1)
             searchStack.push(t.getChild(0));
           if (!searchStack.isEmpty()) {
@@ -1079,7 +1080,7 @@ abstract class Relation implements Serializable {
 
         @Override
         public void initialize() {
-          searchStack = new Stack<Tree>();
+          searchStack = new Stack<>();
           Tree parent = matcher.getParent(t);
           if (parent != null && !parent.isLeaf() &&
               parent.children().length == 1)
@@ -1702,7 +1703,7 @@ abstract class Relation implements Serializable {
 
         @Override
         public void initialize() {
-          searchStack = new Stack<Tree>();
+          searchStack = new Stack<>();
           for (int i = t.numChildren() - 1; i >= 0; i--) {
             searchStack.push(t.getChild(i));
           }
@@ -1899,8 +1900,8 @@ abstract class Relation implements Serializable {
 
         @Override
         public void initialize() {
-          nodesToSearch = new IdentityHashSet<Tree>();
-          searchStack = new Stack<Tree>();
+          nodesToSearch = new IdentityHashSet<>();
+          searchStack = new Stack<>();
           initializeHelper(searchStack, t, matcher.getRoot());
           advance();
         }
@@ -1923,7 +1924,7 @@ abstract class Relation implements Serializable {
             followingNode = null;
           }
           while (followingNode != null) {
-            //System.err.println("adding to stack node " + followingNode.toString());
+            //log.info("adding to stack node " + followingNode.toString());
             if (! nodesToSearch.contains(followingNode)) {
               stack.add(followingNode);
               nodesToSearch.add(followingNode);
@@ -2025,8 +2026,8 @@ abstract class Relation implements Serializable {
 
         @Override
         public void initialize() {
-          nodesToSearch = new IdentityHashSet<Tree>();
-          searchStack = new Stack<Tree>();
+          nodesToSearch = new IdentityHashSet<>();
+          searchStack = new Stack<>();
           initializeHelper(searchStack, t, matcher.getRoot());
           advance();
         }
@@ -2049,7 +2050,7 @@ abstract class Relation implements Serializable {
             precedingNode = null;
           }
           while (precedingNode != null) {
-            //System.err.println("adding to stack node " + precedingNode.toString());
+            //log.info("adding to stack node " + precedingNode.toString());
             if ( ! nodesToSearch.contains(precedingNode)) {
               stack.add(precedingNode);
               nodesToSearch.add(precedingNode);

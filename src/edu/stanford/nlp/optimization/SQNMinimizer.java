@@ -1,4 +1,5 @@
-package edu.stanford.nlp.optimization;
+package edu.stanford.nlp.optimization; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,10 @@ import edu.stanford.nlp.util.Pair;
  * @version 1.0
  * @since 1.0
  */
-public class SQNMinimizer<T extends Function> extends StochasticMinimizer<T> {
+public class SQNMinimizer<T extends Function> extends StochasticMinimizer<T>  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(SQNMinimizer.class);
 
   private int M = 0;
   private double lambda = 1.0;
@@ -54,9 +58,9 @@ public class SQNMinimizer<T extends Function> extends StochasticMinimizer<T> {
   private double cPosDef = 1;
   private double epsilon = 1e-10;
 
-  private List<double[]> sList = new ArrayList<double[]>();
-  private List<double[]> yList = new ArrayList<double[]>();
-  private List<Double> roList = new ArrayList<Double>();
+  private List<double[]> sList = new ArrayList<>();
+  private List<double[]> yList = new ArrayList<>();
+  private List<Double> roList = new ArrayList<>();
 
   double[] dir, s,y;
   double ro;
@@ -96,8 +100,8 @@ public class SQNMinimizer<T extends Function> extends StochasticMinimizer<T> {
 
   @Override
   public Pair<Integer,Double> tune( edu.stanford.nlp.optimization.Function function,double[] initial, long msPerTest){
-    System.err.println("No tuning set yet");
-    return new Pair<Integer,Double>(bSize, gain);
+    log.info("No tuning set yet");
+    return new Pair<>(bSize, gain);
   }
 
   private void computeDir(double[] dir, double[] fg) throws SQNMinimizer.SurpriseConvergence {
@@ -139,8 +143,8 @@ public class SQNMinimizer<T extends Function> extends StochasticMinimizer<T> {
   @Override
   protected void init(AbstractStochasticCachingDiffFunction func){
 
-    sList = new ArrayList<double[]>();
-    yList = new ArrayList<double[]>();
+    sList = new ArrayList<>();
+    yList = new ArrayList<>();
    dir = new double[func.domainDimension()];
   }
 

@@ -1,4 +1,5 @@
-package edu.stanford.nlp.international.arabic.pipeline;
+package edu.stanford.nlp.international.arabic.pipeline; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.*;
 import java.util.*;
@@ -15,7 +16,10 @@ import edu.stanford.nlp.util.Generics;
  * @author Spence Green
  *
  */
-public class DecimatedArabicDataset extends ATBArabicDataset {
+public class DecimatedArabicDataset extends ATBArabicDataset  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(DecimatedArabicDataset.class);
 
   private boolean taggedOutput = false;
   private String wordTagDelim = "_";
@@ -148,7 +152,7 @@ public class DecimatedArabicDataset extends ATBArabicDataset {
     }
 
     public List<String> getFilenames() {
-      List<String> filenames = new ArrayList<String>();
+      List<String> filenames = new ArrayList<>();
       for(String keyForFile : outFilenames.keySet())
         filenames.add(outFilenames.get(keyForFile));
 

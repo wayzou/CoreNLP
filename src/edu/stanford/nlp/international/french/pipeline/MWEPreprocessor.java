@@ -1,11 +1,12 @@
-package edu.stanford.nlp.international.french.pipeline;
+package edu.stanford.nlp.international.french.pipeline; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.io.*;
 import java.util.*;
 import java.util.regex.Pattern;
 
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.ling.Sentence;
+import edu.stanford.nlp.ling.SentenceUtils;
 import edu.stanford.nlp.stats.Counters;
 import edu.stanford.nlp.stats.TwoDimensionalCounter;
 import edu.stanford.nlp.trees.Tree;
@@ -23,7 +24,10 @@ import edu.stanford.nlp.util.Generics;
  * @author Spence Green
  *
  */
-public final class MWEPreprocessor {
+public final class MWEPreprocessor  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(MWEPreprocessor.class);
 
   private static final boolean RESOLVE_DUMMY_TAGS = true;
 
@@ -70,7 +74,7 @@ public final class MWEPreprocessor {
       else if(preps.contains(word))
         return "P";
 
-      System.err.println("No POS tag for " + word);
+      log.info("No POS tag for " + word);
       return "N";
     }
   }
@@ -191,8 +195,8 @@ public final class MWEPreprocessor {
       if(RESOLVE_DUMMY_TAGS && label.equals(FrenchXMLTreeReader.MISSING_PHRASAL))
         continue;
 
-      String preterm = Sentence.listToString(match.preTerminalYield());
-      String term = Sentence.listToString(match.yield());
+      String preterm = SentenceUtils.listToString(match.preTerminalYield());
+      String term = SentenceUtils.listToString(match.yield());
 
       labelPreterm.incrementCount(label,preterm);
       pretermLabel.incrementCount(preterm,label);
@@ -214,16 +218,16 @@ public final class MWEPreprocessor {
 
     final File treeFile = new File(args[0]);
     TwoDimensionalCounter<String,String> labelTerm =
-      new TwoDimensionalCounter<String,String>();
+            new TwoDimensionalCounter<>();
     TwoDimensionalCounter<String,String> termLabel =
-      new TwoDimensionalCounter<String,String>();
+            new TwoDimensionalCounter<>();
     TwoDimensionalCounter<String,String> labelPreterm =
-      new TwoDimensionalCounter<String,String>();
+            new TwoDimensionalCounter<>();
     TwoDimensionalCounter<String,String> pretermLabel =
-      new TwoDimensionalCounter<String,String>();
+            new TwoDimensionalCounter<>();
 
     TwoDimensionalCounter<String,String> unigramTagger =
-      new TwoDimensionalCounter<String,String>();
+            new TwoDimensionalCounter<>();
 
     try {
       BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(treeFile), "UTF-8"));

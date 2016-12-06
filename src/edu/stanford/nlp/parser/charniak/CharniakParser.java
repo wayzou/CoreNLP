@@ -2,7 +2,7 @@ package edu.stanford.nlp.parser.charniak;
 
 import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.ling.HasWord;
-import edu.stanford.nlp.ling.Sentence;
+import edu.stanford.nlp.ling.SentenceUtils;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.util.*;
 
@@ -21,26 +21,22 @@ public class CharniakParser {
 
   private static final String CHARNIAK_DIR = "/u/nlp/packages/bllip-parser/";
   // note: this is actually the parser+reranker (will use 2 CPUs)
-  private static final String CHARNIAK_BIN = CHARNIAK_DIR + "reranking-parser.sh";
-  // this is the self-trained WSJ+NANC model (see McClosky, Charniak, and Johnson (NAACL 2010))
-  private static final String CHARNIAK_PARSING_MODEL = "/u/nlp/packages/bllip-parser-models/selftrained/parser/";
+  private static final String CHARNIAK_BIN = "./parse-50best.sh";
 
   private final CharniakScoredParsesReaderWriter scoredParsesReaderWriter = new CharniakScoredParsesReaderWriter();
 
+  private String dir = CHARNIAK_DIR;
   private String parserExecutable = CHARNIAK_BIN;
-  private String parserModel = CHARNIAK_PARSING_MODEL;
 
   /** Do not parse sentences larger than this sentence length */
   private int maxSentenceLength = 400;
   private int beamSize = 0;
 
-  public CharniakParser()
-  {
-  }
+  public CharniakParser() {}
 
-  public CharniakParser(String parserExecutable, String parserModel) {
+  public CharniakParser(String dir, String parserExecutable) {
     this.parserExecutable = parserExecutable;
-    this.parserModel = parserModel;
+    this.dir = dir;
   }
 
   public int getBeamSize() {
@@ -124,7 +120,7 @@ public class CharniakParser {
         outFile.delete();
         errFile.delete();
       }
-      return new IterableIterator<List<ScoredObject<Tree>>>(iter.iterator());
+      return new IterableIterator<>(iter.iterator());
     } catch (IOException ex) {
       throw new RuntimeException(ex);
     }
@@ -132,7 +128,7 @@ public class CharniakParser {
 
   public void printSentence(List<? extends HasWord> sentence, String filename)
   {
-    List<List<? extends HasWord>> sentences = new ArrayList<List<? extends HasWord>>();
+    List<List<? extends HasWord>> sentences = new ArrayList<>();
     sentences.add(sentence);
     printSentences(sentences, filename);
   }
@@ -143,7 +139,7 @@ public class CharniakParser {
       PrintWriter pw = IOUtils.getPrintWriter(filename);
       for (List<? extends HasWord> sentence:sentences) {
         pw.print("<s> ");   // Note: Use <s sentence-id > to identify sentences
-        String sentString = Sentence.listToString(sentence);
+        String sentString = SentenceUtils.listToString(sentence);
         if (sentence.size() > maxSentenceLength) {
           logger.warning("Sentence length=" + sentence.size() +
                   " is longer than maximum set length " + maxSentenceLength);
@@ -162,22 +158,12 @@ public class CharniakParser {
   {
     try {
       if (n == 1) n++;  // Charniak does not output score if n = 1?
-      // Options
-      //  -l <maxsentencelength>, should not exceed 400 for normal charniak parser
-      //  -K do not tokenize
-      //  -N <N> N best parsing
-      //  -T <beamsize>
-      List<String> args = new ArrayList<String>();
+
+      List<String> args = new ArrayList<>();
       args.add(parserExecutable);
-      args.add("-l" + maxSentenceLength);
-      args.add("-K");
-      args.add("-N" + n);
-      if (beamSize > 0) {
-        args.add("-T" + beamSize);
-      }
-      args.add(parserModel);
       args.add(infile);
       ProcessBuilder process = new ProcessBuilder(args);
+      process.directory(new File(this.dir));
       PrintWriter out = IOUtils.getPrintWriter(outfile);
       PrintWriter err = IOUtils.getPrintWriter(errfile);
       SystemUtils.run(process, out, err);

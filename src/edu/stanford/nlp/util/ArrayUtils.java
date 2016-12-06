@@ -1,4 +1,5 @@
-package edu.stanford.nlp.util;
+package edu.stanford.nlp.util; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -15,7 +16,10 @@ import java.util.function.Predicate;
  * @author Huy Nguyen (htnguyen@cs.stanford.edu)
  * @author Michel Galley (mgalley@stanford.edu)
  */
-public class ArrayUtils {
+public class ArrayUtils  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ArrayUtils.class);
 
   /**
    * Should not be instantiated
@@ -37,7 +41,7 @@ public class ArrayUtils {
       }
     }
 
-    List<Byte> bytes = new ArrayList<Byte>();
+    List<Byte> bytes = new ArrayList<>();
 
     int index = 0;
     int prevNum = 0;
@@ -112,7 +116,7 @@ public class ArrayUtils {
 
     boolean gettingSize = true;
     int size = 0;
-    List<Integer> ints = new ArrayList<Integer>();
+    List<Integer> ints = new ArrayList<>();
     int gap = 0;
     int prevNum = 0;
 
@@ -168,7 +172,7 @@ public class ArrayUtils {
       }
     }
 
-    List<Byte> bytes = new ArrayList<Byte>();
+    List<Byte> bytes = new ArrayList<>();
 
     int index = 0;
     int prevNum = 0;
@@ -261,7 +265,7 @@ public class ArrayUtils {
     boolean gettingSize1 = true;
     boolean gettingSize2 = false;
     int size1 = 0;
-    List<Integer> ints = new ArrayList<Integer>();
+    List<Integer> ints = new ArrayList<>();
     int gap = 0;
     int size2 = 0;
     int prevNum = 0;
@@ -362,7 +366,7 @@ public class ArrayUtils {
 //       int prevNum = 0;
 //       for (int f : orig) {
 //         StringBuilder bits1 = new StringBuilder();
-//               System.err.print(f+"\t");
+//               log.info(f+"\t");
 //               String n = Integer.toString(f-prevNum, 2);
 //               String n1 = Integer.toString(n.length(), 2);
 //               for (int ii = 0; ii < n1.length(); ii++) {
@@ -371,7 +375,7 @@ public class ArrayUtils {
 //               bits1.append("0");
 //               bits1.append(n1.substring(1));
 //               bits1.append(n.substring(1));
-//               System.err.print(bits1+"\t");
+//               log.info(bits1+"\t");
 //               bits.append(bits1);
 //               prevNum = f;
 //             }
@@ -665,7 +669,7 @@ public class ArrayUtils {
    * singleton list back with just that array as an element.
    */
   public static List<Integer> asList(int[] array) {
-    List<Integer> l = new ArrayList<Integer>();
+    List<Integer> l = new ArrayList<>();
     for (int i : array) {
       l.add(i);
     }
@@ -914,7 +918,7 @@ public class ArrayUtils {
   public static List<Integer> getSubListIndex(Object[] tofind, Object[] tokens, Function<Pair, Boolean> matchingFunction){
     if(tofind.length > tokens.length)
       return null;
-    List<Integer> allIndices = new ArrayList<Integer>();
+    List<Integer> allIndices = new ArrayList<>();
     boolean matched = false;
     int index = -1;
     int lastUnmatchedIndex = 0;

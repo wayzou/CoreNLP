@@ -1,4 +1,5 @@
-package edu.stanford.nlp.ie;
+package edu.stanford.nlp.ie; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.util.StringUtils;
@@ -34,14 +35,21 @@ import java.util.Properties;
  *
 *****************************************************************************/
 
-public class NERServer {
+public class NERServer  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(NERServer.class);
 
   //// Variables
 
   /**
    * Debugging toggle.
    */
-  private boolean DEBUG = false;
+  private static final boolean ENV_DEBUG = ((System.getenv("NERSERVER_DEBUG") != null) ?
+                                            Boolean.parseBoolean(System.getenv("NERSERVER_DEBUG")) :
+                                            false);
+
+  private boolean DEBUG = ENV_DEBUG;
 
   private final String charset;
 
@@ -84,17 +92,17 @@ public class NERServer {
       try {
         client = listener.accept();
         if (DEBUG) {
-          System.err.print("Accepted request from ");
-          System.err.println(client.getInetAddress().getHostName());
+          log.info("Accepted request from ");
+          log.info(client.getInetAddress().getHostName());
         }
         new Session(client);
       } catch (Exception e1) {
-        System.err.println("NERServer: couldn't accept");
+        log.info("NERServer: couldn't accept");
         e1.printStackTrace(System.err);
         try {
           client.close();
         } catch (Exception e2) {
-          System.err.println("NERServer: couldn't close client");
+          log.info("NERServer: couldn't close client");
           e2.printStackTrace(System.err);
         }
       }
@@ -147,7 +155,7 @@ public class NERServer {
      */
     @Override
     public void run() {
-      if (DEBUG) {System.err.println("Created new session");}
+      if (DEBUG) {log.info("Created new session");}
       String input = null;
       try {
         // TODO: why not allow for multiple lines of input?
@@ -156,10 +164,10 @@ public class NERServer {
           EncodingPrintWriter.err.println("Receiving: \"" + input + '\"', charset);
         }
       } catch (IOException e) {
-        System.err.println("NERServer:Session: couldn't read input");
+        log.info("NERServer:Session: couldn't read input");
         e.printStackTrace(System.err);
       } catch (NullPointerException npe) {
-        System.err.println("NERServer:Session: connection closed by peer");
+        log.info("NERServer:Session: connection closed by peer");
         npe.printStackTrace(System.err);
       }
       try {
@@ -174,10 +182,15 @@ public class NERServer {
           out.print(output);
           out.flush();
         }
-      } catch (RuntimeException e) {
+      } catch (RuntimeException | OutOfMemoryError e) {
         // ah well, guess they won't be hearing back from us after all
+        if (DEBUG) {
+          log.error("NERServer.Session: error classifying string.");
+          log.error(e);
+        }
+      } finally {
+        close();
       }
-      close();
     }
 
     /**
@@ -187,9 +200,13 @@ public class NERServer {
       try {
         in.close();
         out.close();
+        if (DEBUG) {
+          log.info("Closing connection to client");
+          log.info(client.getInetAddress().getHostName());
+        }
         client.close();
       } catch (Exception e) {
-        System.err.println("NERServer:Session: can't close session");
+        log.info("NERServer:Session: can't close session");
         e.printStackTrace(System.err);
       }
     }
@@ -257,12 +274,12 @@ public class NERServer {
           in.close();
           socket.close();
         } catch (UnknownHostException e) {
-          System.err.print("Cannot find host: ");
-          System.err.println(host);
+          log.info("Cannot find host: ");
+          log.info(host);
           return;
         } catch (IOException e) {
-          System.err.print("I/O error in the connection to: ");
-          System.err.println(host);
+          log.info("I/O error in the connection to: ");
+          log.info(host);
           return;
         }
       }
@@ -298,7 +315,7 @@ public class NERServer {
     String portStr = props.getProperty("port", "4465");
     props.remove("port"); // so later code doesn't complain
     if (portStr == null || portStr.equals("")) {
-      System.err.println(USAGE);
+      log.info(USAGE);
       return;
     }
     String charset = "utf-8";
@@ -310,8 +327,8 @@ public class NERServer {
     try {
       port = Integer.parseInt(portStr);
     } catch (NumberFormatException e) {
-      System.err.println("Non-numerical port");
-      System.err.println(USAGE);
+      log.info("Non-numerical port");
+      log.info(USAGE);
       return;
     }
     // default output format for if no output format is specified

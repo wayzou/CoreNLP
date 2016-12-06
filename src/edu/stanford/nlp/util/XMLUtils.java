@@ -14,6 +14,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.ErrorHandler;
@@ -21,6 +22,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import edu.stanford.nlp.io.IOUtils;
+import edu.stanford.nlp.util.logging.Redwood;
+
 
 /**
  * Provides some utilities for dealing with XML files, both by properly
@@ -29,7 +32,10 @@ import edu.stanford.nlp.io.IOUtils;
  * @author Teg Grenager
  * @author Grace Muzny
  */
-public class XMLUtils {
+public class XMLUtils  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(XMLUtils.class);
 
   private XMLUtils() {} // only static methods
 
@@ -43,7 +49,7 @@ public class XMLUtils {
     try {
       sents = getTextContentFromTagsFromFileSAXException(f, tag);
     } catch (SAXException e) {
-      System.err.println(e);
+      log.info(e);
     }
     return sents;
   }
@@ -58,8 +64,8 @@ public class XMLUtils {
    * @throws SAXException if tag doesn't exist in the file.
    * @return List of String text contents of tags.
    */
-  public static List<String> getTextContentFromTagsFromFileSAXException(
-      File f, String tag) throws SAXException {
+  private static List<String> getTextContentFromTagsFromFileSAXException(
+          File f, String tag) throws SAXException {
     List<String> sents = Generics.newArrayList();
     try {
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -72,25 +78,23 @@ public class XMLUtils {
         // Get element
         Element element = (Element)nodeList.item(i);
         String raw = element.getTextContent();
-        String builtUp = "";
+        StringBuilder builtUp = new StringBuilder();
         boolean inTag = false;
-        for(int j = 0; j < raw.length(); j++) {
+        for (int j = 0; j < raw.length(); j++) {
           if (raw.charAt(j) == '<') {
             inTag = true;
           }
           if (!inTag) {
-            builtUp += raw.charAt(j);
+            builtUp.append(raw.charAt(j));
           }
           if (raw.charAt(j) == '>') {
             inTag = false;
           }
         }
-        sents.add(builtUp);
+        sents.add(builtUp.toString());
       }
-    } catch (IOException e) {
-      System.err.println(e);
-    } catch (ParserConfigurationException e) {
-      System.err.println(e);
+    } catch (IOException | ParserConfigurationException e) {
+      log.info(e);
     }
     return sents;
   }
@@ -106,7 +110,7 @@ public class XMLUtils {
     try {
       sents = getTagElementsFromFileSAXException(f, tag);
     } catch (SAXException e) {
-      System.err.println(e);
+      log.info(e);
     }
     return sents;
   }
@@ -121,8 +125,8 @@ public class XMLUtils {
    * @throws SAXException if tag doesn't exist in the file.
    * @return List of String text contents of tags.
    */
-  public static List<Element> getTagElementsFromFileSAXException(
-      File f, String tag) throws SAXException {
+  private static List<Element> getTagElementsFromFileSAXException(
+          File f, String tag) throws SAXException {
     List<Element> sents = Generics.newArrayList();
     try {
       DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -136,9 +140,103 @@ public class XMLUtils {
         Element element = (Element)nodeList.item(i);
         sents.add(element);
       }
-    } catch (IOException e) {
+    } catch (IOException | ParserConfigurationException e) {
+      log.info(e);
+    }
+    return sents;
+  }
+
+  /**
+   * Returns the elements in the given file with the given tag associated with
+   * the text content of the two previous siblings and two next siblings.
+   *
+   * @return List of {@code Triple<String, Element, String>} Targeted elements surrounded
+   * by the text content of the two previous siblings and two next siblings.
+   */
+  public static List<Triple<String, Element, String>> getTagElementTriplesFromFile(File f, String tag) {
+    List<Triple<String, Element, String>> sents = Generics.newArrayList();
+    try {
+      sents = getTagElementTriplesFromFileSAXException(f, tag);
+    } catch (SAXException e) {
       System.err.println(e);
-    } catch (ParserConfigurationException e) {
+    }
+    return sents;
+  }
+
+  /**
+   * Returns the elements in the given file with the given tag associated with
+   * the text content of the previous and next siblings up to max numIncludedSiblings.
+   *
+   * @return List of Triple<String, Element, String> Targeted elements surrounded
+   * by the text content of the two previous siblings and two next siblings.
+   */
+  public static List<Triple<String, Element, String>> getTagElementTriplesFromFileNumBounded(File f,
+                                                                                             String tag,
+                                                                                             int num) {
+    List<Triple<String, Element, String>> sents = Generics.newArrayList();
+    try {
+      sents = getTagElementTriplesFromFileNumBoundedSAXException(f, tag, num);
+    } catch (SAXException e) {
+      System.err.println(e);
+    }
+    return sents;
+  }
+
+  /**
+   * Returns the elements in the given file with the given tag associated with
+   * the text content of the two previous siblings and two next siblings.
+   *
+   * @throws SAXException if tag doesn't exist in the file.
+   * @return List of {@code Triple<String, Element, String>} Targeted elements surrounded
+   * by the text content of the two previous siblings and two next siblings.
+   */
+  public static List<Triple<String, Element, String>> getTagElementTriplesFromFileSAXException(
+      File f, String tag) throws SAXException {
+    return  getTagElementTriplesFromFileNumBoundedSAXException(f, tag, 2);
+  }
+
+  /**
+   * Returns the elements in the given file with the given tag associated with
+   * the text content of the previous and next siblings up to max numIncludedSiblings.
+   *
+   * @throws SAXException if tag doesn't exist in the file.
+   * @return List of Triple<String, Element, String> Targeted elements surrounded
+   * by the text content of the two previous siblings and two next siblings.
+   */
+  public static List<Triple<String, Element, String>> getTagElementTriplesFromFileNumBoundedSAXException(
+      File f, String tag, int numIncludedSiblings) throws SAXException {
+    List<Triple<String, Element, String>> sents = Generics.newArrayList();
+    try {
+      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      DocumentBuilder db = dbf.newDocumentBuilder();
+      Document doc = db.parse(f);
+      doc.getDocumentElement().normalize();
+
+      NodeList nodeList=doc.getElementsByTagName(tag);
+      for (int i = 0; i < nodeList.getLength(); i++) {
+        // Get element
+        Node prevNode = nodeList.item(i).getPreviousSibling();
+        String prev = "";
+        int count = 0;
+        while (prevNode != null && count <= numIncludedSiblings) {
+          prev = prevNode.getTextContent() + prev;
+          prevNode = prevNode.getPreviousSibling();
+          count++;
+        }
+
+        Node nextNode = nodeList.item(i).getNextSibling();
+        String next = "";
+        count = 0;
+        while (nextNode != null && count <= numIncludedSiblings) {
+          next = next + nextNode.getTextContent();
+          nextNode = nextNode.getNextSibling();
+          count++;
+        }
+        Element element = (Element)nodeList.item(i);
+        Triple<String, Element, String> t = new Triple<>(prev, element, next);
+        sents.add(t);
+      }
+    } catch (IOException | ParserConfigurationException e) {
       System.err.println(e);
     }
     return sents;
@@ -179,7 +277,7 @@ public class XMLUtils {
   /**
    * Returns a validating XML parser given an XSD (not DTD!).
    *
-   * @param schemaFile
+   * @param schemaFile File wit hXML schema
    * @return An XML parser in the form of a DocumentBuilder
    */
   public static DocumentBuilder getValidatingXmlParser(File schemaFile) {
@@ -213,7 +311,7 @@ public class XMLUtils {
   /**
    * Block-level HTML tags that are rendered with surrounding line breaks.
    */
-  public static final Set<String> breakingTags = Generics.newHashSet(Arrays.asList(new String[] {"blockquote", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "li", "ol", "p", "pre", "ul", "tr", "td"}));
+  private static final Set<String> breakingTags = Generics.newHashSet(Arrays.asList(new String[] {"blockquote", "br", "div", "h1", "h2", "h3", "h4", "h5", "h6", "hr", "li", "ol", "p", "pre", "ul", "tr", "td"}));
 
   /**
    * @param r       the reader to read the XML/HTML from
@@ -226,12 +324,10 @@ public class XMLUtils {
       mapBack.clear(); // just in case it has something in it!
     }
     StringBuilder result = new StringBuilder();
-    String text;
-    String tag;
-    int position = 0;
     try {
+      int position = 0;
       do {
-        text = XMLUtils.readUntilTag(r); // will do nothing if the next thing is a tag
+        String text = XMLUtils.readUntilTag(r);
         if (text.length() > 0) {
           // add offsets to the map back
           for (int i = 0; i < text.length(); i++) {
@@ -243,7 +339,7 @@ public class XMLUtils {
           position += text.length();
         }
         //        System.out.println(position + " got text: " + text);
-        tag = XMLUtils.readTag(r);
+        String tag = XMLUtils.readTag(r);
         if (tag == null) {
           break;
         }
@@ -257,7 +353,7 @@ public class XMLUtils {
         //        System.out.println(position + " got tag: " + tag);
       } while (true);
     } catch (IOException e) {
-      System.err.println("Error reading string");
+      log.info("Error reading string");
       e.printStackTrace();
     }
     return result.toString();
@@ -301,7 +397,7 @@ public class XMLUtils {
     try {
       ret = new XMLTag(s);
     } catch (Exception e) {
-      System.err.println("Failed to handle |" + s + "|");
+      log.info("Failed to handle |" + s + "|");
     }
     return ret;
   }
@@ -310,7 +406,7 @@ public class XMLUtils {
   // "many matchers can share the same pattern"
   // on the Pattern javadoc.  Therefore, this should be
   // safe as a static final variable.
-  static final Pattern xmlEscapingPattern = Pattern.compile("\\&.+?;");
+  private static final Pattern xmlEscapingPattern = Pattern.compile("\\&.+?;");
 
   public static String unescapeStringForXML(String s) {
     StringBuilder result = new StringBuilder();
@@ -929,7 +1025,7 @@ public class XMLUtils {
         result.append(tag.toString());
       } while (true);
     } catch (IOException e) {
-      System.err.println("Error reading string");
+      log.info("Error reading string");
       e.printStackTrace();
     }
     return result.toString();
@@ -1033,7 +1129,7 @@ public class XMLUtils {
               if (end < 0) {
                 end = tag.length();
               }
-              System.out.println(begin + " " + end);
+//              System.out.println(begin + " " + end);
               value = tag.substring(begin, end);
             }
           }
@@ -1077,7 +1173,7 @@ public class XMLUtils {
   }
 
   public static XMLTag parseTag(String tagString) {
-    if (tagString == null || tagString.length() == 0) {
+    if (tagString == null || tagString.isEmpty()) {
       return null;
     }
     if (tagString.charAt(0) != '<' ||
@@ -1105,7 +1201,7 @@ public class XMLUtils {
       StringBuilder sb = new StringBuilder(msg);
       sb.append(": ");
       String str = ex.getMessage();
-      if (str.lastIndexOf(".") == str.length() - 1) {
+      if (str.lastIndexOf('.') == str.length() - 1) {
         str = str.substring(0, str.length() - 1);
       }
       sb.append(str);
@@ -1121,11 +1217,11 @@ public class XMLUtils {
     }
 
     public void warning(SAXParseException exception) {
-      System.err.println(makeBetterErrorString("Warning", exception));
+      log.info(makeBetterErrorString("Warning", exception));
     }
 
     public void error(SAXParseException exception) {
-      System.err.println(makeBetterErrorString("Error", exception));
+      log.info(makeBetterErrorString("Error", exception));
     }
 
     public void fatalError(SAXParseException ex) throws SAXParseException {
@@ -1155,10 +1251,10 @@ public class XMLUtils {
       String s = IOUtils.slurpFile(args[0]);
       Reader r = new StringReader(s);
       String tag = readTag(r);
-      while (tag.length() > 0) {
+      while (tag != null && tag.length() > 0) {
         readUntilTag(r);
         tag = readTag(r);
-        if (tag.length() == 0) {
+        if (tag == null || tag.isEmpty()) {
           break;
         }
         System.out.println("got tag=" + new XMLTag(tag));

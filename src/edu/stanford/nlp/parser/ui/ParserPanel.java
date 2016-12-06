@@ -24,7 +24,8 @@
 //    parser-support@lists.stanford.edu
 //    http://nlp.stanford.edu/downloads/lex-parser.shtml
 
-package edu.stanford.nlp.parser.ui;
+package edu.stanford.nlp.parser.ui; 
+import edu.stanford.nlp.util.logging.Redwood;
 
 import edu.stanford.nlp.io.ui.OpenPageDialog;
 import edu.stanford.nlp.ling.*;
@@ -70,7 +71,10 @@ import java.util.List;
  *
  * @author Huy Nguyen (htnguyen@cs.stanford.edu)
  */
-public class ParserPanel extends JPanel {
+public class ParserPanel extends JPanel  {
+
+  /** A logger for this class */
+  private static Redwood.RedwoodChannels log = Redwood.channels(ParserPanel.class);
 
   /**
    *
@@ -227,7 +231,7 @@ public class ParserPanel extends JPanel {
     DocumentPreprocessor processor = new DocumentPreprocessor(reader);
     TokenizerFactory<? extends HasWord> tf = tlp.getTokenizerFactory();
     processor.setTokenizerFactory(tf);
-    List<Integer> boundaries = new ArrayList<Integer>();
+    List<Integer> boundaries = new ArrayList<>();
     for (List<HasWord> sentence : processor) {
       if (sentence.size() == 0)
         continue;
@@ -302,7 +306,7 @@ public class ParserPanel extends JPanel {
       Font font = new Font(fonts.get(0).getName(), Font.PLAIN, 14);
       textPane.setFont(font);
       treePanel.setFont(font);
-      System.err.println("Selected font " + font);
+      log.info("Selected font " + font);
     } else if (FontDetector.hasFont("Watanabe Mincho")) {
       textPane.setFont(new Font("Watanabe Mincho", Font.PLAIN, 14));
       treePanel.setFont(new Font("Watanabe Mincho", Font.PLAIN, 14));
@@ -378,11 +382,11 @@ public class ParserPanel extends JPanel {
     try {
       if (urlOrFile.startsWith("http://") || urlOrFile.endsWith(".htm") || urlOrFile.endsWith(".html")) {
         // strip tags from html documents
-        Document<Object, Word, Word> docPre = new BasicDocument<Object>().init(new URL(urlOrFile));
-        DocumentProcessor<Word, Word, Object, Word> noTags = new StripTagsProcessor<Object, Word>();
+        Document<Object, Word, Word> docPre = new BasicDocument<>().init(new URL(urlOrFile));
+        DocumentProcessor<Word, Word, Object, Word> noTags = new StripTagsProcessor<>();
         doc = noTags.processDocument(docPre);
       } else {
-        doc = new BasicDocument<Object>(this.getTokenizerFactory()).init(new InputStreamReader(new FileInputStream(filename), encoding));
+        doc = new BasicDocument<>(this.getTokenizerFactory()).init(new InputStreamReader(new FileInputStream(filename), encoding));
       }
     } catch (Exception e) {
       JOptionPane.showMessageDialog(this, "Could not load file " + filename + "\n" + e, null, JOptionPane.ERROR_MESSAGE);
@@ -393,11 +397,11 @@ public class ParserPanel extends JPanel {
 
     // load the document into the text pane
     StringBuilder docStr = new StringBuilder();
-    for (Iterator<?> it = doc.iterator(); it.hasNext(); ) {
+    for (Word aDoc : doc) {
       if (docStr.length() > 0) {
         docStr.append(' ');
       }
-      docStr.append(it.next().toString());
+      docStr.append(aDoc.toString());
     }
     textPane.setText(docStr.toString());
     dataFileLabel.setText(urlOrFile);
@@ -450,7 +454,7 @@ public class ParserPanel extends JPanel {
     DocumentPreprocessor processor = new DocumentPreprocessor(reader);
     TokenizerFactory<? extends HasWord> tf = tlp.getTokenizerFactory();
     processor.setTokenizerFactory(tf);
-    List<List<HasWord>> sentences = new ArrayList<List<HasWord>>();
+    List<List<HasWord>> sentences = new ArrayList<>();
     for (List<HasWord> sentence : processor) {
       sentences.add(sentence);
     }
@@ -516,7 +520,7 @@ public class ParserPanel extends JPanel {
           Tree tree = parser.parseTree(sentence);
           if (tree == null) {
             ++failures;
-            System.err.println("Failed on sentence " + sentence);
+            log.info("Failed on sentence " + sentence);
           } else {
             bw.write(tree.toString());
             bw.newLine();

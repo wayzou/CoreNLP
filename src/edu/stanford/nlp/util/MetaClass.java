@@ -9,6 +9,8 @@ import edu.stanford.nlp.trees.Tree;
 
 import java.io.*;
 import java.lang.reflect.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -315,7 +317,7 @@ public class MetaClass {
    */
   public <E> ClassFactory<E> createFactory(Class<?>... classes) {
     try {
-      return new ClassFactory<E>(classname, classes);
+      return new ClassFactory<>(classname, classes);
     } catch (ClassCreationException e){
       throw e;
     } catch (Exception e) {
@@ -335,7 +337,7 @@ public class MetaClass {
    */
   public <E> ClassFactory<E> createFactory(String... classes) {
     try {
-      return new ClassFactory<E>(classname, classes);
+      return new ClassFactory<>(classname, classes);
     } catch (ClassCreationException e){
       throw e;
     } catch (Exception e) {
@@ -355,7 +357,7 @@ public class MetaClass {
    */
   public <E> ClassFactory<E> createFactory(Object... objects) {
     try {
-      return new ClassFactory<E>(classname, objects);
+      return new ClassFactory<>(classname, objects);
     } catch (ClassCreationException e){
       throw e;
     } catch (Exception e) {
@@ -512,6 +514,10 @@ public class MetaClass {
       } catch (NumberFormatException e) {
         return (E) new Integer((int) Double.parseDouble(value));
       }
+    }else if(BigInteger.class.isAssignableFrom(clazz)) {
+      //(case: biginteger)
+      if(value == null){ return (E) BigInteger.ZERO; }
+      return (E) new BigInteger(value);
     }else if(Long.class.isAssignableFrom(clazz) || long.class.isAssignableFrom(clazz)){
       //(case: long)
       try {
@@ -527,6 +533,10 @@ public class MetaClass {
       //(case: double)
       if(value == null){ return (E) new Double(Double.NaN); }
       return (E) new Double(Double.parseDouble(value));
+    }else if(BigDecimal.class.isAssignableFrom(clazz)) {
+      //(case: bigdecimal)
+      if(value == null){ return (E) BigDecimal.ZERO; }
+      return (E) new BigDecimal(value);
     }else if(Short.class.isAssignableFrom(clazz) || short.class.isAssignableFrom(clazz)){
       //(case: short)
       try {
@@ -550,7 +560,7 @@ public class MetaClass {
       return (E) Lazy.of(() -> MetaClass.castWithoutKnowingType(v) );
     }else if(Optional.class.isAssignableFrom(clazz)) {
       //(case: Optional)
-      return (E) ((value == null || "null".equals(value.toLowerCase()) || "empty".equals(value.toLowerCase()) || "none".equals(value.toLowerCase())) ? Optional.empty() : Optional.of(castWithoutKnowingType(value)));
+      return (E) ((value == null || "null".equals(value.toLowerCase()) || "empty".equals(value.toLowerCase()) || "none".equals(value.toLowerCase())) ? Optional.empty() : Optional.of(value));
     }else if(java.util.Date.class.isAssignableFrom(clazz)){
       //(case: date)
       try {
@@ -652,8 +662,8 @@ public class MetaClass {
       }
     } else if (PrintWriter.class.isAssignableFrom(clazz)) {
       // (case: input stream)
-      if (value.equalsIgnoreCase("stdout") || value.equalsIgnoreCase("out")) { return (E) System.out; }
-      if (value.equalsIgnoreCase("stderr") || value.equalsIgnoreCase("err")) { return (E) System.err; }
+      if (value.equalsIgnoreCase("stdout") || value.equalsIgnoreCase("out")) { return (E) new PrintWriter(System.out); }
+      if (value.equalsIgnoreCase("stderr") || value.equalsIgnoreCase("err")) { return (E) new PrintWriter(System.err); }
       try {
         return (E) IOUtils.getPrintWriter(value);
       } catch (IOException e) {
@@ -725,7 +735,6 @@ public class MetaClass {
   }
 
   public static <E> E castWithoutKnowingType(String value){
-    Object rtn;
     Class[] typesToTry = new Class[]{
       Integer.class, Double.class,
       File.class, Date.class, List.class, Set.class, Queue.class,
@@ -736,6 +745,7 @@ public class MetaClass {
       if (Collection.class.isAssignableFrom(toTry) && !value.contains(",") || value.contains(" ")) { continue; }
       //noinspection EmptyCatchBlock
       try {
+        Object rtn;
         if ((rtn = cast(value, toTry)) != null &&
             (!File.class.isAssignableFrom(rtn.getClass()) || ((File) rtn).exists())) {
           return ErasureUtils.uncheckedCast(rtn);
@@ -749,6 +759,7 @@ public class MetaClass {
     int argmin = argmin(scores, atLeast);
     return argmin >= 0 ? elems[argmin] : null;
   }
+
   private static int argmin(int[] scores, int atLeast) {
     int min = Integer.MAX_VALUE;
     int argmin = -1;
@@ -761,7 +772,7 @@ public class MetaClass {
     return argmin;
   }
 
-  private static final HashMap<Class, MetaClass> abstractToConcreteCollectionMap = new HashMap<Class, MetaClass>();
+  private static final HashMap<Class, MetaClass> abstractToConcreteCollectionMap = new HashMap<>();
   static {
     abstractToConcreteCollectionMap.put(Collection.class, MetaClass.create(ArrayList.class));
     abstractToConcreteCollectionMap.put(List.class, MetaClass.create(ArrayList.class));
@@ -769,4 +780,5 @@ public class MetaClass {
     abstractToConcreteCollectionMap.put(Queue.class, MetaClass.create(LinkedList.class));
     abstractToConcreteCollectionMap.put(Deque.class, MetaClass.create(LinkedList.class));
   }
+
 }

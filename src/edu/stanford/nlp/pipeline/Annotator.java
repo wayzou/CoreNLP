@@ -1,9 +1,8 @@
 package edu.stanford.nlp.pipeline;
 
-import edu.stanford.nlp.util.ArraySet;
+import edu.stanford.nlp.ling.CoreAnnotation;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is an interface for adding annotations to a partially annotated
@@ -42,48 +41,19 @@ public interface Annotator {
    */
   void annotate(Annotation annotation);
 
-  /**
-   * The Requirement is a general way of describing the pre and post
-   * conditions of an Annotator running.  Typical use is to have
-   * constants for the different requirement types, such as the
-   * TOKENIZE_REQUIREMENT below, and to reuse those constants instead
-   * of creating new objects.  It is also possible to subclass
-   * Requirement if an Annotator has a more general output.  For
-   * example, one could imagine a TsurgeonAnnotator which has a wide
-   * range of possible effects; this would probably subclass
-   * Requirement to indicate which particular surgery it provided.
-   * <br>
-   * We do nothing to override the equals or hashCode methods.  This
-   * means that two Requirements are equal iff they are the same
-   * object.  We do not want to use {@code name} to decide
-   * equality because a subclass that uses more information, such as
-   * the particular kind of tsurgeon used in a hypothetical
-   * TsurgeonAnnotator, cannot use a stricter equals() than the
-   * superclass.  It is hard to get stricter than ==.
-   */
-  class Requirement {
-    private final String name;
-    public Requirement(String name) {
-      this.name = name;
-    }
-    @Override
-    public String toString() {
-      return name;
-    }
-  }
 
   /**
    * Returns a set of requirements for which tasks this annotator can
    * provide.  For example, the POS annotator will return "pos".
    */
-  Set<Requirement> requirementsSatisfied();
+  Set<Class<? extends CoreAnnotation>> requirementsSatisfied();
 
   /**
    * Returns the set of tasks which this annotator requires in order
    * to perform.  For example, the POS annotator will return
    * "tokenize", "ssplit".
    */
-  Set<Requirement> requires();
+  Set<Class<? extends CoreAnnotation>> requires();
 
   /**
    * These are annotators which StanfordCoreNLP knows how to create.
@@ -101,7 +71,8 @@ public interface Annotator {
   String STANFORD_TRUECASE = "truecase";
   String STANFORD_PARSE = "parse";
   String STANFORD_DETERMINISTIC_COREF = "dcoref";
-  String STANFORD_COREF = "hcoref";
+  String STANFORD_COREF = "coref";
+  String STANFORD_MENTION = "mention";  // TODO(jebolton) Merge with entitymention
   String STANFORD_RELATION = "relation";
   String STANFORD_SENTIMENT = "sentiment";
   String STANFORD_COLUMN_DATA_CLASSIFIER = "cdc";
@@ -109,58 +80,43 @@ public interface Annotator {
   String STANFORD_NATLOG = "natlog";
   String STANFORD_OPENIE = "openie";
   String STANFORD_QUOTE = "quote";
+  String STANFORD_UD_FEATURES = "udfeats";
+  String STANFORD_LINK = "entitylink";
+  String STANFORD_KBP = "kbp";
 
-
-  Requirement TOKENIZE_REQUIREMENT = new Requirement(STANFORD_TOKENIZE);
-  Requirement CLEAN_XML_REQUIREMENT = new Requirement(STANFORD_CLEAN_XML);
-  Requirement SSPLIT_REQUIREMENT = new Requirement(STANFORD_SSPLIT);
-  Requirement POS_REQUIREMENT = new Requirement(STANFORD_POS);
-  Requirement LEMMA_REQUIREMENT = new Requirement(STANFORD_LEMMA);
-  Requirement NER_REQUIREMENT = new Requirement(STANFORD_NER);
-  Requirement GENDER_REQUIREMENT = new Requirement(STANFORD_GENDER);
-  Requirement TRUECASE_REQUIREMENT = new Requirement(STANFORD_TRUECASE);
-  Requirement PARSE_REQUIREMENT = new Requirement(STANFORD_PARSE);
-  Requirement DEPENDENCY_REQUIREMENT = new Requirement(STANFORD_DEPENDENCIES);
-  Requirement DETERMINISTIC_COREF_REQUIREMENT = new Requirement(STANFORD_DETERMINISTIC_COREF);
-  Requirement COREF_REQUIREMENT = new Requirement(STANFORD_COREF);
-  Requirement RELATION_EXTRACTOR_REQUIREMENT = new Requirement(STANFORD_RELATION);
-  Requirement NATLOG_REQUIREMENT = new Requirement(STANFORD_NATLOG);
-  Requirement OPENIE_REQUIREMENT = new Requirement(STANFORD_OPENIE);
-  Requirement QUOTE_REQUIREMENT = new Requirement(STANFORD_QUOTE);
 
   /**
-   * These are annotators which StanfordCoreNLP does not know how to
-   * create by itself, meaning you would need to use the custom
-   * annotator mechanism to create them.  Note that some of them are
-   * already included in other parts of the system, such as sutime,
-   * which is already included in ner.
+   * A mapping from an annotator to a its default transitive dependencies.
+   * Note that this is not guaranteed to be accurate, as properties set in the annotator
+   * can change the annotator's dependencies; but, it's a reasonable guess if you're using
+   * things out-of-the-box.
    */
-  Requirement GUTIME_REQUIREMENT = new Requirement("gutime");
-  Requirement SUTIME_REQUIREMENT = new Requirement("sutime");
-  Requirement HEIDELTIME_REQUIREMENT = new Requirement("heideltime");
-  Requirement STEM_REQUIREMENT = new Requirement("stem");
-  Requirement NUMBER_REQUIREMENT = new Requirement("number");
-  Requirement TIME_WORDS_REQUIREMENT = new Requirement("timewords");
-  Requirement QUANTIFIABLE_ENTITY_NORMALIZATION_REQUIREMENT = new Requirement("quantifiable_entity_normalization");
-  Requirement COLUMN_DATA_CLASSIFIER = new Requirement("column_data_classifer");
-
-  /**
-   * The Stanford Parser can produce this if it is specifically requested.
-   */
-  Requirement BINARIZED_TREES_REQUIREMENT = new Requirement("binarized_trees");
-
-  /**
-   * These are typical combinations of annotators which may be used as
-   * requirements by other annotators.
-   */
-  Set<Requirement> TOKENIZE_AND_SSPLIT = Collections.unmodifiableSet(new ArraySet<Requirement>(TOKENIZE_REQUIREMENT, SSPLIT_REQUIREMENT));
-  Set<Requirement> TOKENIZE_SSPLIT_POS = Collections.unmodifiableSet(new ArraySet<Requirement>(TOKENIZE_REQUIREMENT, SSPLIT_REQUIREMENT, POS_REQUIREMENT));
-  Set<Requirement> TOKENIZE_SSPLIT_NER = Collections.unmodifiableSet(new ArraySet<Requirement>(TOKENIZE_REQUIREMENT, SSPLIT_REQUIREMENT, NER_REQUIREMENT));
-  Set<Requirement> TOKENIZE_SSPLIT_PARSE = Collections.unmodifiableSet(new ArraySet<Requirement>(TOKENIZE_REQUIREMENT, SSPLIT_REQUIREMENT, PARSE_REQUIREMENT));
-  Set<Requirement> TOKENIZE_SSPLIT_PARSE_NER = Collections.unmodifiableSet(new ArraySet<Requirement>(TOKENIZE_REQUIREMENT, SSPLIT_REQUIREMENT, PARSE_REQUIREMENT, NER_REQUIREMENT));
-  Set<Requirement> TOKENIZE_SSPLIT_POS_LEMMA = Collections.unmodifiableSet(new ArraySet<Requirement>(TOKENIZE_REQUIREMENT, SSPLIT_REQUIREMENT, POS_REQUIREMENT, LEMMA_REQUIREMENT));
-  Set<Requirement> TOKENIZE_SSPLIT_POS_DEPPARSE = Collections.unmodifiableSet(new ArraySet<Requirement>(TOKENIZE_REQUIREMENT, SSPLIT_REQUIREMENT, POS_REQUIREMENT, DEPENDENCY_REQUIREMENT));
-  Set<Requirement> PARSE_AND_TAG = Collections.unmodifiableSet(new ArraySet<Requirement>(POS_REQUIREMENT, PARSE_REQUIREMENT));
-  Set<Requirement> PARSE_TAG_BINARIZED_TREES = Collections.unmodifiableSet(new ArraySet<Requirement>(POS_REQUIREMENT, PARSE_REQUIREMENT, BINARIZED_TREES_REQUIREMENT));
+  @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
+  Map<String, Set<String>> DEFAULT_REQUIREMENTS = new HashMap<String, Set<String>>(){{
+    put(STANFORD_TOKENIZE,                 new LinkedHashSet<>(Arrays.asList()));
+    put(STANFORD_CLEAN_XML,                new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE)));
+    put(STANFORD_SSPLIT,                   new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE)));
+    put(STANFORD_POS,                      new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT)));
+    put(STANFORD_LEMMA,                    new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS)));
+    put(STANFORD_NER,                      new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA)));
+    put(STANFORD_REGEXNER,                 new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT)));
+    put(STANFORD_ENTITY_MENTIONS,          new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA, STANFORD_NER)));
+    put(STANFORD_GENDER,                   new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA, STANFORD_NER)));
+    put(STANFORD_TRUECASE,                 new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT)));
+    put(STANFORD_PARSE,                    new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT)));
+    put(STANFORD_DETERMINISTIC_COREF,      new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA, STANFORD_NER, STANFORD_MENTION, STANFORD_PARSE)));
+    put(STANFORD_COREF,                    new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA, STANFORD_NER, STANFORD_MENTION)));
+    put(STANFORD_MENTION,                  new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA, STANFORD_NER, STANFORD_DEPENDENCIES)));
+    put(STANFORD_RELATION,                 new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA, STANFORD_NER, STANFORD_PARSE, STANFORD_DEPENDENCIES)));
+    put(STANFORD_SENTIMENT,                new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_PARSE)));
+    put(STANFORD_COLUMN_DATA_CLASSIFIER,   new LinkedHashSet<>(Arrays.asList()));
+    put(STANFORD_DEPENDENCIES,             new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS)));
+    put(STANFORD_NATLOG,                   new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA, STANFORD_DEPENDENCIES)));
+    put(STANFORD_OPENIE,                   new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_LEMMA, STANFORD_DEPENDENCIES, STANFORD_NATLOG)));
+    put(STANFORD_QUOTE,                    new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT)));
+    put(STANFORD_UD_FEATURES,              new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_DEPENDENCIES)));
+    put(STANFORD_LINK,                     new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_DEPENDENCIES, STANFORD_LEMMA, STANFORD_NER, STANFORD_ENTITY_MENTIONS)));
+    put(STANFORD_KBP,                      new LinkedHashSet<>(Arrays.asList(STANFORD_TOKENIZE, STANFORD_SSPLIT, STANFORD_POS, STANFORD_DEPENDENCIES, STANFORD_LEMMA, STANFORD_NER, STANFORD_MENTION, STANFORD_COREF, STANFORD_REGEXNER)));
+  }};
 
 }

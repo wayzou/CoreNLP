@@ -1,16 +1,16 @@
 package edu.stanford.nlp.pipeline;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import edu.stanford.nlp.ling.CoreAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.tokensregex.TokenSequencePattern;
 import edu.stanford.nlp.process.WordToSentenceProcessor;
+import edu.stanford.nlp.util.ArraySet;
 import edu.stanford.nlp.util.ArrayUtils;
 import edu.stanford.nlp.util.CoreMap;
+import edu.stanford.nlp.util.logging.Redwood;
 
 
 /**
@@ -23,7 +23,10 @@ import edu.stanford.nlp.util.CoreMap;
  * @author Jenny Finkel
  * @author Christopher Manning
  */
-public class WordsToSentencesAnnotator implements Annotator {
+public class WordsToSentencesAnnotator implements Annotator  {
+
+  /** A logger for this class */
+  private static final Redwood.RedwoodChannels log = Redwood.channels(WordsToSentencesAnnotator.class);
 
   private final WordToSentenceProcessor<CoreLabel> wts;
 
@@ -36,16 +39,7 @@ public class WordsToSentencesAnnotator implements Annotator {
   }
 
   public WordsToSentencesAnnotator(boolean verbose) {
-    this(verbose, false, new WordToSentenceProcessor<CoreLabel>());
-  }
-
-  public WordsToSentencesAnnotator(boolean verbose, String boundaryTokenRegex,
-                                   Set<String> boundaryToDiscard, Set<String> htmlElementsToDiscard,
-                                   String newlineIsSentenceBreak) {
-    this(verbose, false,
-         new WordToSentenceProcessor<CoreLabel>(boundaryTokenRegex,
-                 boundaryToDiscard, htmlElementsToDiscard,
-                 WordToSentenceProcessor.stringToNewlineIsSentenceBreak(newlineIsSentenceBreak)));
+    this(verbose, false, new WordToSentenceProcessor<>());
   }
 
   public WordsToSentencesAnnotator(boolean verbose, String boundaryTokenRegex,
@@ -53,10 +47,10 @@ public class WordsToSentencesAnnotator implements Annotator {
                                    String newlineIsSentenceBreak, String boundaryMultiTokenRegex,
                                    Set<String> tokenRegexesToDiscard) {
     this(verbose, false,
-            new WordToSentenceProcessor<CoreLabel>(boundaryTokenRegex,
+            new WordToSentenceProcessor<>(boundaryTokenRegex, null,
                     boundaryToDiscard, htmlElementsToDiscard,
                     WordToSentenceProcessor.stringToNewlineIsSentenceBreak(newlineIsSentenceBreak),
-                    (boundaryMultiTokenRegex != null)? TokenSequencePattern.compile(boundaryMultiTokenRegex):null, tokenRegexesToDiscard));
+                    (boundaryMultiTokenRegex != null) ? TokenSequencePattern.compile(boundaryMultiTokenRegex) : null, tokenRegexesToDiscard));
   }
 
   private WordsToSentencesAnnotator(boolean verbose, boolean countLineNumbers,
@@ -75,27 +69,25 @@ public class WordsToSentencesAnnotator implements Annotator {
    *  are used in numbering the sentence. Only this constructor leads to
    *  empty sentences.
    *
-   *  @param verbose Whether it is verbose.
    *  @param  nlToken Zero or more new line tokens, which might be a {@literal \n} or the fake
    *                 newline tokens returned from the tokenizer.
    *  @return A WordsToSentenceAnnotator.
    */
-  public static WordsToSentencesAnnotator newlineSplitter(boolean verbose, String ... nlToken) {
+  public static WordsToSentencesAnnotator newlineSplitter(String... nlToken) {
     // this constructor will keep empty lines as empty sentences
     WordToSentenceProcessor<CoreLabel> wts =
-            new WordToSentenceProcessor<CoreLabel>(ArrayUtils.asImmutableSet(nlToken));
-    return new WordsToSentencesAnnotator(verbose, true, wts);
+            new WordToSentenceProcessor<>(ArrayUtils.asImmutableSet(nlToken));
+    return new WordsToSentencesAnnotator(false, true, wts);
   }
 
 
   /** Return a WordsToSentencesAnnotator that never splits the token stream. You just get one sentence.
    *
-   *  @param verbose Whether it is verbose.
    *  @return A WordsToSentenceAnnotator.
    */
-  public static WordsToSentencesAnnotator nonSplitter(boolean verbose) {
-    WordToSentenceProcessor<CoreLabel> wts = new WordToSentenceProcessor<CoreLabel>(true);
-    return new WordsToSentencesAnnotator(verbose, false, wts);
+  public static WordsToSentencesAnnotator nonSplitter() {
+    WordToSentenceProcessor<CoreLabel> wts = new WordToSentenceProcessor<>(true);
+    return new WordsToSentencesAnnotator(false, false, wts);
   }
 
 
@@ -108,9 +100,9 @@ public class WordsToSentencesAnnotator implements Annotator {
   @Override
   public void annotate(Annotation annotation) {
     if (VERBOSE) {
-      System.err.print("Sentence splitting ...");
+      log.info("Sentence splitting ...");
     }
-    if ( ! annotation.has(CoreAnnotations.TokensAnnotation.class)) {
+    if ( !annotation.containsKey(CoreAnnotations.TokensAnnotation.class)) {
       throw new IllegalArgumentException("WordsToSentencesAnnotator: unable to find words/tokens in: " + annotation);
     }
 
@@ -118,15 +110,15 @@ public class WordsToSentencesAnnotator implements Annotator {
     String text = annotation.get(CoreAnnotations.TextAnnotation.class);
     List<CoreLabel> tokens = annotation.get(CoreAnnotations.TokensAnnotation.class);
     String docID = annotation.get(CoreAnnotations.DocIDAnnotation.class);
-    // System.err.println("Tokens are: " + tokens);
+    // log.info("Tokens are: " + tokens);
 
     // assemble the sentence annotations
     int tokenOffset = 0;
     int lineNumber = 0;
     // section annotations to mark sentences with
     CoreMap sectionAnnotations = null;
-    List<CoreMap> sentences = new ArrayList<CoreMap>();
-    for (List<CoreLabel> sentenceTokens: this.wts.process(tokens)) {
+    List<CoreMap> sentences = new ArrayList<>();
+    for (List<CoreLabel> sentenceTokens: wts.process(tokens)) {
       if (countLineNumbers) {
         ++lineNumber;
       }
@@ -207,13 +199,21 @@ public class WordsToSentencesAnnotator implements Annotator {
 
 
   @Override
-  public Set<Requirement> requires() {
-    return Collections.singleton(TOKENIZE_REQUIREMENT);
+  public Set<Class<? extends CoreAnnotation>> requires() {
+    return Collections.unmodifiableSet(new ArraySet<>(Arrays.asList(
+        CoreAnnotations.TextAnnotation.class,
+        CoreAnnotations.TokensAnnotation.class,
+        CoreAnnotations.CharacterOffsetBeginAnnotation.class,
+        CoreAnnotations.CharacterOffsetEndAnnotation.class
+    )));
   }
 
   @Override
-  public Set<Requirement> requirementsSatisfied() {
-    return Collections.singleton(SSPLIT_REQUIREMENT);
+  public Set<Class<? extends CoreAnnotation>> requirementsSatisfied() {
+    return new HashSet<>(Arrays.asList(
+        CoreAnnotations.SentencesAnnotation.class,
+        CoreAnnotations.SentenceIndexAnnotation.class
+    ));
   }
 
 }
